@@ -1,0 +1,51 @@
+﻿<Page
+    x:Class="Detextive.View.DocumentoPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Detextive.View"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Grid>
+       
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="67*"/>
+                <ColumnDefinition Width="220*"/>
+                <ColumnDefinition Width="205*"/>
+            </Grid.ColumnDefinitions>
+            <StackPanel Padding="15" Grid.Column="0" Orientation="Vertical" BorderBrush="Gray" BorderThickness="1" Margin="0,-13,0,-15">
+                <Button   Background="White"  ToolTipService.ToolTip="Proyecto" Height="140" Width="202" HorizontalAlignment="Center" VerticalAlignment="Stretch" Padding="0" BorderThickness="0" >
+                    <Image Source="/Assets/proyecto.png"  Stretch="Uniform"/>
+                </Button>
+                <Button   Background="White" BorderBrush="Black" ToolTipService.ToolTip="Documentos" HorizontalAlignment="Center" Height="140" Width="202" VerticalAlignment="Stretch" Padding="0" BorderThickness="0"  >
+                    <Image HorizontalAlignment="Center" VerticalAlignment="Center" Source="/Assets/docs.png" Stretch="Uniform" Height="104" Width="111"/>
+                </Button>
+                <Button  Background="White" BorderBrush="Black" ToolTipService.ToolTip="Etiquetas" HorizontalAlignment="Center" Height="140" Width="202" VerticalAlignment="Stretch" Padding="0" BorderThickness="0"  >
+                    <Image HorizontalAlignment="Center" VerticalAlignment="Center" Source="/Assets/tags.png" Stretch="Uniform" Height="104" Width="111"/>
+                </Button>
+                <Button  Background="White" BorderBrush="Black" ToolTipService.ToolTip="Nubes de palabras" HorizontalAlignment="Center" Height="140" Width="202" VerticalAlignment="Stretch" Padding="0" BorderThickness="0"  >
+                    <Image HorizontalAlignment="Center" VerticalAlignment="Center" Source="/Assets/cloud.png" Stretch="Uniform" Height="92" Width="102"/>
+                </Button>
+                <Button  Background="White"  ToolTipService.ToolTip="Salir" HorizontalAlignment="Center" Height="140" Width="202" VerticalAlignment="Bottom" Padding="0" BorderThickness="0"  >
+                    <Image HorizontalAlignment="Center" VerticalAlignment="Center" Source="/Assets/salir.png" Stretch="Uniform" Height="59" Width="60"/>
+                </Button>
+            </StackPanel>
+            <ScrollViewer Grid.Column="1" Margin="25">
+                <DataTemplate x:DataType="localModel:Documento">
+                    <TextBlock Text="{x:Bind Nombre}"/>
+                </DataTemplate>
+            </ScrollViewer>
+
+            <Grid Grid.Column="2">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Image Grid.Row="0" Margin=" 20"  />
+                <ListView Grid.Row="1" Margin="20"></ListView>
+            </Grid>
+        
+    </Grid>
+</Page>
