@@ -19,5 +19,9 @@ namespace Detextive.Model
         public string Tag { get => _tag; set => _tag = value; }
         public string Nombre { get => _nombre; set => _nombre = value; }
         public string Ubicacion { get => _ubicacion; set => _ubicacion = value; }
+
+        public ICollection<Cita> CitasSet;
+        
     }
+
 }

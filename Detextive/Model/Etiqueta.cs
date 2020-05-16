@@ -12,5 +12,13 @@ namespace Detextive.Model
         private string _nombre;
         private int _idProy;
         private int _numCitas;
+
+        public int Id { get => _id; set => _id = value; }
+        public string Nombre { get => _nombre; set => _nombre = value; }
+        public int IdProy { get => _idProy; set => _idProy = value; }
+        public int NumCitas { get => _numCitas; set => _numCitas = value; }
+
+        public ICollection<Cita> CitasSet;
+        
     }
 }

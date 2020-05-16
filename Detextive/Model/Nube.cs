@@ -20,17 +20,7 @@ namespace Detextive.Model
         public int ExtensionFragmento { get => _extensionFragmento; set => _extensionFragmento = value; }
         public string NumDocumentos { get => _numDocumentos; set => _numDocumentos = value; }
 
-        //var wc = new WordCloud(1024, 768);
-        //var ids = GetText()
-        //    .Split("\n")
-        //    .Select(x => x.Trim().Split("\t"))
-        //    .Select(x => new { Freq = int.Parse(x[0]), Word = x[1] })
-        //    .ToList();
-        //var freqs = ids.Select(x => x.Freq).ToList();
-        //var words = ids.Select(x => x.Word).ToList();
+        public ICollection<Palabra> PalabrasSet;
 
-        //wc.Draw(words, freqs).Dump();
-
-        //string GetText() =>
     }
 }
