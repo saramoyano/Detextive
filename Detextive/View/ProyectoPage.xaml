@@ -4,15 +4,16 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:Detextive"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:localModel="using:Detextive.Model"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    xmlns:Model="using:AccesoDatos.Model"
     mc:Ignorable="d"
     Background="SteelBlue">
 
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="67*"/>
-            <ColumnDefinition Width="220*"/>
-            <ColumnDefinition Width="205*"/>
+            <ColumnDefinition Width="55*"/>
+            <ColumnDefinition Width="293*"/>
+            <ColumnDefinition Width="292*"/>
         </Grid.ColumnDefinitions>
         <StackPanel Background="White" Padding="15" Grid.Column="0" Orientation="Vertical" BorderBrush="SteelBlue" BorderThickness="2" Margin="0,-13,0,-15">
             <Button   Background="White"  ToolTipService.ToolTip="Proyecto" Height="140" Width="202" HorizontalAlignment="Center" VerticalAlignment="Stretch" Padding="0" BorderThickness="0" >
@@ -31,30 +32,45 @@
                 <Image HorizontalAlignment="Center" VerticalAlignment="Center" Source="/Assets/salir.png" Stretch="Uniform" Height="59" Width="60"/>
             </Button>
         </StackPanel>
-        <Grid Grid.Column="1" Margin="10" Background="SteelBlue">
+        <Grid Name="centerGrid" Grid.Column="1" Margin="10,10,10,10" Background="SteelBlue">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="15*"/>
             </Grid.RowDefinitions>
-            <Button Content="Nuevo Proyecto"
-                    VerticalAlignment="Center"
+
+            <StackPanel Grid.Column="1" Grid.Row="0" Orientation="Horizontal" Margin="10,0,0,0">
+                <Button Content="Nuevo Proyecto"
                     FontSize="20"
-                    Grid.Row="0"
-                    Width="200"
-                    Height="50"
-                    Margin="5"
+                                       
                     Background="LightSteelBlue"
                     Click="Button_Click_2"
-                    />
+                    >
+                    <Button.Flyout>
+                        <Flyout x:Name="flyNombre">
+                            <StackPanel>
+                                <TextBox Name="textBoxProy" PlaceholderText="Ingrese un nombre para el proyecto"/>
+                                <Button Click="Button_Click_3" Content="Aceptar" />
+                            </StackPanel>
+                        </Flyout>
+                    </Button.Flyout>
+                </Button>
+                <Button Content="Abrir Proyecto "
+                    HorizontalAlignment="Center"
+                    FontSize="20"
+                    Margin="5,0,0,0"
+                    Background="LightSteelBlue"
+                    Click="Button_Click_4">
+                    <Button.Flyout>
+                        <Flyout>
+                            <StackPanel>
+                                <ListBox ItemsSource="x:Bind Proyecto"/>
+                                <Button Content="Aceptar"/>
+                            </StackPanel>
+                        </Flyout>
+                    </Button.Flyout>
+                </Button>
+            </StackPanel>
 
-            <!--<ItemsControl ItemsSource="{Binding PdfPages,Mode=TwoWay}">
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <TextBlock/>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl><RichEditBox x:Name="rebArchivo"></RichEditBox>
-                <WebView x:Name="webView1" Source= "ms-appdata:///local/Documentos/Tema.pdf" />-->
             <RelativePanel  Margin="5"   Grid.Column="1"
                       Grid.Row="1" HorizontalAlignment="Stretch">
                 <RelativePanel.Resources>
@@ -64,25 +80,19 @@
                 </RelativePanel.Resources>
 
                 <AppBarButton x:Name="underlineButton" Click="UnderlineButton_Click" Content="Asignar etiqueta" FontSize="20" FontWeight="Bold" Background="LightSteelBlue"
-                  ToolTipService.ToolTip="Asigne una etiqueta al texto seleccionado"  RelativePanel.RightOf="saveFileButton" Height="41" Width="181"/>
+                  ToolTipService.ToolTip="Asigne una etiqueta al texto seleccionado"  RelativePanel.RightOf="saveFileButton" Height="41" Width="181" Margin="0,0,4,0"/>
                 <AppBarButton x:Name="saveFileButton" Click="SaveButton_Click" Content="Guardar" FontSize="20" FontWeight="Bold" Background="LightSteelBlue"
                   ToolTipService.ToolTip="Guardar este archivo" RelativePanel.RightOf="openFileButton"
                   Height="41" Width="180"/>
                 <AppBarButton x:Name="openFileButton" Content="Abrir Archivo" FontSize="20" FontWeight="Bold" Background="LightSteelBlue"
-                  Click="OpenButton_Click" ToolTipService.ToolTip="Abrir un archivo" Height="41" Width="180"/>
-
-
+                  Click="OpenButton_Click" ToolTipService.ToolTip="Abrir un archivo" Height="41" Width="180" Margin="3,0,0,0"/>
                 <RichEditBox x:Name="editor"  RelativePanel.Below="openFileButton" Background="White"
                  RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" Height="615" RenderTransformOrigin="0.5,0.5">
-
                 </RichEditBox>
             </RelativePanel>
-
-
-
         </Grid>
 
-        <Grid Grid.Column="2" Margin=" 10" Background="SteelBlue">
+        <Grid Grid.Column="2" Margin="10,10,10,10" Background="SteelBlue">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="*"/>
@@ -93,12 +103,11 @@
                     <RowDefinition Height="7*"/>
                 </Grid.RowDefinitions>
                 <Button Content="Crear Nube"
-                    VerticalAlignment="Center"
                     FontSize="20"
                     Grid.Row="0"
                     Width="200"
-                    Height="50"
-                        Margin="5"
+                   
+                    Margin="5,0,0,0"
                     Background="LightSteelBlue"
                         Click="Button_Click_1"/>
                 <Image Margin="5" Grid.Row="1" Source="/Assets/nube.png" Stretch="Fill"/>
@@ -114,8 +123,8 @@
                     FontSize="20"
                     Grid.Row="0"
                     Width="200"
-                    Height="50"
-                        Margin="5"
+                
+                    Margin="5,5, 0,0"
                     Background="LightSteelBlue"
                         Click="Button_Click"/>
                 <ListView Grid.Row="1" Background="White" Margin="5"></ListView>

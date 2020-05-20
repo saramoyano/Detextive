@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Detextive.Model
+namespace AccesoDatos.Model
 {
     public class Palabra
     {
@@ -14,6 +14,7 @@ namespace Detextive.Model
         private int _numApariciones;
         private float _porcentaje;
         private int _numPalabrasVinculadas;
+        private Proyecto proyecto;
 
         public int Id { get => _id; set => _id = value; }
         public string Nombre { get => _nombre; set => _nombre = value; }
@@ -21,5 +22,6 @@ namespace Detextive.Model
         public int NumApariciones { get => _numApariciones; set => _numApariciones = value; }
         public float Porcentaje { get => _porcentaje; set => _porcentaje = value; }
         public int NumPalabrasVinculadas { get => _numPalabrasVinculadas; set => _numPalabrasVinculadas = value; }
+        public Proyecto Proyecto { get => proyecto; set => proyecto = value; }
     }
 }

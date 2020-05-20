@@ -12,7 +12,7 @@
     <DefaultLanguage>es-ES</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
     <TargetPlatformVersion Condition=" '$(TargetPlatformVersion)' == '' ">10.0.18362.0</TargetPlatformVersion>
-    <TargetPlatformMinVersion>10.0.16299.0</TargetPlatformMinVersion>
+    <TargetPlatformMinVersion>10.0.18362.0</TargetPlatformMinVersion>
     <MinimumVisualStudioVersion>14</MinimumVisualStudioVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{A5A43C5B-DE2A-4C0C-9213-0A381AF9435A};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -120,13 +120,6 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Logica\LogicaDocumento.cs" />
-    <Compile Include="Logica\LogicaCita.cs" />
-    <Compile Include="Logica\LogicaEtiqueta.cs" />
-    <Compile Include="Logica\LogicaNube.cs" />
-    <Compile Include="Logica\LogicaPalabra.cs" />
-    <Compile Include="Logica\LogicaProyecto.cs" />
-    <Compile Include="Model\Context.cs" />
     <Compile Include="ViewModel\DocumentoPageViewModel.cs" />
     <Compile Include="ViewModel\EtiquetaPageViewModel.cs" />
     <Compile Include="ViewModel\NubePageViewModel.cs" />
@@ -137,12 +130,6 @@
     <Compile Include="View\EtiquetaPage.xaml.cs">
       <DependentUpon>EtiquetaPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Model\Cita.cs" />
-    <Compile Include="Model\Documento.cs" />
-    <Compile Include="Model\Etiqueta.cs" />
-    <Compile Include="Model\Nube.cs" />
-    <Compile Include="Model\Palabra.cs" />
-    <Compile Include="Model\Proyecto.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="View\NubePages.xaml.cs">
       <DependentUpon>NubePages.xaml</DependentUpon>
@@ -305,19 +292,11 @@
     <PackageReference Include="itext7">
       <Version>7.1.11</Version>
     </PackageReference>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools">
-      <Version>3.1.4</Version>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-      <PrivateAssets>all</PrivateAssets>
-    </PackageReference>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
       <Version>6.2.10</Version>
     </PackageReference>
     <PackageReference Include="NETStandard.Library">
       <Version>2.0.3</Version>
-    </PackageReference>
-    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL">
-      <Version>3.1.3</Version>
     </PackageReference>
     <PackageReference Include="Sdcb.WordCloud">
       <Version>1.0.0</Version>

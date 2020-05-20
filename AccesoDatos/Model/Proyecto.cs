@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Detextive.Model
+namespace AccesoDatos.Model
 {
     public class Proyecto
     {
@@ -19,7 +19,7 @@ namespace Detextive.Model
         public int NumEtiquetas { get => _numEtiquetas; set => _numEtiquetas = value; }
         public int NumCitas { get => _numCitas; set => _numCitas = value; }
 
-        public ICollection<Documento> Documentos;
+        public ICollection<Documento> Documentos; 
         public ICollection<Etiqueta> Etiquetas;
         public ICollection<Nube> Nubes;
 

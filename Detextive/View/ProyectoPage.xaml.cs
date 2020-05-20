@@ -1,8 +1,11 @@
-﻿using System;
+﻿using Detextive.ViewModel;
+using iText.Layout.Element;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Data.Pdf;
 using Windows.Foundation;
@@ -25,10 +28,18 @@ namespace Detextive
     /// </summary>
     public sealed partial class ProyectoPage : Page
     {
+
+        ProyectoPageViewModel proyectoVM;
+
         public ProyectoPage()
         {
             this.InitializeComponent();
+            proyectoVM = new ProyectoPageViewModel();
+            
         }
+
+
+        
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
@@ -42,7 +53,23 @@ namespace Detextive
 
         private void Button_Click_2(object sender, RoutedEventArgs e)
         {
-           // OpenButton_Click();
+
+           
+            
+            ////TextBox textBox = new TextBox();
+            
+            ////textBox.PlaceholderText = "Ingrese un nombre para el proyecto";
+            ////// Add the TextBox to the visual tree.
+            ////centerGrid.Children.Add(textBox);
+            ////if (textBox.TextChanged)
+            ////{
+            ////    string textoIngresado = textBox.Text;
+
+            ////}
+
+
+
+            // OpenButton_Click();
         }
 
         public async void OpenButton_Click(object sender, RoutedEventArgs e)
@@ -145,28 +172,6 @@ namespace Detextive
             }
         }
 
-        private void BoldButton_Click(object sender, RoutedEventArgs e)
-        {
-            Windows.UI.Text.ITextSelection selectedText = editor.Document.Selection;
-            if (selectedText != null)
-            {
-                Windows.UI.Text.ITextCharacterFormat charFormatting = selectedText.CharacterFormat;
-                charFormatting.Bold = Windows.UI.Text.FormatEffect.Toggle;
-                selectedText.CharacterFormat = charFormatting;
-            }
-        }
-
-        private void ItalicButton_Click(object sender, RoutedEventArgs e)
-        {
-            Windows.UI.Text.ITextSelection selectedText = editor.Document.Selection;
-            if (selectedText != null)
-            {
-                Windows.UI.Text.ITextCharacterFormat charFormatting = selectedText.CharacterFormat;
-                charFormatting.Italic = Windows.UI.Text.FormatEffect.Toggle;
-                selectedText.CharacterFormat = charFormatting;
-            }
-        }
-
         private void UnderlineButton_Click(object sender, RoutedEventArgs e)
         {
             Windows.UI.Text.ITextSelection selectedText = editor.Document.Selection;
@@ -199,6 +204,26 @@ namespace Detextive
 
             }
 
+        private void Button_Click_3(object sender, RoutedEventArgs e)
+        {
+            string textoIngresado= textBoxProy.Text;
+            if (textoIngresado != "") {
+                openFileButton.IsEnabled = true;
+                saveFileButton.IsEnabled = true;
+                underlineButton.IsEnabled = true;
+                
+            }
+            flyNombre.Hide();
+        }
+
+        private void Button_Click_4(object sender, RoutedEventArgs e)
+        {
 
         }
+
+        private void BaseExample_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+    }
     }
