@@ -29,12 +29,12 @@ namespace Detextive
     public sealed partial class ProyectoPage : Page
     {
 
-        ProyectoPageViewModel proyectoVM;
+        ProyectoViewModel proyectoVM;
 
         public ProyectoPage()
         {
             this.InitializeComponent();
-            proyectoVM = new ProyectoPageViewModel();
+            proyectoVM = new ProyectoViewModel();
             
         }
 

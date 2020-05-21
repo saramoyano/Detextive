@@ -120,10 +120,11 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ViewModel\DocumentoPageViewModel.cs" />
-    <Compile Include="ViewModel\EtiquetaPageViewModel.cs" />
+    <Compile Include="Auxiliar\Pdftotext.cs" />
+    <Compile Include="ViewModel\DocumentoViewModel.cs" />
+    <Compile Include="ViewModel\EtiquetaViewModel.cs" />
     <Compile Include="ViewModel\NubePageViewModel.cs" />
-    <Compile Include="ViewModel\ProyectoPageViewModel.cs" />
+    <Compile Include="ViewModel\ProyectoViewModel.cs" />
     <Compile Include="View\DocumentoPage.xaml.cs">
       <DependentUpon>DocumentoPage.xaml</DependentUpon>
     </Compile>
@@ -581,7 +582,9 @@
     <None Include="pdfjs\web\locale\zh-TW\viewer.properties" />
     <None Include="pdfjs\web\viewer.js.map" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
+  </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>

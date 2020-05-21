@@ -1,23 +1,15 @@
-﻿using iText.Kernel.Geom;
-using iText.Kernel.Pdf;
+﻿using iText.Kernel.Pdf;
 using iText.Kernel.Pdf.Canvas.Parser;
-using iText.Kernel.Pdf.Canvas.Parser.Listener;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-
-namespace Detextive.ViewModel
+namespace Detextive.Auxiliar
 {
-    public class ProyectoPageViewModel
+    class Pdftotext
     {
-        public ProyectoPageViewModel() { 
-
-        
-        }
 
 
         public void ExtractTextFromPdf(string path)
@@ -29,6 +21,7 @@ namespace Detextive.ViewModel
 
                 var stringBuilder = new StringBuilder();
 
+
                 for (var i = 1; i <= pdfDocument.GetNumberOfPages(); i++)
                     stringBuilder.Append(PdfTextExtractor.GetTextFromPage(pdfDocument.GetPage(i)));
                 string[] lines = stringBuilder.ToString().Split('\n');
@@ -38,8 +31,7 @@ namespace Detextive.ViewModel
                 }
                 //  return stringBuilder.ToString().Replace("\n", "\r\n");
             }
-        } 
-                    
+        }
 
 
 
