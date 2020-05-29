@@ -1,17 +1,30 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Npgsql;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace AccesoDatos.Model
 {
     public class Context : DbContext
     {
         public DbSet<Proyecto> ProyectoSet { get; set; }
+
+        #region Required
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Proyecto>()
+                .Property(b => b.Nombre)
+                .IsRequired();
+           
+            modelBuilder.Entity<Proyecto>()
+               .Property(b => b.Nombre)
+               .IsRequired();
+
+        }
+        #endregion
         public DbSet<Documento> DocumentoSet { get; set; }
+
+        
         public DbSet<Etiqueta> EtiquetaSet { get; set; }
         public DbSet<Nube> NubeSet { get; set; }
         public DbSet<Palabra> PalabraSet { get; set; }

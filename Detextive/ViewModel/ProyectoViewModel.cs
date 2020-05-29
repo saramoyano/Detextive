@@ -1,4 +1,5 @@
-﻿using iText.Kernel.Geom;
+﻿using AccesoDatos.Model;
+using iText.Kernel.Geom;
 using iText.Kernel.Pdf;
 using iText.Kernel.Pdf.Canvas.Parser;
 using iText.Kernel.Pdf.Canvas.Parser.Listener;
@@ -16,16 +17,16 @@ namespace Detextive.ViewModel
     public class ProyectoViewModel
     {
 
-        private ObservableCollection<AccesoDatos.Proyecto> proyectos;
+        private List<Proyecto> proyectos;
 
         public ProyectoViewModel() {
-            proyectos = new ObservableCollection<AccesoDatos.Proyecto>();
+            proyectos = new List<Proyecto>();
 
             
         }
 
 
-        public ObservableCollection<AccesoDatos.Proyecto> ListaProyectos() { 
+        public List<Proyecto> ListaProyectos() { 
             proyectos = AccesoDatos.Logica.LogicaProyecto.GetInstance().ListaProyectos();
             return proyectos;
         }

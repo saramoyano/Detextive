@@ -1,13 +1,14 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using AccesoDatos.Model;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace AccesoDatos.Logica
 {
-    class LogicaCita
+    public class LogicaCita
     {
         private static LogicaCita logicaCita;
 
@@ -20,7 +21,8 @@ namespace AccesoDatos.Logica
             return logicaCita;
         }
 
-
+        // Obtener la lista de Citas
+        // params: ninguno
         public List<Model.Cita> ListaCitas()
         {
             using (var db = new Model.Context())
@@ -33,6 +35,28 @@ namespace AccesoDatos.Logica
                 catch (Exception e)
                 {
                     throw new Exception("No hay citas guardadas.", e);
+                }
+
+            }
+
+        }
+
+
+        // Obtener una Cita de la lista según filtro aplicado 
+        // params: objeto de la clase AccesoDatos.Model.Cita
+        public Model.Cita ListaCitasFiltro(Cita cita)
+        {
+            using (var db = new Model.Context())
+            {
+
+                try
+                {
+                    var c = db.CitaSet.Single(b => b.Id.Equals(cita.Id));
+                    return c;
+                }
+                catch (Exception e)
+                {
+                    throw new Exception("No hay citas guardados.", e);
                 }
 
             }
@@ -58,7 +82,10 @@ namespace AccesoDatos.Logica
 
         }
 
-        public void ActualizarCita(Cita cita)
+
+        // Actualiza una cita de la lista 
+        // params: objeto de la clase AccesoDatos.Model.Cita con los datos actualizados
+        public void ActualizarCita(Model.Cita cita)
         {
             using (var db = new Model.Context())
             {
@@ -77,7 +104,10 @@ namespace AccesoDatos.Logica
             }
         }
 
-        public void EliminarCita(Cita cita)
+
+        // Elimina una cita de la lista 
+        // params: objeto de la clase AccesoDatos.Model.Cita 
+        public void EliminarCita(Model.Cita cita)
         {
             using (var db = new Model.Context())
             {
@@ -95,5 +125,4 @@ namespace AccesoDatos.Logica
             }
         }
     }
-}
 }

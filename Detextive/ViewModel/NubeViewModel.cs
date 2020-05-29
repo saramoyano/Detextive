@@ -1,24 +1,45 @@
-﻿using System;
+﻿using AccesoDatos.Logica;
+using AccesoDatos.Model;
+using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.UI.Input.Inking.Analysis;
 
 namespace Detextive.ViewModel
 {
-    class NubePageViewModel
+    class NubeViewModel
     {
-        private ObservableCollection<AccesoDatos.Nube> nubes;
+        private List<Nube> nubes;
 
         public NubeViewModel()
         {
-            nubes = new ObservableCollection<AccesoDatos.Nube>();
-
-
+            nubes = new List<Nube>();
         }
 
 
-        public ObservableCollection<AccesoDatos.Nube> ListaNubes()
+        //public List<string> ObtenerPalabras( )
+        //{
+        //    return LogicaNube.GetInstance().Palabras;
+                
+        //}
+
+        //public List<int> ObtenerFrecuencias( )
+        //{
+        //    return LogicaNube.GetInstance().Frecuencias;
+
+        //}
+
+        //public void ProcesarTexto(string texto)
+        //{
+        //    LogicaNube.GetInstance().ProcessText(texto);
+        //}
+
+
+        public List<Nube> ListaNubes()
         {
             nubes = AccesoDatos.Logica.LogicaNube.GetInstance().ListaNubes();
             return nubes;

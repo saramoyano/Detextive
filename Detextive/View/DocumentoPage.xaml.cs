@@ -1,4 +1,7 @@
-﻿using System;
+﻿using AccesoDatos.Model;
+using Detextive.ViewModel;
+using iText.Layout;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -22,9 +25,41 @@ namespace Detextive.View
     /// </summary>
     public sealed partial class DocumentoPage : Page
     {
+
+        public DocumentoViewModel documentoVM;
+        Documento documento;
         public DocumentoPage()
         {
             this.InitializeComponent();
+        }
+
+        private void lvDocs_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+             documento = (Documento) lvDocs.SelectedItem; 
+
+            
+              
+        }
+
+        private void Eliminar_Documento(object sender, RoutedEventArgs e)
+        {
+
+            documentoVM.EliminarDocumento(documento);
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            this.Frame.Navigate(typeof(ProyectoPage));
+        }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Button_Click_2(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

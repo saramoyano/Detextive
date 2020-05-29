@@ -26,31 +26,16 @@ namespace AccesoDatos.Migrations
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<int?>("DocumentoId")
-                        .HasColumnType("integer");
-
-                    b.Property<int?>("EtiquetaId")
-                        .HasColumnType("integer");
-
                     b.Property<int>("IdDoc")
                         .HasColumnType("integer");
 
                     b.Property<int>("IdEtiqueta")
                         .HasColumnType("integer");
 
-                    b.Property<int?>("ProyectoId")
-                        .HasColumnType("integer");
-
                     b.Property<string>("Texto")
                         .HasColumnType("text");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("DocumentoId");
-
-                    b.HasIndex("EtiquetaId");
-
-                    b.HasIndex("ProyectoId");
 
                     b.ToTable("CitaSet");
                 });
@@ -62,24 +47,19 @@ namespace AccesoDatos.Migrations
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
+                    b.Property<int>("Extension")
+                        .HasColumnType("integer");
+
                     b.Property<int>("IdProy")
                         .HasColumnType("integer");
 
                     b.Property<string>("Nombre")
                         .HasColumnType("text");
 
-                    b.Property<int?>("ProyectoId")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("Tag")
-                        .HasColumnType("text");
-
                     b.Property<string>("Ubicacion")
                         .HasColumnType("text");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ProyectoId");
 
                     b.ToTable("DocumentoSet");
                 });
@@ -120,6 +100,9 @@ namespace AccesoDatos.Migrations
                     b.Property<int>("ExtensionFragmento")
                         .HasColumnType("integer");
 
+                    b.Property<int?>("IdDoc")
+                        .HasColumnType("integer");
+
                     b.Property<int>("IdProy")
                         .HasColumnType("integer");
 
@@ -129,12 +112,7 @@ namespace AccesoDatos.Migrations
                     b.Property<string>("NumDocumentos")
                         .HasColumnType("text");
 
-                    b.Property<int?>("ProyectoId")
-                        .HasColumnType("integer");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("ProyectoId");
 
                     b.ToTable("NubeSet");
                 });
@@ -155,18 +133,13 @@ namespace AccesoDatos.Migrations
                     b.Property<int>("NumApariciones")
                         .HasColumnType("integer");
 
-                    b.Property<int>("NumPalabrasVinculadas")
+                    b.Property<int?>("NumPalabrasVinculadas")
                         .HasColumnType("integer");
 
-                    b.Property<float>("Porcentaje")
+                    b.Property<float?>("Porcentaje")
                         .HasColumnType("real");
 
-                    b.Property<int?>("ProyectoId")
-                        .HasColumnType("integer");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("ProyectoId");
 
                     b.ToTable("PalabraSet");
                 });
@@ -178,13 +151,17 @@ namespace AccesoDatos.Migrations
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<int>("NumCitas")
+                    b.Property<string>("Nombre")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int?>("NumCitas")
                         .HasColumnType("integer");
 
-                    b.Property<int>("NumEtiquetas")
+                    b.Property<int?>("NumEtiquetas")
                         .HasColumnType("integer");
 
-                    b.Property<int>("NumPalabras")
+                    b.Property<int?>("NumPalabras")
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
@@ -192,43 +169,7 @@ namespace AccesoDatos.Migrations
                     b.ToTable("ProyectoSet");
                 });
 
-            modelBuilder.Entity("AccesoDatos.Model.Cita", b =>
-                {
-                    b.HasOne("AccesoDatos.Model.Documento", "Documento")
-                        .WithMany()
-                        .HasForeignKey("DocumentoId");
-
-                    b.HasOne("AccesoDatos.Model.Etiqueta", "Etiqueta")
-                        .WithMany()
-                        .HasForeignKey("EtiquetaId");
-
-                    b.HasOne("AccesoDatos.Model.Proyecto", "Proyecto")
-                        .WithMany()
-                        .HasForeignKey("ProyectoId");
-                });
-
-            modelBuilder.Entity("AccesoDatos.Model.Documento", b =>
-                {
-                    b.HasOne("AccesoDatos.Model.Proyecto", "Proyecto")
-                        .WithMany()
-                        .HasForeignKey("ProyectoId");
-                });
-
             modelBuilder.Entity("AccesoDatos.Model.Etiqueta", b =>
-                {
-                    b.HasOne("AccesoDatos.Model.Proyecto", "Proyecto")
-                        .WithMany()
-                        .HasForeignKey("ProyectoId");
-                });
-
-            modelBuilder.Entity("AccesoDatos.Model.Nube", b =>
-                {
-                    b.HasOne("AccesoDatos.Model.Proyecto", "Proyecto")
-                        .WithMany()
-                        .HasForeignKey("ProyectoId");
-                });
-
-            modelBuilder.Entity("AccesoDatos.Model.Palabra", b =>
                 {
                     b.HasOne("AccesoDatos.Model.Proyecto", "Proyecto")
                         .WithMany()

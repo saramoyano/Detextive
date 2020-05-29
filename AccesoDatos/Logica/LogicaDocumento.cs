@@ -1,13 +1,14 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using AccesoDatos.Model;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace AccesoDatos.Logica
 {
-    class LogicaDocumento
+    public class LogicaDocumento
     {
         private static LogicaDocumento logicaDocumento;
 
@@ -20,15 +21,45 @@ namespace AccesoDatos.Logica
             return logicaDocumento;
         }
 
-
-        public List<Model.Documento> ListaDocumentos()
+        // Obtener la lista de Documentos
+        // params: ninguno
+        public ObservableCollection<Model.Documento> ListaDocumentos()
         {
+            ObservableCollection<Documento> documentos = new ObservableCollection<Documento>();
+
             using (var db = new Model.Context())
             {
 
                 try
                 {
-                    return db.DocumentoSet.OrderBy(b => b.Id).ToList();
+                    List<Documento> docs = db.DocumentoSet.OrderBy(b => b.Id).ToList();
+                    foreach (Documento documento in docs)
+                    {
+                        documentos.Add(documento);
+                    }
+                    return documentos;
+                }
+                catch (Exception e)
+                {
+                    throw new Exception("No hay documentos guardados.", e);
+                }
+
+            }
+
+        }
+
+        // Obtener un Documento de la lista según filtro aplicado (propiedad nombre)
+        // params: objeto de la clase AccesoDatos.Model.Documento
+        public Model.Documento ListaDocumentosFiltro(Documento documento)
+        {
+            
+            using (var db = new Model.Context())
+            {
+
+                try
+                {
+                    Documento doc = db.DocumentoSet.Single(b => b.Nombre.Equals(documento.Nombre));
+                    return doc;
                 }
                 catch (Exception e)
                 {
@@ -58,6 +89,9 @@ namespace AccesoDatos.Logica
 
         }
 
+
+        // Actualiza un documento de la lista 
+        // params: objeto de la clase AccesoDatos.Model.Documento con los datos actualizados
         public void ActualizarDocumento(Documento documento)
         {
             using (var db = new Model.Context())
@@ -77,6 +111,8 @@ namespace AccesoDatos.Logica
             }
         }
 
+        // Elimina un documento de la lista 
+        // params: objeto de la clase AccesoDatos.Model.Documento
         public void EliminarDocumento(Documento documento)
         {
             using (var db = new Model.Context())
@@ -95,5 +131,4 @@ namespace AccesoDatos.Logica
             }
         }
     }
-}
 }

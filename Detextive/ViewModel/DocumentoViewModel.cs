@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AccesoDatos.Model;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -7,23 +8,28 @@ using System.Threading.Tasks;
 
 namespace Detextive.ViewModel
 {
-    class DocumentoViewModel
+    public class DocumentoViewModel
     {
 
-        private ObservableCollection<AccesoDatos.Documento> documentos;
+        public ObservableCollection<Documento> documentos;
 
         public DocumentoViewModel()
         {
-            documentos = new ObservableCollection<AccesoDatos.Documento>();
+            documentos = new ObservableCollection<Documento>();
 
 
         }
 
 
-        public ObservableCollection<AccesoDatos.Documento> ListaDocumentos()
+        public ObservableCollection<Documento> ListaDocumentos()
         {
             documentos = AccesoDatos.Logica.LogicaDocumento.GetInstance().ListaDocumentos();
             return documentos;
+        }
+
+        public Documento ListaDocumentosFiltro(Documento doc)
+        {             
+            return AccesoDatos.Logica.LogicaDocumento.GetInstance().ListaDocumentosFiltro(doc);
         }
         public void AgregarDocumento(Documento documento)
         {

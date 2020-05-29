@@ -13,9 +13,10 @@ namespace AccesoDatos.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    NumPalabras = table.Column<int>(nullable: false),
-                    NumEtiquetas = table.Column<int>(nullable: false),
-                    NumCitas = table.Column<int>(nullable: false)
+                    NumPalabras = table.Column<int>(nullable: true),
+                    NumEtiquetas = table.Column<int>(nullable: true),
+                    Nombre = table.Column<string>(nullable: false),
+                    NumCitas = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {

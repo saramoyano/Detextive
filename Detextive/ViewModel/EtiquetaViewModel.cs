@@ -1,24 +1,24 @@
-﻿using System;
+﻿using AccesoDatos.Model;
+using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Detextive.ViewModel
 {
-    class EtiquetaViewModel
+    public class EtiquetaViewModel 
     {
-        private ObservableCollection<AccesoDatos.Etiqueta> etiquetas;
+        public ObservableCollection<Etiqueta> etiquetas;
 
         public EtiquetaViewModel()
         {
-            etiquetas = new ObservableCollection<AccesoDatos.Etiqueta>();
-
-
+            etiquetas = new ObservableCollection<Etiqueta>();
         }
 
 
-        public ObservableCollection<AccesoDatos.Etiqueta> ListaEtiquetas()
+        public ObservableCollection<Etiqueta> ListaEtiquetas()
         {
             etiquetas = AccesoDatos.Logica.LogicaEtiqueta.GetInstance().ListaEtiquetas();
             return etiquetas;

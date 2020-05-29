@@ -1,29 +1,30 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace AccesoDatos.Model
 {
-    public class Documento
+    public class Documento : NotifyBase
     {
         private int _id;
-        private int _idProy;
-        private string _tag;
+        private int _idProy;         
         private string _nombre;
         private string _ubicacion;
-        private Proyecto _proyecto;
+        private int _extension;
+        
+
 
         public int Id { get => _id; set => _id = value; }
+     
         public int IdProy { get => _idProy; set => _idProy = value; }
-        public string Tag { get => _tag; set => _tag = value; }
-        public string Nombre { get => _nombre; set => _nombre = value; }
+
+        public string Nombre { get { return _nombre; } set { _nombre = value; NotificarCambio("Nombre"); } }
+
         public string Ubicacion { get => _ubicacion; set => _ubicacion = value; }
-        public Proyecto Proyecto { get => _proyecto; set => _proyecto = value; }
+        public int Extension { get => _extension; set => _extension = value; }
 
         public ICollection<Cita> CitasSet;
-        
-    }
+     
 
+    }
 }

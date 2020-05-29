@@ -1,13 +1,9 @@
 ﻿using AccesoDatos.Model;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using Npgsql;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
-
 
 namespace AccesoDatos.Logica
 {
@@ -26,7 +22,8 @@ namespace AccesoDatos.Logica
             return logicaProyecto;
         }
 
-
+        // Obtener la lista de Proyectos
+        // params: ninguno
         public List<Model.Proyecto> ListaProyectos()
         {
             using (var db = new Model.Context())
@@ -37,6 +34,27 @@ namespace AccesoDatos.Logica
                     return db.ProyectoSet
                 .OrderBy(b => b.Id)
                 .ToList();
+                }
+                catch (Exception e)
+                {
+                    throw new Exception("No hay proyectos guardados.", e);
+                }
+
+            }
+
+        }
+
+        // Obtener un Proyecto de la lista según filtro aplicado (propiedad nombre)
+        // params: objeto de la clase AccesoDatos.Model.Proyecto
+        public Model.Proyecto ListaProyectosFiltro(Proyecto proyecto)
+        {
+            using (var db = new Model.Context())
+            {
+
+                try
+                {
+                    var proy = db.ProyectoSet.Single(b => b.Nombre.Equals(proyecto.Nombre));
+                    return proy;
                 }
                 catch (Exception e)
                 {
@@ -66,6 +84,8 @@ namespace AccesoDatos.Logica
 
         }
 
+        // Actualiza un proyecto de la lista 
+        // params: objeto de la clase AccesoDatos.Model.Proyecto con los datos actualizados
         public void ActualizarProyecto(Proyecto proyecto)
         {
             using (var db = new Model.Context())
@@ -85,6 +105,9 @@ namespace AccesoDatos.Logica
             }
         }
 
+
+        // Elimina un proyecto de la lista 
+        // params: objeto de la clase AccesoDatos.Model.Proyecto 
         public void EliminarProyecto(Proyecto proyecto)
         {
             using (var db = new Model.Context())

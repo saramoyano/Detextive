@@ -1,13 +1,14 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using AccesoDatos.Model;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace AccesoDatos.Logica
 {
-    class LogicaEtiqueta
+    public class LogicaEtiqueta
     {
         private static LogicaEtiqueta logicaEtiqueta;
 
@@ -20,15 +21,41 @@ namespace AccesoDatos.Logica
             return logicaEtiqueta;
         }
 
-
-        public List<Model.Etiqueta> ListaEtiquetas()
+        // Obtener la lista de Etiquetas
+        // params: ninguno
+        public ObservableCollection<Model.Etiqueta> ListaEtiquetas()
         {
+
+            ObservableCollection<Etiqueta> etiquetas = new ObservableCollection<Etiqueta>();
+            using (var db = new Model.Context())
+            {
+                
+                try
+                {
+                     List<Etiqueta> etiq =  db.EtiquetaSet.OrderBy(b => b.Id).ToList();
+                    foreach (Etiqueta etiqueta in etiq) {
+                        etiquetas.Add(etiqueta);                       
+                    }
+                    return etiquetas;
+                }
+                catch (Exception e)
+                {
+                    throw new Exception("No hay etiquetas guardadas.", e);
+                }
+
+            }
+        }
+
+        public List<Model.Etiqueta> ListaEtiquetasList()
+        {
+            ObservableCollection<Etiqueta> etiquetas = new ObservableCollection<Etiqueta>();
             using (var db = new Model.Context())
             {
 
                 try
                 {
-                    return db.EtiquetaSet.OrderBy(b => b.Id).ToList();
+                    return  db.EtiquetaSet.OrderBy(b => b.Id).ToList();
+                    
                 }
                 catch (Exception e)
                 {
@@ -39,9 +66,31 @@ namespace AccesoDatos.Logica
 
         }
 
-        // Agregar un etiqueta a la lista 
+        // Obtener una Etiqueta de la lista según filtro aplicado (propiedad nombre)
         // params: objeto de la clase AccesoDatos.Model.Etiqueta
-        public void AgregarEtiqueta(Etiqueta etiqueta)
+        public Model.Etiqueta ListaEtiquetasFiltro(Etiqueta etiqueta)
+        {
+            using (var db = new Model.Context())
+            {
+
+                try
+                {
+                    var etiq = db.EtiquetaSet.Single(b => b.Nombre.Equals(etiqueta.Nombre));
+                    return etiq;
+                }
+                catch (Exception e)
+                {
+                    throw new Exception("No hay etiquetas guardados.", e);
+                }
+
+            }
+
+        }
+
+
+        // Agregar una etiqueta a la lista 
+        // params: objeto de la clase AccesoDatos.Model.Etiqueta
+        public void AgregarEtiqueta(Model.Etiqueta etiqueta)
         {
             using (var db = new Model.Context())
             {
@@ -58,7 +107,9 @@ namespace AccesoDatos.Logica
 
         }
 
-        public void ActualizarEtiqueta(Etiqueta etiqueta)
+        // Actualiza una etiqueta de la lista 
+        // params: objeto de la clase AccesoDatos.Model.Etiqueta con los datos actualizados
+        public void ActualizarEtiqueta(Model.Etiqueta etiqueta)
         {
             using (var db = new Model.Context())
             {
@@ -77,7 +128,10 @@ namespace AccesoDatos.Logica
             }
         }
 
-        public void EliminarEtiqueta(Etiqueta etiqueta)
+
+        // Elimina un etiqueta de la lista 
+        // params: objeto de la clase AccesoDatos.Model.Etiqueta 
+        public void EliminarEtiqueta(Model.Etiqueta etiqueta)
         {
             using (var db = new Model.Context())
             {
@@ -95,5 +149,4 @@ namespace AccesoDatos.Logica
             }
         }
     }
-}
 }

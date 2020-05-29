@@ -31,19 +31,73 @@
                 <Image HorizontalAlignment="Center" VerticalAlignment="Center" Source="/Assets/salir.png" Stretch="Uniform" Height="59" Width="60"/>
             </Button>
         </StackPanel>
-        <ScrollViewer Grid.Column="1" Margin="25">
-            <DataTemplate>
-                <TextBlock/>
-            </DataTemplate>
-        </ScrollViewer>
-
+        <Grid Grid.Column="1" Margin="5,15,5,0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="11*"/>
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0" Margin="5,0,5,0">
+                <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                    <Button Grid.Column="0" Name="btEliminar"   FontSize="20" Margin="5,0,5,0"  Content="Eliminar" Click="Eliminar_Documento" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
+                    <Button Grid.Column="1" Name="btAnalizar" FontSize="20" Margin="5,0,5,0" Content="Analizar" Click="Button_Click" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
+                    <Button Grid.Column="2" Name="btNube" FontSize="20" Margin="5,0,5,0"  Content="Nube multidoc" Click="Button_Click_1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
+                    <Button Grid.Column="3" Name="btAgregar" FontSize="20" Margin="5,0,5,0"  Content="Agregar" Click="Button_Click_2" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
+            </Grid>
+            <!--ItemsSource="{x:Bind documentoVM.documentos}"-->
+            <ListView Grid.Row="1" x:Name="lvDocs"  Grid.Column="1"  Margin="5,10,0,5" SelectionMode="Multiple" SelectionChanged="lvDocs_SelectionChanged">
+                <ListView.ItemTemplate>
+                    <DataTemplate x:DataType="Model:Documento">
+                        <TextBlock Text="{x:Bind Nombre, Mode=OneWay}" FontSize="20" Foreground="Black"/>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </Grid>
         <Grid Grid.Column="2">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-            <Image Grid.Row="0" Margin=" 20"  />
-            <ListView Grid.Row="1" Margin="20"></ListView>
+            <Grid Grid.Row="0" Margin="5,30,5,0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Row="0" FontSize="24" >
+                    <Span><Bold>Detalles</Bold></Span>
+                </TextBlock>
+                <TextBlock Grid.Row="1" FontSize="20">
+                    <Span><Bold>Nombre</Bold></Span>
+                </TextBlock>
+                <TextBlock Grid.Row="2"></TextBlock>
+                <TextBlock Grid.Row="3"  FontSize="20">
+                    <Span><Bold>Ubicación</Bold></Span>
+                </TextBlock>
+                <TextBlock Grid.Row="4"></TextBlock>
+                <TextBlock Grid.Row="5"  FontSize="20">
+                    <Span><Bold>Extensión</Bold></Span>
+                </TextBlock>
+                <TextBlock Grid.Row="6"></TextBlock>
+
+            </Grid>
+            <!--ItemsSource="{x:Bind documentoVM.documentos}"-->
+
+            <ListView Grid.Row="1"  x:Name="lvCitas"  Grid.Column="1" Margin="5,15,5,5" SelectionMode="Multiple" SelectionChanged="lvDocs_SelectionChanged">
+                <ListView.ItemTemplate>
+                    <DataTemplate x:DataType="Model:Documento">
+                        <TextBlock Text="{x:Bind Nombre, Mode=OneWay}" FontSize="20" Foreground="Black"/>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
         </Grid>
     </Grid>
 </Page>
