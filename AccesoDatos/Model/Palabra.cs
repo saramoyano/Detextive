@@ -9,6 +9,7 @@ namespace AccesoDatos.Model
         private int _id;
         private string _nombre;
         private int _idProy;
+        private int _idNube;
         private int _numApariciones;
         private float? _porcentaje;
         private int? _numPalabrasVinculadas;
@@ -20,6 +21,6 @@ namespace AccesoDatos.Model
         public int NumApariciones { get => _numApariciones; set => _numApariciones = value; }
         public float? Porcentaje { get => _porcentaje; set => _porcentaje = value; }
         public int? NumPalabrasVinculadas { get => _numPalabrasVinculadas; set => _numPalabrasVinculadas = value; }
-         
+        public int IdNube { get => _idNube; set => _idNube = value; }
     }
 }

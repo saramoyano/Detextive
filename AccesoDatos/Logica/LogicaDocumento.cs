@@ -83,7 +83,7 @@ namespace AccesoDatos.Logica
                 }
                 catch (Exception e)
                 {
-                    throw new Exception("No se ha podido agregar el documento ", e);
+                    throw new Exception("No se ha podido agregar el documento", e);
                 }
             }
 

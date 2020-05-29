@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using StopWord;
+using System.Collections.ObjectModel;
 
 namespace AccesoDatos.Logica
 {
@@ -29,14 +30,18 @@ namespace AccesoDatos.Logica
 
         // Obtener la lista de nubes
         // params: ninguno
-        public List<Model.Nube> ListaNubes()
+        public ObservableCollection<Model.Nube> ListaNubes()
         {
             using (var db = new Model.Context())
             {
-
+                ObservableCollection<Model.Nube> nubes = new ObservableCollection<Nube>();
                 try
                 {
-                    return db.NubeSet.OrderBy(b => b.Id).ToList();
+                   var lsNubes =  db.NubeSet.OrderBy(b => b.Id).ToList();
+                    foreach (Nube n in lsNubes) {
+                        nubes.Add(n);
+                    }
+                    return nubes;
                 }
                 catch (Exception e)
                 {

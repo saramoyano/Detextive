@@ -2,7 +2,7 @@
     x:Class="Detextive.View.NubePages"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:Detextive.View"
+    xmlns:local="using:Detextive.View"   
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:Model="using:AccesoDatos.Model"
     mc:Ignorable="d"
@@ -15,20 +15,20 @@
             <ColumnDefinition Width="205*"/>
         </Grid.ColumnDefinitions>
         <StackPanel Padding="15" Grid.Column="0" Orientation="Vertical" BorderBrush="Gray" BorderThickness="1" Margin="0,-13,0,-15">
-            <Button   Background="White"  ToolTipService.ToolTip="Proyecto" Height="140" Width="202" HorizontalAlignment="Center" VerticalAlignment="Stretch" Padding="0" BorderThickness="0" >
+            <Button Name="btProyPage" Background="White"  Margin="0, 30, 0,30" ToolTipService.ToolTip="Proyecto" HorizontalAlignment="Center" Padding="0" BorderThickness="0">
                 <Image Source="/Assets/proyecto.png"  Stretch="Uniform"/>
             </Button>
-            <Button   Background="White" BorderBrush="Black" ToolTipService.ToolTip="Documentos" HorizontalAlignment="Center" Height="140" Width="202" VerticalAlignment="Stretch" Padding="0" BorderThickness="0"  >
-                <Image HorizontalAlignment="Center" VerticalAlignment="Center" Source="/Assets/docs.png" Stretch="Uniform" Height="104" Width="111"/>
+            <Button Name="btDocPage" Click="btDocPage_Click" Background="White"   Margin="0, 30, 0,30" BorderBrush="Black" ToolTipService.ToolTip="Documentos" HorizontalAlignment="Center" VerticalAlignment="Stretch" Padding="0" BorderThickness="0"  >
+                <Image HorizontalAlignment="Center" VerticalAlignment="Center" Source="/Assets/docs.png" Stretch="Uniform"/>
             </Button>
-            <Button  Background="White" BorderBrush="Black" ToolTipService.ToolTip="Etiquetas" HorizontalAlignment="Center" Height="140" Width="202" VerticalAlignment="Stretch" Padding="0" BorderThickness="0"  >
-                <Image HorizontalAlignment="Center" VerticalAlignment="Center" Source="/Assets/tags.png" Stretch="Uniform" Height="104" Width="111"/>
+            <Button Name="btEtiPage" Click="btEtiPage_Click" Background="White"   Margin="0, 30, 0,30" BorderBrush="Black" ToolTipService.ToolTip="Etiquetas" HorizontalAlignment="Center" VerticalAlignment="Stretch" Padding="0" BorderThickness="0"  >
+                <Image HorizontalAlignment="Center" VerticalAlignment="Center" Source="/Assets/tags.png" Stretch="Uniform"  />
             </Button>
-            <Button  Background="White" BorderBrush="Black" ToolTipService.ToolTip="Nubes de palabras" HorizontalAlignment="Center" Height="140" Width="202" VerticalAlignment="Stretch" Padding="0" BorderThickness="0"  >
-                <Image HorizontalAlignment="Center" VerticalAlignment="Center" Source="/Assets/cloud.png" Stretch="Uniform" Height="92" Width="102"/>
+            <Button Name="btNubePage" Click="btNubePage_Click" Background="White"   Margin="0, 30, 0,30" BorderBrush="Black" ToolTipService.ToolTip="Nubes de palabras" HorizontalAlignment="Center"  VerticalAlignment="Stretch" Padding="0" BorderThickness="0"  >
+                <Image HorizontalAlignment="Center" VerticalAlignment="Center" Source="/Assets/cloud.png" Stretch="Uniform"  />
             </Button>
-            <Button  Background="White"  ToolTipService.ToolTip="Salir" HorizontalAlignment="Center" Height="140" Width="202" VerticalAlignment="Bottom" Padding="0" BorderThickness="0"  >
-                <Image HorizontalAlignment="Center" VerticalAlignment="Center" Source="/Assets/salir.png" Stretch="Uniform" Height="59" Width="60"/>
+            <Button Name="btSalirPage" Background="White"   Margin="0, 30, 0,30" ToolTipService.ToolTip="Salir" HorizontalAlignment="Center" VerticalAlignment="Bottom" Padding="0" BorderThickness="0"  >
+                <Image HorizontalAlignment="Center" VerticalAlignment="Center" Source="/Assets/salir.png" Stretch="Uniform"  />
             </Button>
         </StackPanel>
         <Grid Grid.Column="1" Margin="5,15,5,0">
@@ -43,16 +43,17 @@
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-                    <Button Grid.Column="0" Name="btEliminar"   FontSize="20" Margin="5,0,5,0"  Content="Eliminar" Click="Eliminar_Documento" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
-                    <Button Grid.Column="1" Name="btAnalizar" FontSize="20" Margin="5,0,5,0" Content="Analizar" Click="Button_Click" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
-                    <Button Grid.Column="2" Name="btNube" FontSize="20" Margin="5,0,5,0"  Content="Nube multidoc" Click="Button_Click_1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
+                    <Button Grid.Column="0" Name="btEliminar"   FontSize="20" Margin="5,0,5,0"  Content="Eliminar" Click="btEliminar_Click" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
+                    <Button Grid.Column="1" Name="Crear" FontSize="20" Margin="5,0,5,0" Content="Analizar" Click="Crear_Click" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
+                    <!--<Button Grid.Column="2" Name="btNube" FontSize="20" Margin="5,0,5,0"  Content="Nube multidoc" Click="Button_Click_1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
                     <Button Grid.Column="3" Name="btAgregar" FontSize="20" Margin="5,0,5,0"  Content="Agregar" Click="Button_Click_2" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
+            -->
             </Grid>
             <!--ItemsSource="{x:Bind documentoVM.documentos}"-->
-            <ListView Grid.Row="1" x:Name="lvDocs"  Grid.Column="1"  Margin="5,10,0,5" SelectionMode="Multiple" SelectionChanged="lvDocs_SelectionChanged">
+            <ListView Grid.Row="1" x:Name="lvNubes"  Grid.Column="1"  Margin="5,10,0,5" SelectionMode="Multiple" SelectionChanged="lvNubes_SelectionChanged">
                 <ListView.ItemTemplate>
-                    <DataTemplate x:DataType="Model:Documento">
-                        <TextBlock Text="{x:Bind Nombre, Mode=OneWay}" FontSize="20" Foreground="Black"/>
+                    <DataTemplate x:DataType="Model:Nube">
+                        <TextBlock Text="{x:Bind Id, Mode=OneWay}" FontSize="20" Foreground="Black"/>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
@@ -91,9 +92,9 @@
             </Grid>
             <!--ItemsSource="{x:Bind documentoVM.documentos}"-->
 
-            <ListView Grid.Row="1"  x:Name="lvCitas"  Grid.Column="1" Margin="5,15,5,5" SelectionMode="Multiple" SelectionChanged="lvDocs_SelectionChanged">
+            <ListView Grid.Row="1"  x:Name="lvPalabras"  Grid.Column="1" Margin="5,15,5,5" SelectionMode="Multiple" SelectionChanged="lvPalabras_SelectionChanged">
                 <ListView.ItemTemplate>
-                    <DataTemplate x:DataType="Model:Documento">
+                    <DataTemplate x:DataType="Model:Palabra">
                         <TextBlock Text="{x:Bind Nombre, Mode=OneWay}" FontSize="20" Foreground="Black"/>
                     </DataTemplate>
                 </ListView.ItemTemplate>

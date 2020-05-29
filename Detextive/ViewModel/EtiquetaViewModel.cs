@@ -12,17 +12,24 @@ namespace Detextive.ViewModel
     {
         public ObservableCollection<Etiqueta> etiquetas;
 
-        public EtiquetaViewModel()
+        public EtiquetaViewModel(Proyecto proyecto)
         {
-            etiquetas = new ObservableCollection<Etiqueta>();
+            etiquetas =  AccesoDatos.Logica.LogicaEtiqueta.GetInstance().ListaEtiquetasFiltro(proyecto);
         }
 
 
-        public ObservableCollection<Etiqueta> ListaEtiquetas()
-        {
-            etiquetas = AccesoDatos.Logica.LogicaEtiqueta.GetInstance().ListaEtiquetas();
-            return etiquetas;
-        }
+        //public ObservableCollection<Etiqueta> ListaEtiquetas()
+        //{
+        //    etiquetas =
+        //    return etiquetas;
+        //}
+
+        //public ObservableCollection<Etiqueta> ListaEtiquetasFiltro(Etiqueta etiqueta)
+        //{
+        //    etiquetas = AccesoDatos.Logica.LogicaEtiqueta.GetInstance().
+        //    return etiquetas;
+        //}
+
         public void AgregarEtiqueta(Etiqueta etiqueta)
         {
             try

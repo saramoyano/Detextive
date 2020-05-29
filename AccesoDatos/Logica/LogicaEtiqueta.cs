@@ -66,25 +66,27 @@ namespace AccesoDatos.Logica
 
         }
 
-        // Obtener una Etiqueta de la lista según filtro aplicado (propiedad nombre)
+        // Obtener una Etiqueta de la lista según filtro aplicado (proyecto)
         // params: objeto de la clase AccesoDatos.Model.Etiqueta
-        public Model.Etiqueta ListaEtiquetasFiltro(Etiqueta etiqueta)
+        public ObservableCollection<Model.Etiqueta> ListaEtiquetasFiltro(Proyecto proyecto)
         {
             using (var db = new Model.Context())
             {
-
+                ObservableCollection<Etiqueta> etiquetas = new ObservableCollection<Etiqueta>();
                 try
                 {
-                    var etiq = db.EtiquetaSet.Single(b => b.Nombre.Equals(etiqueta.Nombre));
-                    return etiq;
+                    List<Etiqueta> etiq = db.EtiquetaSet.Where(b => b.IdProy.Equals(proyecto.Id)).ToList();
+                    foreach (Etiqueta eti in etiq)
+                    {
+                        etiquetas.Add(eti);
+                    }
+                    return etiquetas;                  
                 }
                 catch (Exception e)
                 {
-                    throw new Exception("No hay etiquetas guardados.", e);
+                    throw new Exception("No hay etiquetas guardadas.", e);
                 }
-
             }
-
         }
 
 

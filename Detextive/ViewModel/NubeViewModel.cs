@@ -11,13 +11,13 @@ using Windows.UI.Input.Inking.Analysis;
 
 namespace Detextive.ViewModel
 {
-    class NubeViewModel
+    public class NubeViewModel
     {
-        private List<Nube> nubes;
+        private ObservableCollection<Nube> nubes;
 
         public NubeViewModel()
         {
-            nubes = new List<Nube>();
+            nubes =  AccesoDatos.Logica.LogicaNube.GetInstance().ListaNubes();
         }
 
 
@@ -39,11 +39,11 @@ namespace Detextive.ViewModel
         //}
 
 
-        public List<Nube> ListaNubes()
-        {
-            nubes = AccesoDatos.Logica.LogicaNube.GetInstance().ListaNubes();
-            return nubes;
-        }
+        //public List<Nube> ListaNubes()
+        //{
+        //    nubes = 
+        //    return nubes;
+        //}
         public void AgregarNube(Nube nube)
         {
             try

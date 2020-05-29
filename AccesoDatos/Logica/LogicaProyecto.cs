@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 
@@ -24,16 +25,18 @@ namespace AccesoDatos.Logica
 
         // Obtener la lista de Proyectos
         // params: ninguno
-        public List<Model.Proyecto> ListaProyectos()
+        public ObservableCollection<Model.Proyecto> ListaProyectos()
         {
             using (var db = new Model.Context())
             {
-
+                ObservableCollection<Proyecto> proyectos = new ObservableCollection<Proyecto>();
                 try
                 {
-                    return db.ProyectoSet
-                .OrderBy(b => b.Id)
-                .ToList();
+                    var lsProy =  db.ProyectoSet.OrderBy(b => b.Id).ToList();
+                    foreach (Proyecto p in lsProy) {
+                        proyectos.Add(p);
+                    }
+                    return proyectos;
                 }
                 catch (Exception e)
                 {

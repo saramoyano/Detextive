@@ -23,14 +23,19 @@ namespace AccesoDatos.Logica
 
         // Obtener la lista de Citas
         // params: ninguno
-        public List<Model.Cita> ListaCitas()
+        public ObservableCollection<Model.Cita> ListaCitas()
         {
+            ObservableCollection<Cita> citas = new ObservableCollection<Cita>();
             using (var db = new Model.Context())
             {
-
                 try
                 {
-                    return db.CitaSet.OrderBy(b => b.Id).ToList();
+                    List<Cita> lCitas = db.CitaSet.OrderBy(b => b.Id).ToList();
+                    foreach (Cita cita in lCitas)
+                    {
+                        citas.Add(cita);
+                    }
+                    return citas;
                 }
                 catch (Exception e)
                 {
@@ -43,24 +48,26 @@ namespace AccesoDatos.Logica
 
 
         // Obtener una Cita de la lista según filtro aplicado 
-        // params: objeto de la clase AccesoDatos.Model.Cita
-        public Model.Cita ListaCitasFiltro(Cita cita)
+        // params: objeto de la clase AccesoDatos.Model.Etiqueta
+        public ObservableCollection<Model.Cita> ListaCitasFiltro(Etiqueta eti)
         {
+            ObservableCollection<Cita> citas = new ObservableCollection<Cita>();
             using (var db = new Model.Context())
-            {
-
+            {                
                 try
                 {
-                    var c = db.CitaSet.Single(b => b.Id.Equals(cita.Id));
-                    return c;
+                    List<Cita> lCitas = db.CitaSet.Where(b => b.IdEtiqueta.Equals(eti.Id)).ToList();
+                    foreach (Cita c in lCitas)
+                    {
+                        citas.Add(c);
+                    }
+                    return citas;
                 }
                 catch (Exception e)
                 {
-                    throw new Exception("No hay citas guardados.", e);
+                    throw new Exception("No hay citas guardadas.", e);
                 }
-
             }
-
         }
 
         // Agregar un cita a la lista 

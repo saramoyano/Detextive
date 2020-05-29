@@ -18,7 +18,7 @@ namespace AccesoDatos.Model
      
         public int IdProy { get => _idProy; set => _idProy = value; }
 
-        public string Nombre { get { return _nombre; } set { _nombre = value; NotificarCambio("Nombre"); } }
+        public string Nombre { get => _nombre;  set { _nombre = value; NotificarCambio("Nombre"); } }
 
         public string Ubicacion { get => _ubicacion; set => _ubicacion = value; }
         public int Extension { get => _extension; set => _extension = value; }

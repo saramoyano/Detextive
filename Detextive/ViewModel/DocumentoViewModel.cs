@@ -15,17 +15,15 @@ namespace Detextive.ViewModel
 
         public DocumentoViewModel()
         {
-            documentos = new ObservableCollection<Documento>();
-
-
-        }
-
-
-        public ObservableCollection<Documento> ListaDocumentos()
-        {
             documentos = AccesoDatos.Logica.LogicaDocumento.GetInstance().ListaDocumentos();
-            return documentos;
         }
+
+
+        //public ObservableCollection<Documento> ListaDocumentos()
+        //{
+        //    documentos = 
+        //    return documentos;
+        //}
 
         public Documento ListaDocumentosFiltro(Documento doc)
         {             

@@ -17,19 +17,19 @@ namespace Detextive.ViewModel
     public class ProyectoViewModel
     {
 
-        private List<Proyecto> proyectos;
+        private ObservableCollection<Proyecto> proyectos;
 
         public ProyectoViewModel() {
-            proyectos = new List<Proyecto>();
+            proyectos =  AccesoDatos.Logica.LogicaProyecto.GetInstance().ListaProyectos();
 
             
         }
 
 
-        public List<Proyecto> ListaProyectos() { 
-            proyectos = AccesoDatos.Logica.LogicaProyecto.GetInstance().ListaProyectos();
-            return proyectos;
-        }
+        //public List<Proyecto> ListaProyectos() { 
+        //    proyectos = 
+        //    return proyectos;
+        //}
         public void AgregarProyecto(Proyecto proyecto) {
             try
             {

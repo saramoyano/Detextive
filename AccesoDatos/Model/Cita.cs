@@ -4,7 +4,7 @@ using System.Text;
 
 namespace AccesoDatos.Model
 {
-    public class Cita
+    public class Cita : NotifyBase
     {
         private int _id;
         private int _idEtiqueta;
@@ -14,7 +14,7 @@ namespace AccesoDatos.Model
         public int Id { get => _id; set => _id = value; }
         public int IdEtiqueta { get => _idEtiqueta; set => _idEtiqueta = value; }
         public int IdDoc { get => _idDoc; set => _idDoc = value; }
-        public string Texto { get => _texto; set => _texto = value; }
-        
+        public string Texto { get => _texto; set { _texto = value; NotificarCambio("Texto"); } }
+
     }
 }

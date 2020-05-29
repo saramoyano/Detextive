@@ -9,6 +9,8 @@ using Gma.CodeCloud.Controls.TextAnalyses.Extractors;
 using Gma.CodeCloud.Controls.TextAnalyses.Processing;
 using Gma.CodeCloud.Controls.TextAnalyses.Blacklist;
 using StopWord;
+using System.Diagnostics;
+using Gma.CodeCloud.Controls.TextAnalyses.Blacklist.En;
 
 // La plantilla de elemento Página en blanco está documentada en https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0xc0a
 
@@ -37,20 +39,20 @@ namespace Detextive
         List<int> frecuencias;
         List<string> nombres;
         string texto;
+        private PalabraViewModel palabraVM;
+
         public ProyectoPage()
         {
             this.InitializeComponent();
             proyectoVM = new ProyectoViewModel();
-         
+            documentoVM = new DocumentoViewModel();
+            
             palabras = new List<string>();
             frecuencias = new List<int>();
             nombres = new List<string>();
-            _blacklist = new BannedWords();// CommonWords();
-            _progress = new ProgressBarWrapper(ProgressBar);
-
-             
+            _blacklist = new CommonWords();
+            _progress = new ProgressBarWrapper(ProgressBar);             
         }
-
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
@@ -60,18 +62,14 @@ namespace Detextive
             btnEtiqueta.IsEnabled = false;
             btnNube.IsEnabled = false;
             btnCerrarProy.IsEnabled = false; 
-            etiqVM = new EtiquetaViewModel();
+          //  etiqVM = new EtiquetaViewModel();
             MostrarDialog();
             
-           
-         
              // spEtiq.Children.Add(lvEtiq);
             }
 
-
         private void NuevoProyecto(object sender, RoutedEventArgs e)
         {}
-
 
         private void AceptaNombreProyecto(object sender, RoutedEventArgs e)
         {
@@ -86,6 +84,7 @@ namespace Detextive
                     
                     flyNombre.Hide();
                     proyectoVM.AgregarProyecto(proyecto);
+                    etiqVM = new EtiquetaViewModel(proyecto);
                     openFileButton.IsEnabled = true;
                     saveFileButton.IsEnabled = true;
                     underlineButton.IsEnabled = true;
@@ -93,13 +92,13 @@ namespace Detextive
                     btnNube.IsEnabled = true;
                     btnProyecto.IsEnabled = false;
                     btnAbrirProy.IsEnabled = false;
-                    foreach (Etiqueta eti in etiqVM.ListaEtiquetas())
-                    {
-                        nombres.Add(eti.Nombre);
-                    }
+                    //foreach (Etiqueta eti in etiqVM.ListaEtiquetas())
+                    //{
+                    //    nombres.Add(eti.Nombre);
+                    //}
 
-                    //ListView lvEtiq = new ListView();
-                    lvEtiquetas.ItemsSource = nombres;
+                    ////ListView lvEtiq = new ListView();
+                    //lvEtiquetas.ItemsSource = nombres;
                 }
                 catch (Exception excepcion)
                 {
@@ -113,8 +112,6 @@ namespace Detextive
             }
            
         }
-
-
 
         private void CrearEtiqueta(object sender, RoutedEventArgs e)
         {
@@ -153,9 +150,7 @@ namespace Detextive
         private void CrearNubes(object sender, RoutedEventArgs e)
         {
             this.Frame.Navigate(typeof(Detextive.View.DocumentoPage));
-
         }
-
 
         public async void OpenButton_Click(object sender, RoutedEventArgs e)
         {
@@ -166,16 +161,10 @@ namespace Detextive
             picker.FileTypeFilter.Add(".doc");
             picker.FileTypeFilter.Add(".rtf");
 
-
             Windows.Storage.StorageFile file = await picker.PickSingleFileAsync();
             if (file != null)
             {
-
-                string archivo = file.Path;
-                documento = new Documento();
-                documento.Ubicacion = archivo;
-         
-                if (file.FileType == ".rtf")
+                if (file.FileType == ".rtf" || file.FileType == ".doc" || file.FileType == ".docx")
                 {
                     try
                     {
@@ -202,60 +191,33 @@ namespace Detextive
                 try
                 {
 
-                    editor.Document.GetText(TextGetOptions.FormatRtf, out texto);
+                    editor.Document.GetText(TextGetOptions.None, out texto);
+                    UpdateWords();
+                    //string[] archivo = file.Path.Split( "\\");
+                    //String ruta = archivo[0].Substring(0, 1);
+                    //foreach (string a in archivo) {
+                    //    ruta = ruta + "\\" + a;
+                    //}
+                    string[] nombre = file.Name.Split(".");
+                    string name = nombre[0];
+                    //Debug.WriteLine(ruta);
 
-                    //string creado para ver si estaba teniendo problemas de rtf
-                    //texto = "“No somos mojigatos ni pretendemos antiguallas”. Sexualidad y pareja en el discurso del Movimiento Familiar Cristiano de Córdoba" +
-                        //" en las décadas del sesenta y setenta. Asistimos como meros espectadores, acostumbrados ya a tanta injusticia, a tanto odio," +
-                        //" que más de una vez nos sirven para “justificar” nuestras propias faltas e injusticias[…] Si vamos al fondo de la cuestión deberemos" +
-                        //" concluir que la injusticia, la tortura, el asesinato, etc., no son más que el fruto de un proceso de deshumanización creciente, " +
-                        //"cuyo punto de partida está en la familia, o mejor dicho en la NO FAMILIA. Sí, porque todos[…] somos en definitiva responsables de que " +
-                        //"el hombre esté perdiendo –insensiblemente - el sentido de lo humano y en consecuencia –también insensiblemente, poco a " +
-                        //"poco-transformándose y actuando como una bestia. El fragmento precedente expresa con claridad la que fuera una de las preocupaciones " +
-                        //"centrales en las reflexiones que muchos actores hacían de su época. Los cambios familiares eran vistos al mismo tiempo como " +
-                        //"posibilidad o amenaza, las posturas que abogaban por transformar la sociedad eran discutidas por los diagnósticos de crisis y " +
-                        //"desintegración social, que reconocían como causas a las transformaciones familiares. Estos debates no eran novedosos, ya que como" +
-                        //" elemento fundamental de la sociedad, la familia ha sido objeto de la acción del Estado y la Iglesia, suscitando acuerdos y conflictos." +
-                        //"A pesar de la multiplicidad de formas existentes, la difusión de un modelo de organización familiar evidencia que ésta revistió " +
-                        //"una importancia crucial para el orden social. Como ha señalado Ghirardi, el modelo de familia promovido por la Iglesia a partir del" +
-                        //" Concilio de Trento consagraba al matrimonio religioso como el único válido, esta unión debía ser monógama," +
-                        //" heterosexual y no podía disolverse(sólo se aceptaba la separación de cuerpos).En la construcción de este ideal destacaba además la " +
-                        //"regulación de la sexualidad, que debía restringirse al ámbito conyugal, estar destinada únicamente a la reproducción con el objetivo de" +
-                        //" engendrar descendencia legítima y ser estrictamente limitada en el caso de las mujeres, valorizando la virginidad y la castidad." +
-                        //" La autoridad del paterfamilias dentro del grupo doméstico constituía otro componente de control social. " +
-                        //"Mucho se ha debatido acerca de la influencia de la Iglesia y el Estado sobre las familias." +
-                        //"Es necesario destacar que la familia se convirtió, en muchos casos, en un elemento generador de tensiones entre" +
-                        //" ambos actores, dado que la regulación de la organización familiar –en términos de relaciones entre sus miembros," +
-                        //" roles de género y vínculos intergeneracionales, y como espacio, de conductas y prácticas cotidianas que " +
-                        //"involucran aspectos como la sexualidad y la educación - posibilitaría el control sobre realidades diversas, " +
-                        //"disímiles y cambiantes en el intento de sostener el orden social y reforzar la importancia de estos actores " +
-                        //"en la sociedad.Este modelo se reconfiguró y consolidó a principios del siglo XX, fuertemente asociado al " +
-                        //"desarrollo de la clase media.  Ahora bien, los años sesenta fueron escenario de importantes cambios culturales, " +
-                        //"sociales y políticos, que afectaron profundamente la vida cotidiana de la población.  La Iglesia no permaneció al " +
-                        //"margen de los mismos: inició en 1963, con el Concilio Vaticano II, un proceso de renovación cuyas repercusiones " +
-                        //"en Latinoamérica cristalizaron en la Conferencia del Episcopado Latinoamericano en Medellín y la declaración " +
-                        //"de los 18 obispos para el Tercer Mundo.En Argentina, todos estos cambios adquirieron matices propios, en la " +
-                        //"medida en que el proceso de radicalización – que afectó también a los católicos – fue un elemento central de la " +
-                        //"vida social y de la política. Asimismo, las transformaciones sociales, políticas y culturales producidas durante " +
-                        //"esta década implicaron cuestionamientos al paradigma de familia imperante. En efecto, la aparición de la píldora," +
-                        //" los debates sobre el lugar de la mujer y sobre el control de la natalidad, fueron factores que tendieron a reconfigurar" +
-                        //" y resignificar el ideal familiar. Durante los años sesenta, la familia, la moralidad y los valores cristianos," +
-                        //" fueron elementos centrales en el discurso de la jerarquía eclesiástica.En el mencionado contexto, la llegada del Concilio Vaticano " +
-                        //"II se veía como la posibilidad de una solución a los problemas denunciados por la Iglesia, principalmente el materialismo, el comunismo marxista," +
-                        //" el clima de inmoralidad y el peligro de la excesiva búsqueda de gozo. Esta situación, según el arzobispo de Córdoba, implicaba que:" +
-                        //" Dos mundos diametralmente opuestos se enfrentan en esta hora decisiva: el reino de Cristo y el poder de las tinieblas. Y en esta lucha " +
-                        //"titánica nadie puede ser indiferente, nadie simple espectador y las posiciones neutralistas resultan absurdas; porque o se está con Cristo o contra Cristo." +
-                        //"Este y otros discursos dan algunos indicios acerca de los comportamientos familiares y de la familia como ámbito de formación en el catolicismo.Del mismo modo," +
-                        //" muestran la importancia que otorgaba la Iglesia a la familia como espacio de formación de católicos. El ámbito doméstico, y en particular, la educación que " +
-                        //"los padres daban a sus hijos era un componente fundamental para el desarrollo de una sociedad católica, que ";
-                        UpdateWords();
+                    documento = new Documento();
+                    documento.Ubicacion ="ruta";
+                    documento.IdProy = proyecto.Id;
+                   // Debug.WriteLine(name);
+                    documento.Nombre = name;
+                    Debug.WriteLine(texto.Length);
+                    documento.Extension = (int)texto.Length;
+                    documentoVM.AgregarDocumento(documento);                                                    
                 }
                 catch (Exception excepcion)
                 {
+                   
                     ContentDialog errorDialog = new ContentDialog()
                     {
                         Title = "Error",
-                        Content = excepcion.StackTrace,
+                        Content = excepcion.Message,
                         PrimaryButtonText = "Ok"
                     };
 
@@ -358,7 +320,6 @@ namespace Detextive
             ContentDialogResult resultado = await proyDialog.ShowAsync();
             }
 
-        
         private void AbrirProyecto(object sender, RoutedEventArgs e)
         {
             
@@ -380,16 +341,31 @@ namespace Detextive
             }
 
             IEnumerable<string> terms = new StringExtractor(textoNuevo, _progress);
-            int numPal = 0;
-            foreach (string term in terms) {
-                numPal++;
-            }
 
             CloudControl.WeightedWords =
-                terms
-                .Filter(_blacklist)
-                    .CountOccurences()
-                    .SortByOccurences();
+               terms
+                   .CountOccurences()
+                   .SortByOccurences();
+
+
+            
+            int numPal = 0;
+            Palabra palabra;
+            try {
+                foreach (var term in terms) {                 
+                    numPal++;
+                    palabra = new Palabra();
+                    palabra.IdProy = proyecto.Id;
+                    palabra.Nombre = term;
+                    palabra.NumApariciones = 1;
+                    palabra.Porcentaje = 1;
+                    palabraVM = new PalabraViewModel();
+                    palabraVM.AgregarPalabra(palabra);
+                }
+            }
+            catch (Exception ex) {
+                Debug.WriteLine(ex.StackTrace);
+            }
 
             nube = new Nube();
                nube.IdProy = proyecto.Id;
@@ -399,7 +375,6 @@ namespace Detextive
             nube.NumConceptos = numPal;
             nubeVM.AgregarNube(nube);
         }
-
 
         internal class ProgressBarWrapper : IProgressIndicator
         {
@@ -455,6 +430,21 @@ namespace Detextive
             btnNube.IsEnabled = false;
             btnCerrarProy.IsEnabled = false;
         }
+
+        public void btDocPage_Click(object sender, RoutedEventArgs e)
+        {
+                this.Frame.Navigate(typeof(Detextive.View.DocumentoPage), proyecto);            
+        }
+
+        private void btEtiPage_Click(object sender, RoutedEventArgs e)
+        {
+            this.Frame.Navigate(typeof(Detextive.View.EtiquetaPage),proyecto);
+        }
+
+        private void btNubePage_Click(object sender, RoutedEventArgs e)
+        {
+            this.Frame.Navigate(typeof(Detextive.View.NubePages), proyecto);
+        }
     }
 }
 //public void CreateCloud(FileInfo fileInfo) {
@@ -500,3 +490,4 @@ namespace Detextive
 
 
 //}
+

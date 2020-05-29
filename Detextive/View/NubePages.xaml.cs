@@ -1,4 +1,6 @@
-﻿using System;
+﻿using AccesoDatos.Model;
+using Detextive.ViewModel;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -22,9 +24,61 @@ namespace Detextive.View
     /// </summary>
     public sealed partial class NubePages : Page
     {
+        public NubeViewModel nubeVM;
+        Proyecto proyecto;
+        Nube nube;
+        Palabra palabra;
+
         public NubePages()
         {
             this.InitializeComponent();
+            nubeVM = new NubeViewModel();
+        }
+
+
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            base.OnNavigatedTo(e);
+            if (e.Parameter != null && e.Parameter.GetType().Equals(typeof(Proyecto)))
+            {
+
+                proyecto = (Proyecto)e.Parameter;
+            }
+        }
+
+        private void btEliminar_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Crear_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void lvNubes_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
+        private void lvPalabras_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
+        private void btDocPage_Click(object sender, RoutedEventArgs e)
+        {
+            this.Frame.Navigate(typeof(Detextive.View.DocumentoPage), proyecto);
+        }
+
+        private void btEtiPage_Click(object sender, RoutedEventArgs e)
+        {
+ this.Frame.Navigate(typeof(Detextive.View.EtiquetaPage), proyecto);
+        }
+
+        private void btNubePage_Click(object sender, RoutedEventArgs e)
+        {
+            this.Frame.Navigate(typeof(Detextive.View.NubePages), proyecto);
         }
     }
 }

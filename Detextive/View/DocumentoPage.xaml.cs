@@ -25,7 +25,7 @@ namespace Detextive.View
     /// </summary>
     public sealed partial class DocumentoPage : Page
     {
-
+        Proyecto proyecto;
         public DocumentoViewModel documentoVM;
         Documento documento;
         public DocumentoPage()
@@ -33,12 +33,22 @@ namespace Detextive.View
             this.InitializeComponent();
         }
 
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            base.OnNavigatedTo(e);
+            if (e.Parameter != null && e.Parameter.GetType().Equals(typeof(Proyecto)))
+            {
+
+                proyecto = (Proyecto)e.Parameter;
+            }
+        }
+
         private void lvDocs_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-             documento = (Documento) lvDocs.SelectedItem; 
+            documento = (Documento)lvDocs.SelectedItem;
 
-            
-              
+
+
         }
 
         private void Eliminar_Documento(object sender, RoutedEventArgs e)
@@ -54,12 +64,47 @@ namespace Detextive.View
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-
+            //this.Frame.Navigate(typeof(Detextive.View.ProyectoPage), proyecto);
         }
 
         private void Button_Click_2(object sender, RoutedEventArgs e)
         {
+            
+        }
 
+        public void btDocPage_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void btEtiPage_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void btNubePage_Click(object sender, RoutedEventArgs e)
+        {
+            
+        }
+
+        private void btNubePage_Click_1(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void btEtiPage_Click_1(object sender, RoutedEventArgs e)
+        {
+this.Frame.Navigate(typeof(Detextive.View.EtiquetaPage), proyecto);
+        }
+
+        private void btDocPage_Click_1(object sender, RoutedEventArgs e)
+        {
+            ;
+        }
+
+        private void btNubePage_Click_2(object sender, RoutedEventArgs e)
+        {
+this.Frame.Navigate(typeof(Detextive.View.NubePages), proyecto);
         }
     }
 }

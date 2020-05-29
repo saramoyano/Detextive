@@ -8,20 +8,26 @@ using System.Threading.Tasks;
 
 namespace Detextive.ViewModel
 {
-    class CitaViewModel
+   public class CitaViewModel
     {
-        private List<Cita> citas;
+        private ObservableCollection<Cita> citas;
 
         public CitaViewModel()
         {
-            citas = new List<Cita>();
-
+            citas =  AccesoDatos.Logica.LogicaCita.GetInstance().ListaCitas();
         }
 
 
-        public List<Cita> ListaCitas()
+        //public ObservableCollection<Cita> ListaCitas()
+        //{
+        //    citas = 
+        //    return citas;
+        //}
+
+
+        public ObservableCollection<Cita> ListaCitasFiltro(Etiqueta etiqueta)
         {
-            citas = AccesoDatos.Logica.LogicaCita.GetInstance().ListaCitas();
+            citas = AccesoDatos.Logica.LogicaCita.GetInstance().ListaCitasFiltro(etiqueta);
             return citas;
         }
         public void AgregarCita(Cita cita)

@@ -1,4 +1,6 @@
-﻿using System;
+﻿using AccesoDatos.Model;
+using Detextive.ViewModel;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -22,9 +24,76 @@ namespace Detextive.View
     /// </summary>
     public sealed partial class EtiquetaPage : Page
     {
+        public EtiquetaViewModel etiquetaVM;
+        public CitaViewModel citaVM;
+        private Etiqueta etiqueta;
+        private Cita cita;
+        Proyecto proyecto;
         public EtiquetaPage()
         {
             this.InitializeComponent();
+           
+            citaVM = new CitaViewModel();
+        }
+
+
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            base.OnNavigatedTo(e);
+            if (e.Parameter != null && e.Parameter.GetType().Equals(typeof(Proyecto)))
+            {
+
+                proyecto = (Proyecto)e.Parameter; 
+                etiquetaVM = new EtiquetaViewModel(proyecto);
+            }
+        }
+
+        private void lvEtiquetas_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
+        private void btEliminar_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void btAnalizar_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void btNube_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void btAgregar_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void lvCitas_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
+        private void btDocPage_Click(object sender, RoutedEventArgs e)
+        {
+            this.Frame.Navigate(typeof(Detextive.View.DocumentoPage), proyecto);
+
+        }
+
+        private void btEtiPage_Click(object sender, RoutedEventArgs e)
+        {
+            this.Frame.Navigate(typeof(Detextive.View.EtiquetaPage), proyecto);
+
+        }
+
+        private void btNubePage_Click(object sender, RoutedEventArgs e)
+        {
+            this.Frame.Navigate(typeof(Detextive.View.NubePages), proyecto);
+
         }
     }
 }

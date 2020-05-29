@@ -127,6 +127,7 @@
     <Compile Include="ViewModel\EtiquetaViewModel.cs" />
     <Compile Include="ViewModel\NotifyBase.cs" />
     <Compile Include="ViewModel\NubeViewModel.cs" />
+    <Compile Include="ViewModel\PalabraViewModel.cs" />
     <Compile Include="ViewModel\ProyectoViewModel.cs" />
     <Compile Include="View\DocumentoPage.xaml.cs">
       <DependentUpon>DocumentoPage.xaml</DependentUpon>
