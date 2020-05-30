@@ -11,14 +11,21 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid>
-       
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="67*"/>
-                <ColumnDefinition Width="220*"/>
-                <ColumnDefinition Width="205*"/>
-            </Grid.ColumnDefinitions>
-            <StackPanel Padding="15" Grid.Column="0" Orientation="Vertical" BorderBrush="Gray" BorderThickness="1" Margin="0,-13,0,-15">
-            <Button Name="btProyPage" Background="White"  Margin="0, 30, 0,30" ToolTipService.ToolTip="Proyecto" HorizontalAlignment="Center" Padding="0" BorderThickness="0" >
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="67*"/>
+            <ColumnDefinition Width="220*"/>
+            <ColumnDefinition Width="205*"/>
+        </Grid.ColumnDefinitions>
+        <StackPanel Padding="15" Grid.Column="0" Orientation="Vertical" BorderBrush="Gray" BorderThickness="1" Margin="0,-13,0,-15">
+            <Button Name="btProyPage" 
+                    Background="White"  
+                    Margin="0, 30, 0,30" 
+                    ToolTipService.ToolTip="Proyecto" 
+                    HorizontalAlignment="Center" 
+                    Padding="0" 
+                    BorderThickness="0"
+                    Click="btProyPage_Click">
                 <Image Source="/Assets/proyecto.png"  Stretch="Uniform"/>
             </Button>
             <Button Name="btDocPage" Click="btDocPage_Click_1" Background="White"   Margin="0, 30, 0,30" BorderBrush="Black" ToolTipService.ToolTip="Documentos" HorizontalAlignment="Center" VerticalAlignment="Stretch" Padding="0" BorderThickness="0"  >
@@ -36,9 +43,9 @@
         </StackPanel>
         <Grid Grid.Column="1" Margin="5,15,5,0">
             <Grid.RowDefinitions>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="11*"/>
-                </Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="11*"/>
+            </Grid.RowDefinitions>
             <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="5,0,15,0" HorizontalAlignment="Center"  >
                 <Button Name="btEliminar"   FontSize="20" Margin="5,0,15,0"  Content="Eliminar" Click="Eliminar_Documento" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
                 <Button Name="btAnalizar" FontSize="20" Margin="5,0,15,0" Content="Analizar" Click="Button_Click" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
@@ -46,22 +53,22 @@
                 <Button  Name="btAgregar" FontSize="20" Margin="5,0,15,0"  Content="Agregar" Click="Button_Click_2" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
             </StackPanel>
 
-             
-                
-            
-                    <ListView Grid.Row="1" x:Name="lvDocs"  Grid.Column="1" ItemsSource="{x:Bind proyecto.Documentos}" Margin="5,10,0,5" SelectionMode="Multiple" SelectionChanged="lvDocs_SelectionChanged">
-            <ListView.ItemTemplate>
-                <DataTemplate x:DataType="local:Documento">
-                    <TextBlock Text="{x:Bind Nombre}" FontSize="20" Foreground="Black"/>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
+
+
+
+            <ListView Grid.Row="1" x:Name="lvDocs"  Grid.Column="1" ItemsSource="{x:Bind documentoVM.documentos}" Margin="5,10,0,5" SelectionMode="Multiple" SelectionChanged="lvDocs_SelectionChanged">
+                <ListView.ItemTemplate>
+                    <DataTemplate x:DataType="local:Documento">
+                        <TextBlock Text="{x:Bind Nombre}" FontSize="20" Foreground="Black"/>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
         </Grid>
         <Grid Grid.Column="2">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="*"/>
-                </Grid.RowDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
             <Grid Grid.Row="0" Margin="5,30,5,0">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*"/>
@@ -98,6 +105,6 @@
                 </ListView.ItemTemplate>
             </ListView>
         </Grid>
-        
+
     </Grid>
 </Page>

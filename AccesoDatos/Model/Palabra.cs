@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Text;
 
 namespace AccesoDatos.Model
@@ -13,7 +14,8 @@ namespace AccesoDatos.Model
         private int _numApariciones;
         private float? _porcentaje;
         private int? _numPalabrasVinculadas;
-        
+        private Proyecto _proyecto;
+        private Nube _nube;
 
         public int Id { get => _id; set => _id = value; }
         public string Nombre { get => _nombre; set => _nombre = value; }
@@ -22,5 +24,7 @@ namespace AccesoDatos.Model
         public float? Porcentaje { get => _porcentaje; set => _porcentaje = value; }
         public int? NumPalabrasVinculadas { get => _numPalabrasVinculadas; set => _numPalabrasVinculadas = value; }
         public int IdNube { get => _idNube; set => _idNube = value; }
+        public Proyecto Proyecto { get => _proyecto; set => _proyecto = value; }
+        public Nube Nube { get => _nube; set => _nube = value; }
     }
 }

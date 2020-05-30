@@ -13,22 +13,24 @@ namespace Detextive.ViewModel
 
         public ObservableCollection<Documento> documentos;
 
-        public DocumentoViewModel()
+        public DocumentoViewModel(Proyecto proyecto)
         {
-            documentos = AccesoDatos.Logica.LogicaDocumento.GetInstance().ListaDocumentos();
+            documentos = AccesoDatos.Logica.LogicaDocumento.GetInstance().ListaDocumentosFiltro(proyecto);
         }
 
-
+        public bool ExisteDocumento(Documento d, Proyecto p) {
+            return AccesoDatos.Logica.LogicaDocumento.GetInstance().ExisteDocumento(d,p);
+        }
         //public ObservableCollection<Documento> ListaDocumentos()
         //{
         //    documentos = 
         //    return documentos;
         //}
 
-        public Documento ListaDocumentosFiltro(Documento doc)
-        {             
-            return AccesoDatos.Logica.LogicaDocumento.GetInstance().ListaDocumentosFiltro(doc);
-        }
+        //public Documento ListaDocumentosFiltro(Documento doc)
+        //{             
+        //    return AccesoDatos.Logica.LogicaDocumento.GetInstance().ListaDocumentosFiltro(doc);
+        //}
         public void AgregarDocumento(Documento documento)
         {
             try

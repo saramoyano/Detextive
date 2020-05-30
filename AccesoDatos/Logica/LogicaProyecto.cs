@@ -49,23 +49,25 @@ namespace AccesoDatos.Logica
 
         // Obtener un Proyecto de la lista según filtro aplicado (propiedad nombre)
         // params: objeto de la clase AccesoDatos.Model.Proyecto
-        public Model.Proyecto ListaProyectosFiltro(Proyecto proyecto)
+        public bool ExisteProyecto(Proyecto proyecto)
         {
             using (var db = new Model.Context())
             {
 
                 try
                 {
-                    var proy = db.ProyectoSet.Single(b => b.Nombre.Equals(proyecto.Nombre));
-                    return proy;
+                    Proyecto proy = db.ProyectoSet.Single(b => b.Nombre.Equals(proyecto.Nombre));
+                    if (proy == null) {
+                        return false;
+                    }
+                    else {
+                        return true; }
                 }
                 catch (Exception e)
                 {
                     throw new Exception("No hay proyectos guardados.", e);
                 }
-
             }
-
         }
 
         // Agregar un proyecto a la lista 

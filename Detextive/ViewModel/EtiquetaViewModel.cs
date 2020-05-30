@@ -42,6 +42,8 @@ namespace Detextive.ViewModel
             }
         }
 
+        public bool ExisteEtiqueta(Etiqueta etiqueta) { return false; }
+
         public void ActualizarEtiqueta(Etiqueta etiqueta)
         {
             try

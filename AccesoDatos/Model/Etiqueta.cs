@@ -4,7 +4,7 @@ using System.Text;
 
 namespace AccesoDatos.Model
 {
-    public class Etiqueta: NotifyBase
+    public class Etiqueta : NotifyBase
     {
         private int _id;
         private string _nombre;
@@ -19,14 +19,6 @@ namespace AccesoDatos.Model
         public int NumCitas { get => _numCitas; set => _numCitas = value; }
         public Proyecto Proyecto { get => _proyecto; set => _proyecto = value; }
 
-        public ICollection<Cita> CitasSet;
-
-        public string OneLineSummary
-        {
-            get
-            {
-                return this.Nombre.ToString();
-            }
-        }
+        public ICollection<Cita> CitasSet; 
     }
 }

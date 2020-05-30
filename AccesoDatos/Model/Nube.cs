@@ -12,6 +12,8 @@ namespace AccesoDatos.Model
         private int _numConceptos;
         private int _extensionFragmento;
         private string _numDocumentos;
+        private Proyecto _proyecto;
+         
         
 
         public int Id { get => _id; set => _id = value; }
@@ -20,6 +22,8 @@ namespace AccesoDatos.Model
         public int ExtensionFragmento { get => _extensionFragmento; set => _extensionFragmento = value; }
         public string NumDocumentos { get => _numDocumentos; set => _numDocumentos = value; }
         public int? IdDoc { get => _idDoc; set => _idDoc = value; }
+        public Proyecto Proyecto { get => _proyecto; set => _proyecto = value; }
+         
 
         public ICollection<Palabra> PalabrasSet;
 

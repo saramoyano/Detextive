@@ -92,8 +92,13 @@ namespace Detextive.View
 
         private void btNubePage_Click(object sender, RoutedEventArgs e)
         {
-            this.Frame.Navigate(typeof(Detextive.View.NubePages), proyecto);
+            this.Frame.Navigate(typeof(NubePages), proyecto);
 
+        }
+
+        private void btProyPage_Click(object sender, RoutedEventArgs e)
+        {
+            this.Frame.Navigate(typeof(NubePages), proyecto);
         }
     }
 }

@@ -3,7 +3,7 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:WordCloudControl"
-    xmlns:Model="using:AccesoDatos.Model"
+    xmlns:localModel="using:AccesoDatos.Model"
     xmlns:data="using:AccesoDatos.Model"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -11,7 +11,7 @@
     Background="White"
     Loaded="Page_Loaded"
     >
-    
+
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="55*"/>
@@ -19,7 +19,7 @@
             <ColumnDefinition Width="292*"/>
         </Grid.ColumnDefinitions>
         <StackPanel Background="White" Padding="15" Grid.Column="0" Orientation="Vertical" BorderBrush="White" BorderThickness="2" Margin="0,-13,0,-15">
-            <Button Name="btProyPage" Background="White"  Margin="0, 30, 0,30" ToolTipService.ToolTip="Proyecto" HorizontalAlignment="Center" Padding="0" BorderThickness="0" Click="CrearNubes">
+            <Button Name="btProyPage" Background="White"  Margin="0, 30, 0,30" ToolTipService.ToolTip="Proyecto" HorizontalAlignment="Center" Padding="0" BorderThickness="0" Click="btProyPage_Click">
                 <Image Source="/Assets/proyecto.png"  Stretch="Uniform"/>
             </Button>
             <Button Name="btDocPage" Click="btDocPage_Click" Background="White"   Margin="0, 30, 0,30" BorderBrush="Black" ToolTipService.ToolTip="Documentos" HorizontalAlignment="Center" VerticalAlignment="Stretch" Padding="0" BorderThickness="0"  >
@@ -31,73 +31,135 @@
             <Button Name="btNubePage" Click="btNubePage_Click" Background="White"   Margin="0, 30, 0,30" BorderBrush="Black" ToolTipService.ToolTip="Nubes de palabras" HorizontalAlignment="Center"  VerticalAlignment="Stretch" Padding="0" BorderThickness="0"  >
                 <Image HorizontalAlignment="Center" VerticalAlignment="Center" Source="/Assets/cloud.png" Stretch="Uniform"  />
             </Button>
-            <Button Name="btSalirPage" Background="White"   Margin="0, 30, 0,30" ToolTipService.ToolTip="Salir" HorizontalAlignment="Center" VerticalAlignment="Bottom" Padding="0" BorderThickness="0"  >
+            <Button Name="btSalirPage" Click="btSalirPage_Click" Background="White"   Margin="0, 30, 0,30" ToolTipService.ToolTip="Salir" HorizontalAlignment="Center" VerticalAlignment="Bottom" Padding="0" BorderThickness="0"  >
                 <Image HorizontalAlignment="Center" VerticalAlignment="Center" Source="/Assets/salir.png" Stretch="Uniform"  />
             </Button>
         </StackPanel>
-        <Grid Name="centerGrid" Grid.Column="1" Margin="10,10,10,10" Background="White">
+        <Grid Name="centerGrid" Grid.Column="1"  Margin="5,15,5,0" Background="White">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="11*"/>
             </Grid.RowDefinitions>
 
-            <StackPanel Grid.Column="1" Grid.Row="0" Orientation="Horizontal" Margin="10,0,0,0">
-                <Button Name="btnProyecto" Content="Nuevo Proyecto"
-                    FontSize="20"
-                       HorizontalAlignment="Stretch"
+            <Grid Grid.Column="1" Grid.Row="0"  Margin="5,0,5,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+
+                </Grid.ColumnDefinitions>
+                <Button Name="btnProyecto"  
+                        Content="Nuevo Proyecto"
+                        Grid.Column="0"
+                        FontSize="20" 
+                        HorizontalAlignment="Stretch"
                         VerticalAlignment="Stretch"                 
-                    Background="LightSteelBlue"
-                    Click="NuevoProyecto"
+                        Background="LightSteelBlue"
+                        Click="NuevoProyecto"
                     >
                     <Button.Flyout>
                         <Flyout x:Name="flyNombre" >
-                            <StackPanel Height="200">
-                                <TextBox Name="textBoxProy" PlaceholderText="Ingrese un nombre para el proyecto" Width="250"/>
-                                <Button Click="AceptaNombreProyecto" Content="Aceptar" />
-                            </StackPanel>
+                            <Grid Height="200">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+                                <TextBox Grid.Row="0" Name="textBoxProy" VerticalAlignment="Bottom" PlaceholderText="Ingrese un nombre para el proyecto" Width="250"/>
+                                <Button Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Right" Click="AceptaNombreProyecto" Content="Aceptar" />
+                            </Grid>
                         </Flyout>
                     </Button.Flyout>
                 </Button>
-                <Button Name="btnAbrirProy" Content="Abrir Proyecto "
-                    HorizontalAlignment="Stretch"
-                        VerticalAlignment="Stretch"
-                    FontSize="20"
-                    Margin="30,0,30,0"
-                    Background="LightSteelBlue"
-                    Click="AbrirProyecto">
+                <Button Name="btnAbrirProy" 
+                        Content="Abrir Proyecto"
+                        Grid.Column="1"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Stretch"                         
+                        FontSize="20"
+                        Margin="5,0,0,0"
+                        Background="LightSteelBlue"
+                        Click="AbrirProyecto">
                     <Button.Flyout>
-                        <MenuFlyout>
-                            <ToggleMenuFlyoutItem Text="Repeat" IsChecked="True"/>
-                            <ToggleMenuFlyoutItem Text="Shuffle" IsChecked="True"/>
-                        </MenuFlyout>
+                        <Flyout x:Name="flyListaProy">
+                            <ListView Name="lvProyectos"   
+                                      ItemsSource="{x:Bind proyectoVM.proyectos}" 
+                                      SelectionMode="Single"
+                                      SelectionChanged="lvProyectos_SelectionChanged"
+                                      HorizontalAlignment="Stretch"
+                                      Width="200">
+                                <ListView.ItemTemplate>
+                                    <DataTemplate x:DataType="data:Proyecto">
+                                        <TextBlock  Text="{x:Bind Nombre}" 
+                                                    Name="tbNombreProy"
+                                                    FontSize="20" 
+                                                    Foreground="Black"
+                                                    TextAlignment="DetectFromContent" />
+                                    </DataTemplate>
+                                </ListView.ItemTemplate>
+                            </ListView>
+                        </Flyout>
                     </Button.Flyout>
+
+
                 </Button>
-                <Button Name="btnCerrarProy" Content="Cerrar Proyecto "
-                    HorizontalAlignment="Stretch"
-                    FontSize="20"
-                    Margin="5,0,0,0"
-                    Background="LightSteelBlue"
-                    Click="CerrarProyecto" VerticalAlignment="Stretch"/>
+                <Button Name="btnCerrarProy" 
+                        Content="Cerrar Proyecto "
+                        Grid.Column="2"
+                        HorizontalAlignment="Stretch"
+                        FontSize="20"
+                        Margin="5,0,0,0"
+                        Background="LightSteelBlue"
+                        Click="CerrarProyecto" 
+                        VerticalAlignment="Stretch"/>
 
-            </StackPanel>
+            </Grid>
 
-            <RelativePanel  Margin="5"   Grid.Column="1"
-                      Grid.Row="1" HorizontalAlignment="Stretch">
+            <RelativePanel  Margin="5"   
+                            Grid.Column="1" 
+                            Grid.Row="1" 
+                            HorizontalAlignment="Stretch">
                 <RelativePanel.Resources>
                     <Style TargetType="AppBarButton">
-                        <Setter Property="IsCompact" Value="True"/>
+                        <Setter Property="HorizontalContentAlignment" Value="Center"/>
                     </Style>
                 </RelativePanel.Resources>
 
-                <AppBarButton x:Name="underlineButton" HorizontalAlignment="Stretch" Click="UnderlineButton_Click" Content="Asignar etiqueta" FontSize="20" FontWeight="Bold" Background="LightSteelBlue"
-                  ToolTipService.ToolTip="Asigne una etiqueta al texto seleccionado" RelativePanel.AlignRightWithPanel="True"  Height="41" Width="181" Margin="0,0,4,0"/>
-                <AppBarButton x:Name="saveFileButton" Click="SaveButton_Click" Content="Guardar" FontSize="20" FontWeight="Bold" Background="LightSteelBlue"
-                  ToolTipService.ToolTip="Guardar este archivo" RelativePanel.RightOf="openFileButton"
-                  Height="41" Width="180"/>
-                <AppBarButton x:Name="openFileButton" Content="Abrir Archivo" FontSize="20" FontWeight="Bold" Background="LightSteelBlue"
-                  Click="OpenButton_Click" ToolTipService.ToolTip="Abrir un archivo" Height="41" Width="180" Margin="3,0,0,0"/>
-                <RichEditBox x:Name="editor"  RelativePanel.Below="openFileButton" Background="White" RelativePanel.AlignBottomWithPanel="True" 
-                 RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" RenderTransformOrigin="0.5,0.5"  >
+                <AppBarButton x:Name="underlineButton" 
+                              Click="UnderlineButton_Click" 
+                              Content="Asignar etiqueta" 
+                              FontSize="20" 
+                              FontWeight="Bold" 
+                              Background="LightSteelBlue" 
+                              ToolTipService.ToolTip="Asigne una etiqueta al texto seleccionado" 
+                              RelativePanel.RightOf="saveFileButton"  
+                              Height="41" 
+                              Width="218"/>
+                <AppBarButton x:Name="saveFileButton" 
+                              Click="SaveButton_Click" 
+                              Content="Guardar" 
+                              FontSize="20" 
+                              FontWeight="Bold" 
+                              Background="LightSteelBlue" 
+                              ToolTipService.ToolTip="Guardar este archivo" 
+                              RelativePanel.RightOf="openFileButton" 
+                              Height="41"
+                              Width="209"/>
+                <AppBarButton x:Name="openFileButton" 
+                              Content="Abrir Archivo" 
+                              FontSize="20" 
+                              FontWeight="Bold" 
+                              Background="LightSteelBlue" 
+                              Click="OpenButton_Click" 
+                              ToolTipService.ToolTip="Abrir un archivo" 
+                              Height="41"
+                              Width="241"/>
+                <RichEditBox x:Name="editor" 
+                             RelativePanel.Below="openFileButton" 
+                             Background="White" 
+                             RelativePanel.AlignBottomWithPanel="True" 
+                             RelativePanel.AlignLeftWithPanel="True" 
+                             RelativePanel.AlignRightWithPanel="True" 
+                             RenderTransformOrigin="0.5,0.5"  >
                 </RichEditBox>
             </RelativePanel>
         </Grid>
@@ -112,51 +174,75 @@
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="7*"/>
                 </Grid.RowDefinitions>
-                <Button Name="btnNube" Content="Más Nubes"
-                    FontSize="20"
-                    Grid.Row="0"
-                    Width="200"
-                    Margin="5,2,0,0"
-                    Background="LightSteelBlue"
-                        Click="CrearNubes" VerticalAlignment="Top"/>
-                <ProgressBar Width="100" x:Name="ProgressBar" Grid.Row="0" Background="White" Foreground="White"></ProgressBar>
-                <local:CloudControl Grid.Row="1" x:Name="CloudControl" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"></local:CloudControl>
+                <Button Name="btnNube" 
+                        Content="Más Nubes"
+                        FontSize="20"
+                        Grid.Row="0"
+                        Width="200"
+                        Margin="5,2,0,0"
+                        Background="LightSteelBlue"
+                        Click="CrearNubes" 
+                        VerticalAlignment="Top"/>
+                <ProgressBar Width="100" 
+                             x:Name="ProgressBar" 
+                             Grid.Row="0" Background="White" 
+                             Foreground="White"></ProgressBar>
+                <local:CloudControl 
+                            Grid.Row="1" 
+                            x:Name="CloudControl" 
+                            VerticalAlignment="Stretch" 
+                            HorizontalAlignment="Stretch"></local:CloudControl>
             </Grid>
             <Grid Grid.Row="1">
-                 
+
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="7*"/>
                 </Grid.RowDefinitions>
-                <Button Name="btnEtiqueta"  Content="Crear Etiqueta"
-                    VerticalAlignment="Top"
-                    FontSize="20"
-                    Grid.Row="0"
-                    Width="200"                
-                    Margin="5,5, 0,0"
-                    Background="LightSteelBlue"
+                <Button Name="btnEtiqueta"  
+                        Content="Crear Etiqueta"
+                        VerticalAlignment="Top"
+                        FontSize="20"
+                        Grid.Row="0"
+                        Width="200"                
+                        Margin="5,5, 0,0"
+                        Background="LightSteelBlue"
                         Click="CrearEtiqueta">
                     <Button.Flyout>
                         <Flyout x:Name="flyNvaEtiqueta">
-                            <StackPanel Height="200">
-                                <TextBox Name="tbEtiqueta" PlaceholderText="Ingrese la etiqueta" Width="250"/>
-                                <Button Click="AceptarEtiqueta" Content="Aceptar" />
-                            </StackPanel>
+                            <Grid Height="200">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+                                <TextBox Grid.Row="0" 
+                                         VerticalAlignment="Center" 
+                                         HorizontalAlignment="Center" 
+                                         Name="tbEtiqueta" 
+                                         PlaceholderText="Ingrese la etiqueta" 
+                                         Width="250"/>
+                                <Button Grid.Row="1" 
+                                        VerticalAlignment="Center" 
+                                        HorizontalAlignment="Center" 
+                                        Click="AceptarEtiqueta" 
+                                        Content="Aceptar" />
+                            </Grid>
                         </Flyout>
                     </Button.Flyout>
                 </Button>
-                <ListView x:Name="lvEtiquetas" Grid.Row="1" Margin="5,10,0,5" ItemsSource="{x:Bind etiqVM.etiquetas}" SelectionChanged="lvEtiquetas_SelectionChanged">
+                <ListView x:Name="lvEtiquetas" 
+                          Grid.Row="1" 
+                          Margin="5,10,0,5" 
+                          ItemsSource="{x:Bind etiqVM.etiquetas}" 
+                          SelectionChanged="lvEtiquetas_SelectionChanged">
                     <ListView.ItemTemplate>
                         <DataTemplate x:DataType="data:Etiqueta">
-                            <TextBlock  Text="{x:Bind Nombre}" FontSize="20" Foreground="Black"/>
+                            <TextBlock  Text="{x:Bind Nombre }" 
+                                        FontSize="20" 
+                                        Foreground="Black"/>
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>
-                <!--<StackPanel Name="spEtiq" Grid.Row="1" Orientation="Vertical" Margin="5, 15, 0, 0"  >
-                    <ScrollViewer>-->
-                <!--<ListView x:Name="lvEtiquetas" Grid.Row="1" Margin="5,10,0,5"  />-->
-                    <!--</ScrollViewer>
-                </StackPanel>-->  
             </Grid>
         </Grid>
     </Grid>

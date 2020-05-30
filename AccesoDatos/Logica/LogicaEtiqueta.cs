@@ -75,6 +75,7 @@ namespace AccesoDatos.Logica
                 ObservableCollection<Etiqueta> etiquetas = new ObservableCollection<Etiqueta>();
                 try
                 {
+                    //List<Etiqueta> etiq = db.EtiquetaSet.Where(b => b.IdProy.Equals(proyecto.Id)).ToList();
                     List<Etiqueta> etiq = db.EtiquetaSet.Where(b => b.IdProy.Equals(proyecto.Id)).ToList();
                     foreach (Etiqueta eti in etiq)
                     {
@@ -89,6 +90,30 @@ namespace AccesoDatos.Logica
             }
         }
 
+        //Determina si el documento existe
+        //params Objeto tipo documento(propiedad Nombre)
+        public bool ExisteEtiqueta(Etiqueta eti, Proyecto p)
+        {
+            using (var db = new Model.Context())
+            {
+                try
+                {
+                    Etiqueta etiqueta = db.EtiquetaSet.Single(b => b.Nombre.Equals(eti.Nombre) && b.IdProy == p.Id);
+                    if (etiqueta == null)
+                    {
+                        return false;
+                    }
+                    else
+                    {
+                        return true;
+                    }
+                }
+                catch (Exception e)
+                {
+                    throw new Exception("Hubo un error en base de datos.", e);
+                }
+            }
+        }
 
         // Agregar una etiqueta a la lista 
         // params: objeto de la clase AccesoDatos.Model.Etiqueta

@@ -1,6 +1,5 @@
 ﻿using AccesoDatos.Model;
 using Detextive.ViewModel;
-using iText.Layout;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -27,6 +26,7 @@ namespace Detextive.View
     {
         Proyecto proyecto;
         public DocumentoViewModel documentoVM;
+        public CitaViewModel citaVM;
         Documento documento;
         public DocumentoPage()
         {
@@ -40,6 +40,7 @@ namespace Detextive.View
             {
 
                 proyecto = (Proyecto)e.Parameter;
+                documentoVM = new DocumentoViewModel(proyecto);
             }
         }
 
@@ -105,6 +106,11 @@ this.Frame.Navigate(typeof(Detextive.View.EtiquetaPage), proyecto);
         private void btNubePage_Click_2(object sender, RoutedEventArgs e)
         {
 this.Frame.Navigate(typeof(Detextive.View.NubePages), proyecto);
+        }
+
+        private void btProyPage_Click(object sender, RoutedEventArgs e)
+        {
+            this.Frame.Navigate(typeof(ProyectoPage), proyecto);
         }
     }
 }

@@ -11,7 +11,7 @@ namespace AccesoDatos.Model
         private string _nombre;
         private string _ubicacion;
         private int _extension;
-        
+        private Proyecto proyecto;
 
 
         public int Id { get => _id; set => _id = value; }
@@ -22,6 +22,7 @@ namespace AccesoDatos.Model
 
         public string Ubicacion { get => _ubicacion; set => _ubicacion = value; }
         public int Extension { get => _extension; set => _extension = value; }
+        public Proyecto Proyecto { get => proyecto; set => proyecto = value; }
 
         public ICollection<Cita> CitasSet;
      

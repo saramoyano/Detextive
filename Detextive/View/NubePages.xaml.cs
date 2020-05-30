@@ -46,14 +46,20 @@ namespace Detextive.View
             }
         }
 
-        private void btEliminar_Click(object sender, RoutedEventArgs e)
-        {
 
+        private void btEtiPage_Click(object sender, RoutedEventArgs e)
+        {
+            this.Frame.Navigate(typeof(Detextive.View.EtiquetaPage), proyecto);
         }
 
-        private void Crear_Click(object sender, RoutedEventArgs e)
+        private void btNubePage_Click(object sender, RoutedEventArgs e)
         {
+            this.Frame.Navigate(typeof(Detextive.View.NubePages), proyecto);
+        }
 
+        private void btProyPage_Click(object sender, RoutedEventArgs e)
+        {
+            this.Frame.Navigate(typeof(ProyectoPage), proyecto);
         }
 
         private void lvNubes_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -66,19 +72,19 @@ namespace Detextive.View
 
         }
 
+        private void btEliminar_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Crear_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
         private void btDocPage_Click(object sender, RoutedEventArgs e)
         {
-            this.Frame.Navigate(typeof(Detextive.View.DocumentoPage), proyecto);
-        }
 
-        private void btEtiPage_Click(object sender, RoutedEventArgs e)
-        {
- this.Frame.Navigate(typeof(Detextive.View.EtiquetaPage), proyecto);
-        }
-
-        private void btNubePage_Click(object sender, RoutedEventArgs e)
-        {
-            this.Frame.Navigate(typeof(Detextive.View.NubePages), proyecto);
         }
     }
 }

@@ -3,15 +3,17 @@ using System;
 using AccesoDatos.Model;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace AccesoDatos.Migrations
 {
     [DbContext(typeof(Context))]
-    partial class ContextModelSnapshot : ModelSnapshot
+    [Migration("20200530171756_Cambios5")]
+    partial class Cambios5
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -26,12 +28,6 @@ namespace AccesoDatos.Migrations
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<int?>("DocumentoId")
-                        .HasColumnType("integer");
-
-                    b.Property<int?>("EtiquetaId")
-                        .HasColumnType("integer");
-
                     b.Property<int>("IdDoc")
                         .HasColumnType("integer");
 
@@ -42,10 +38,6 @@ namespace AccesoDatos.Migrations
                         .HasColumnType("text");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("DocumentoId");
-
-                    b.HasIndex("EtiquetaId");
 
                     b.ToTable("CitaSet");
                 });
@@ -66,9 +58,6 @@ namespace AccesoDatos.Migrations
                     b.Property<string>("Nombre")
                         .HasColumnType("text");
 
-                    b.Property<int?>("ProyectoId")
-                        .HasColumnType("integer");
-
                     b.Property<string>("Ubicacion")
                         .HasColumnType("text");
 
@@ -76,8 +65,6 @@ namespace AccesoDatos.Migrations
 
                     b.HasIndex("Nombre")
                         .IsUnique();
-
-                    b.HasIndex("ProyectoId");
 
                     b.ToTable("DocumentoSet");
                 });
@@ -88,9 +75,6 @@ namespace AccesoDatos.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
-
-                    b.Property<int>("IdProy")
-                        .HasColumnType("integer");
 
                     b.Property<string>("Nombre")
                         .HasColumnType("text");
@@ -133,12 +117,7 @@ namespace AccesoDatos.Migrations
                     b.Property<string>("NumDocumentos")
                         .HasColumnType("text");
 
-                    b.Property<int?>("ProyectoId")
-                        .HasColumnType("integer");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("ProyectoId");
 
                     b.ToTable("NubeSet");
                 });
@@ -159,9 +138,6 @@ namespace AccesoDatos.Migrations
                     b.Property<string>("Nombre")
                         .HasColumnType("text");
 
-                    b.Property<int?>("NubeId")
-                        .HasColumnType("integer");
-
                     b.Property<int>("NumApariciones")
                         .HasColumnType("integer");
 
@@ -171,14 +147,7 @@ namespace AccesoDatos.Migrations
                     b.Property<float?>("Porcentaje")
                         .HasColumnType("real");
 
-                    b.Property<int?>("ProyectoId")
-                        .HasColumnType("integer");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("NubeId");
-
-                    b.HasIndex("ProyectoId");
 
                     b.ToTable("PalabraSet");
                 });
@@ -211,44 +180,8 @@ namespace AccesoDatos.Migrations
                     b.ToTable("ProyectoSet");
                 });
 
-            modelBuilder.Entity("AccesoDatos.Model.Cita", b =>
-                {
-                    b.HasOne("AccesoDatos.Model.Documento", "Documento")
-                        .WithMany()
-                        .HasForeignKey("DocumentoId");
-
-                    b.HasOne("AccesoDatos.Model.Etiqueta", "Etiqueta")
-                        .WithMany()
-                        .HasForeignKey("EtiquetaId");
-                });
-
-            modelBuilder.Entity("AccesoDatos.Model.Documento", b =>
-                {
-                    b.HasOne("AccesoDatos.Model.Proyecto", "Proyecto")
-                        .WithMany()
-                        .HasForeignKey("ProyectoId");
-                });
-
             modelBuilder.Entity("AccesoDatos.Model.Etiqueta", b =>
                 {
-                    b.HasOne("AccesoDatos.Model.Proyecto", "Proyecto")
-                        .WithMany()
-                        .HasForeignKey("ProyectoId");
-                });
-
-            modelBuilder.Entity("AccesoDatos.Model.Nube", b =>
-                {
-                    b.HasOne("AccesoDatos.Model.Proyecto", "Proyecto")
-                        .WithMany()
-                        .HasForeignKey("ProyectoId");
-                });
-
-            modelBuilder.Entity("AccesoDatos.Model.Palabra", b =>
-                {
-                    b.HasOne("AccesoDatos.Model.Nube", "Nube")
-                        .WithMany()
-                        .HasForeignKey("NubeId");
-
                     b.HasOne("AccesoDatos.Model.Proyecto", "Proyecto")
                         .WithMany()
                         .HasForeignKey("ProyectoId");

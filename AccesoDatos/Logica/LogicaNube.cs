@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using StopWord;
 using System.Collections.ObjectModel;
 
 namespace AccesoDatos.Logica
@@ -203,12 +202,6 @@ namespace AccesoDatos.Logica
         //    }
         //}
 
-
-
     }
-
-
-
-
 }
 

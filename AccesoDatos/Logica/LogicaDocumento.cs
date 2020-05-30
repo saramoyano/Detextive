@@ -48,18 +48,23 @@ namespace AccesoDatos.Logica
 
         }
 
-        // Obtener un Documento de la lista según filtro aplicado (propiedad nombre)
+        // Obtener una  lista de Documentos según filtro aplicado (propiedad nombre)
         // params: objeto de la clase AccesoDatos.Model.Documento
-        public Model.Documento ListaDocumentosFiltro(Documento documento)
+        public ObservableCollection<Model.Documento> ListaDocumentosFiltro(Proyecto proyecto)
         {
-            
+
             using (var db = new Model.Context())
             {
-
+                ObservableCollection<Documento> documentos = new ObservableCollection<Documento>();
                 try
                 {
-                    Documento doc = db.DocumentoSet.Single(b => b.Nombre.Equals(documento.Nombre));
-                    return doc;
+                    var lDocs = db.DocumentoSet.Where(b => b.IdProy.Equals(proyecto.Id)).ToList();
+
+                    foreach (Documento documento in lDocs)
+                    {
+                        documentos.Add(documento);
+                    }
+                    return documentos;
                 }
                 catch (Exception e)
                 {
@@ -68,6 +73,31 @@ namespace AccesoDatos.Logica
 
             }
 
+        }
+
+        //Determina si el documento existe
+        //params Objeto tipo documento(propiedad Nombre)
+        public bool ExisteDocumento(Documento doc, Proyecto p)
+        {
+            using (var db = new Model.Context())
+            {
+                try
+                {
+                    Documento documento = db.DocumentoSet.Single(b => b.Nombre.Equals(doc.Nombre) && b.IdProy==p.Id);
+                    if (documento == null)
+                    {
+                        return false;
+                    }
+                    else
+                    {
+                        return true;
+                    }
+                }
+                catch (Exception e)
+                {
+                    throw new Exception("Hubo un error en base de datos.", e);
+                }
+            }
         }
 
         // Agregar un documento a la lista 

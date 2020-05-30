@@ -15,8 +15,16 @@
             <ColumnDefinition Width="205*"/>
         </Grid.ColumnDefinitions>
         <StackPanel Padding="15" Grid.Column="0" Orientation="Vertical" BorderBrush="Gray" BorderThickness="1" Margin="0,-13,0,-15">
-            <Button Name="btProyPage" Background="White"  Margin="0, 30, 0,30" ToolTipService.ToolTip="Proyecto" HorizontalAlignment="Center" Padding="0" BorderThickness="0">
-                <Image Source="/Assets/proyecto.png"  Stretch="Uniform"/>
+            <Button Name="btProyPage" 
+                    Background="White" 
+                    Margin="0, 30, 0,30" 
+                    ToolTipService.ToolTip="Proyecto" 
+                    HorizontalAlignment="Center" 
+                    Padding="0" 
+                    BorderThickness="0"
+                    Click="btProyPage_Click">
+                <Image Source="/Assets/proyecto.png"  
+                       Stretch="Uniform"/>
             </Button>
             <Button Name="btDocPage" Click="btDocPage_Click" Background="White"   Margin="0, 30, 0,30" BorderBrush="Black" ToolTipService.ToolTip="Documentos" HorizontalAlignment="Center" VerticalAlignment="Stretch" Padding="0" BorderThickness="0"  >
                 <Image HorizontalAlignment="Center" VerticalAlignment="Center" Source="/Assets/docs.png" Stretch="Uniform"/>
