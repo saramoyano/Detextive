@@ -11,6 +11,8 @@ using Gma.CodeCloud.Controls.TextAnalyses.Blacklist;
 using System.Diagnostics;
 using Windows.UI.Xaml.Navigation;
 using System.Linq;
+using WordCloudControl;
+using Windows.Storage;
 
 namespace Detextive
 {
@@ -22,8 +24,7 @@ namespace Detextive
         EtiquetaViewModel etiqVM;
         DocumentoViewModel documentoVM;
         NubeViewModel nubeVM;
-        CitaViewModel citaVM;
-
+        CitaViewModel citaVM;        
         Proyecto proyecto;
         Etiqueta etiqueta;
         Documento documento;
@@ -75,15 +76,7 @@ namespace Detextive
                 Debug.WriteLine(etiqVM == null);
                 documentoVM = new DocumentoViewModel(proyecto);
                 Debug.WriteLine(documentoVM == null);
-                //if (etiqVM.etiquetas != null)
-                //{
-                //    foreach (Etiqueta etiq in etiqVM.etiquetas)
-                //    {
-                //        Debug.WriteLine("nombre etiqueta: " + etiq.Nombre);
-                //        proyecto.Etiquetas.Add(etiq);
-                //    }
-                //}
-
+               
             }
 
             if (proyecto == null)
@@ -108,7 +101,10 @@ namespace Detextive
                 {
                     proyecto = new Proyecto();
                     proyecto.Nombre = textoIngresado;
-                    proyectoVM.AgregarProyecto(proyecto);
+                    if (proyectoVM.ExisteProyecto(proyecto))
+                    {
+                        proyectoVM.AgregarProyecto(proyecto);
+                    }
                     flyNombre.Hide();
                     Proyecto_Ok();
 
@@ -129,17 +125,9 @@ namespace Detextive
 
             Debug.WriteLine("proyectoId: "+proyecto.Id);
            etiqVM = new EtiquetaViewModel(proyecto);
-            ////Debug.WriteLine(etiqVM == null);
+           
            documentoVM = new DocumentoViewModel(proyecto);
-            ////Debug.WriteLine(documentoVM == null);
-            //if (etiqVM.etiquetas != null)
-            //{
-            //    foreach (Etiqueta etiq in etiqVM.etiquetas)
-            //    {
-            //        Debug.WriteLine("nombre etiqueta: " + etiq.Nombre);
-            //        proyecto.Etiquetas.Add(etiq);
-            //    }
-            //}
+          
             this.Frame.Navigate(typeof(ProyectoPage), proyecto);            
         }
         private void AbrirProyecto(object sender, RoutedEventArgs e)
@@ -173,8 +161,10 @@ namespace Detextive
                     etiqueta.NumCitas = 0;
                     flyNvaEtiqueta.Hide();
                     Debug.WriteLine(etiqVM == null);
-                    etiqVM.AgregarEtiqueta(etiqueta);
+                   if(!etiqVM.ExisteEtiqueta(etiqueta, proyecto)){
+                   etiqVM.AgregarEtiqueta(etiqueta);
                     proyecto.Etiquetas.Add(etiqueta);
+                    }                    
                 }
                 catch (Exception excepcion)
                 {
@@ -200,6 +190,7 @@ namespace Detextive
             
 
             Windows.Storage.StorageFile file = await picker.PickSingleFileAsync();
+           
             if (file != null)
             {
                 if (file.FileType == ".rtf"  )
@@ -241,23 +232,22 @@ namespace Detextive
                     //Debug.WriteLine(ruta);
 
                     documento = new Documento();
-                    documento.Ubicacion = "ruta";
+                    documento.Ubicacion = file.Path;
                     documento.IdProy = proyecto.Id;
                   //  documento.Proyecto.Id = proyecto.Id;
                     // Debug.WriteLine(name);
                     documento.Nombre = name;
                     //Debug.WriteLine(texto.Length);
-                    documento.Extension = (int)texto.Length; 
-                    Debug.WriteLine("existe doc: "+ documentoVM.ExisteDocumento(documento, proyecto));
-                    if (!documentoVM.ExisteDocumento(documento, proyecto)) {
-
+                    documento.Extension = (int)texto.Length;
+                    if ((!documentoVM.ExisteDocumento(documento, proyecto)))
+                    {
                         documentoVM.AgregarDocumento(documento);
-
                         proyecto.Documentos.Add(documento);
+                        // citaVM = new CitaViewModel(documento);
                     }
-
-
-                    UpdateWords();
+                    else { 
+                        //nube = nubeVM.ListaNubesFiltro;
+                    }                  
                 }
                 catch (Exception excepcion)
                 {
@@ -271,6 +261,8 @@ namespace Detextive
 
                     await errorDialog.ShowAsync();
                 }
+
+                UpdateWords();
 
                 //CreateCloud(new FileInfo(file.Path));
 
@@ -338,11 +330,12 @@ namespace Detextive
             {
                 cita = new Cita();
                 cita.IdDoc = documento.Id;
-                cita.Texto = selectedText.ToString();
-                CitaViewModel citaVM = new CitaViewModel();
-                citaVM.AgregarCita(cita);
-
-                Windows.UI.Text.ITextCharacterFormat charFormatting = selectedText.CharacterFormat;
+                cita.Texto = selectedText.ToString();                           
+                if (etiqueta != null ) {
+                    cita.IdEtiqueta = etiqueta.Id;
+                    citaVM.AgregarCita(cita);
+                    documento.CitasSet.Add(cita);
+                   Windows.UI.Text.ITextCharacterFormat charFormatting = selectedText.CharacterFormat;
                 if (charFormatting.Underline == Windows.UI.Text.UnderlineType.None)
                 {
                     charFormatting.Underline = Windows.UI.Text.UnderlineType.Single;
@@ -352,6 +345,22 @@ namespace Detextive
                     charFormatting.Underline = Windows.UI.Text.UnderlineType.None;
                 }
                 selectedText.CharacterFormat = charFormatting;
+                    ContentDialog etiquetaAgregada = new ContentDialog
+                    {
+                        Title = "Cita agregada",
+                        Content = "Se ha agregado la cita a la etiqueta " + etiqueta.Nombre + ".",
+                        CloseButtonText = "Aceptar"
+                    };
+                }
+                else
+                {
+                    ContentDialog error = new ContentDialog
+                    {
+                        Title = "Error",
+                        Content = "No se ha podido agregar la cita",
+                        CloseButtonText = "Aceptar"
+                    };                    
+                }                  
             }
         }
         private async void MostrarDialog()
@@ -359,7 +368,7 @@ namespace Detextive
             ContentDialog proyDialog = new ContentDialog()
             {
                 Title = "Comenzar",
-                Content = "Para comenzar a trabajar, cree un nuevo proyecto o abra uno existente",
+                Content = "Para comenzar a trabajar, cree un nuevo proyecto o abra uno existente.",
                 PrimaryButtonText = "Entendido"
             };
             ContentDialogResult resultado = await proyDialog.ShowAsync();
@@ -370,7 +379,7 @@ namespace Detextive
         }
         public void UpdateWords()
         {
-            Debug.WriteLine("Entra aqui");
+     
             string textoNuevo = texto;
             if (textoNuevo.Length < 3)
             {
@@ -378,24 +387,22 @@ namespace Detextive
             }
 
             IEnumerable<string> terms = new StringExtractor(textoNuevo, _progress);
-
-            
-
-            IEnumerable<IWord> words = terms.CountOccurences().SortByOccurences().Cast<IWord>();
-            
+                   
             CloudControl.WeightedWords =
                terms
                .Filter(_blacklist)
                .CountOccurences()
-                   .SortByOccurences();
-
-            foreach (var item in words)
-            {
+               .SortByOccurences();
+            
+            //IEnumerable<IWord> words = terms.CountOccurences().SortByOccurences().Cast<IWord>();
+            //Hacer el agregado de palabras AQUI
+          //  foreach (var item in words)
+            //{
                
 
-                palabras.Add(item.Text);
-                frecuencias.Add(item.Occurrences);
-            }
+            //    palabras.Add(item.Text);
+            //    frecuencias.Add(item.Occurrences);
+            //}
 
             //nube = new Nube();
             //nube.IdProy = proyecto.Id;
@@ -423,6 +430,7 @@ namespace Detextive
                 //    palabra.Porcentaje = 1;
 
                 //    palabraVM = new PalabraViewModel();
+                //    if(!palabraVM.existePalabra(Palabra pal, Nube n, Proyecto p))
                 //    palabraVM.AgregarPalabra(palabra);
                 //    nube.PalabrasSet.Add(palabra);
                 //}
@@ -468,15 +476,17 @@ namespace Detextive
         }
         private void CerrarProyecto(object sender, RoutedEventArgs e)
         {
-            proyecto = null;
-            openFileButton.IsEnabled = false;
-            saveFileButton.IsEnabled = false;
-            underlineButton.IsEnabled = false;
-            btnEtiqueta.IsEnabled = false;
-            btnNube.IsEnabled = false;
-            btnCerrarProy.IsEnabled = false;
-            btnAbrirProy.IsEnabled = true;
-            btnProyecto.IsEnabled = true;
+            //proyecto = null;
+            //openFileButton.IsEnabled = false;
+            //saveFileButton.IsEnabled = false;
+            //underlineButton.IsEnabled = false;
+            //btnEtiqueta.IsEnabled = false;
+            //btnNube.IsEnabled = false;
+            //btnCerrarProy.IsEnabled = false;
+            //btnAbrirProy.IsEnabled = true;
+            //btnProyecto.IsEnabled = true;
+
+            this.Frame.Navigate(typeof(ProyectoPage));
         }
         public void btDocPage_Click(object sender, RoutedEventArgs e)
         {
@@ -656,6 +666,7 @@ namespace Detextive
                 "quienquiera" ,
                 "quizás" ,
                 "quizá" , "se" ,
+                "son","un","le","dijo",
                 "según" ,
                 "ser" ,
                 "si" ,

@@ -42,7 +42,11 @@ namespace Detextive.ViewModel
             }
         }
 
-        public bool ExisteEtiqueta(Etiqueta etiqueta) { return false; }
+
+        public bool ExisteEtiqueta(Etiqueta eti, Proyecto p)
+        {
+            return AccesoDatos.Logica.LogicaEtiqueta.GetInstance().ExisteEtiqueta(eti, p);
+        }
 
         public void ActualizarEtiqueta(Etiqueta etiqueta)
         {

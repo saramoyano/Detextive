@@ -47,8 +47,7 @@ namespace AccesoDatos.Logica
 
         }
 
-        // Obtener un Proyecto de la lista según filtro aplicado (propiedad nombre)
-        // params: objeto de la clase AccesoDatos.Model.Proyecto
+        
         public bool ExisteProyecto(Proyecto proyecto)
         {
             using (var db = new Model.Context())
@@ -56,17 +55,21 @@ namespace AccesoDatos.Logica
 
                 try
                 {
-                    Proyecto proy = db.ProyectoSet.Single(b => b.Nombre.Equals(proyecto.Nombre));
-                    if (proy == null) {
-                        return false;
+                    List<Proyecto> lProy =  db.ProyectoSet.Where(b => b.Nombre.Equals(proyecto.Nombre)).ToList();
+                    if (lProy.Count > 0)
+                    {
+                        return true;
                     }
                     else {
-                        return true; }
+                        return false;
+                    }
+
                 }
                 catch (Exception e)
                 {
-                    throw new Exception("No hay proyectos guardados.", e);
+                    throw new Exception("Hubo un error en base de datos", e);
                 }
+
             }
         }
 

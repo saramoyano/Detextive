@@ -10,11 +10,11 @@ namespace Detextive.ViewModel
 {
    public class CitaViewModel
     {
-        private ObservableCollection<Cita> citas;
+        public ObservableCollection<Cita> citas;
 
-        public CitaViewModel()
+        public CitaViewModel(Documento d)
         {
-            citas =  AccesoDatos.Logica.LogicaCita.GetInstance().ListaCitas();
+            citas =  AccesoDatos.Logica.LogicaCita.GetInstance().ListaCitasFiltro(d);
         }
 
 

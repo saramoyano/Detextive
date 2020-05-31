@@ -29,11 +29,12 @@ namespace Detextive.View
         private Etiqueta etiqueta;
         private Cita cita;
         Proyecto proyecto;
+        bool itemSeleccionado;
         public EtiquetaPage()
         {
             this.InitializeComponent();
            
-            citaVM = new CitaViewModel();
+           // citaVM = new CitaViewModel();
         }
 
 
@@ -45,17 +46,23 @@ namespace Detextive.View
 
                 proyecto = (Proyecto)e.Parameter; 
                 etiquetaVM = new EtiquetaViewModel(proyecto);
+                itemSeleccionado = false; 
             }
         }
 
         private void lvEtiquetas_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-
+            etiqueta = (Etiqueta)lvEtiquetas.SelectedItem;
+            itemSeleccionado = true;
         }
 
         private void btEliminar_Click(object sender, RoutedEventArgs e)
         {
-
+            if(etiqueta != null)
+            {
+                etiquetaVM.EliminarEtiqueta(etiqueta);
+            }
+            
         }
 
         private void btAnalizar_Click(object sender, RoutedEventArgs e)
@@ -99,6 +106,37 @@ namespace Detextive.View
         private void btProyPage_Click(object sender, RoutedEventArgs e)
         {
             this.Frame.Navigate(typeof(NubePages), proyecto);
+        }
+
+        private void Agregar(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void btActualizar_Click(object sender, RoutedEventArgs e)
+        {
+            if (etiqueta != null) { 
+                
+            }
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            string textoIngresado = tbCambiarNombre.Text;
+            if (etiqueta != null && textoIngresado != "") {
+                etiqueta.Nombre = textoIngresado;
+            }
+        }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            string textoIngresado = tbEtiqueta.Text;
+            if (textoIngresado != "")
+            {
+                etiqueta = new Etiqueta();
+                etiqueta.IdProy = proyecto.Id;
+                etiqueta.Nombre = textoIngresado;
+            }
         }
     }
 }

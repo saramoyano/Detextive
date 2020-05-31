@@ -69,9 +69,33 @@ namespace AccesoDatos.Logica
 
     }
 
-    // Agregar una palabra a la lista 
-    // params: objeto de la clase AccesoDatos.Model.Palabra
-    public void AgregarPalabra(Palabra palabra)
+        public bool ExistePalabra(Palabra pal, Proyecto p)
+        {
+            using (var db = new Model.Context())
+            {
+                try
+                {
+                    List<Palabra> lPal = new List<Palabra>();
+                    lPal = db.PalabraSet.Where(b => b.IdProy.Equals(p.Id) && b.Nombre.Equals(pal.Nombre)).ToList();
+                    if (lPal.Count > 0)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+                catch (Exception e)
+                {
+                    throw new Exception("Hubo un error en base de datos.", e);
+                }
+            }
+        }
+
+        // Agregar una palabra a la lista 
+        // params: objeto de la clase AccesoDatos.Model.Palabra
+        public void AgregarPalabra(Palabra palabra)
     {
         using (var db = new Model.Context())
         {

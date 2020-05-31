@@ -11,6 +11,7 @@ namespace AccesoDatos.Model
         private int? _numEtiquetas;
         private int? _numCitas;
         private string _nombre;
+        private string _nombreDocActivo;
        
 
 
@@ -19,7 +20,7 @@ namespace AccesoDatos.Model
         public int? NumEtiquetas { get => _numEtiquetas; set => _numEtiquetas = value; }
         public string Nombre { get => _nombre; set => _nombre = value; }
         public int? NumCitas { get => _numCitas; set => _numCitas = value; }
-       
+        public string NombreDocActivo { get => _nombreDocActivo; set => _nombreDocActivo = value; }
 
         public ICollection<Documento> Documentos;
         public ICollection<Etiqueta> Etiquetas;

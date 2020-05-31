@@ -17,20 +17,23 @@ namespace Detextive.ViewModel
             palabras =  AccesoDatos.Logica.LogicaPalabra.GetInstance().ListaPalabras();
         }
 
+        public bool ExistePalabra(Palabra pal, Nube n, Proyecto p)
+        {
+            return AccesoDatos.Logica.LogicaPalabra.GetInstance().ExistePalabra(pal, p);
+        }
+            //public ObservableCollection<Palabra> ListaPalabras()
+            //{
+            //    palabras = 
+            //    return palabras;
+            //}
 
-        //public ObservableCollection<Palabra> ListaPalabras()
-        //{
-        //    palabras = 
-        //    return palabras;
-        //}
+            //public ObservableCollection<Palabra> ListaPalabrasFiltro(Palabra palabra)
+            //{
+            //    palabras = AccesoDatos.Logica.LogicaPalabra.GetInstance().ListaPalabrasFiltro(palabra);
+            //    return palabras;
+            //}
 
-        //public ObservableCollection<Palabra> ListaPalabrasFiltro(Palabra palabra)
-        //{
-        //    palabras = AccesoDatos.Logica.LogicaPalabra.GetInstance().ListaPalabrasFiltro(palabra);
-        //    return palabras;
-        //}
-
-        public void AgregarPalabra(Palabra palabra)
+            public void AgregarPalabra(Palabra palabra)
         {
             try
             {

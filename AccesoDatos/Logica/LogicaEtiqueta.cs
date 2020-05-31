@@ -98,14 +98,15 @@ namespace AccesoDatos.Logica
             {
                 try
                 {
-                    Etiqueta etiqueta = db.EtiquetaSet.Single(b => b.Nombre.Equals(eti.Nombre) && b.IdProy == p.Id);
-                    if (etiqueta == null)
+                    List<Etiqueta> lEtiq = new List<Etiqueta>();
+                    lEtiq = db.EtiquetaSet.Where(b => b.IdProy.Equals(p.Id) && b.Nombre.Equals(eti.Nombre)).ToList();
+                    if (lEtiq.Count > 0)
                     {
-                        return false;
+                        return true;
                     }
                     else
                     {
-                        return true;
+                        return false;
                     }
                 }
                 catch (Exception e)

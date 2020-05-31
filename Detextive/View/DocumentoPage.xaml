@@ -4,41 +4,81 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:AccesoDatos.Model"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-    xmlns:Model="using:AccesoDatos.Model"
-    xmlns:localViewModel="using:Detextive.ViewModel"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"    
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid>
-
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="67*"/>
             <ColumnDefinition Width="220*"/>
             <ColumnDefinition Width="205*"/>
         </Grid.ColumnDefinitions>
-        <StackPanel Padding="15" Grid.Column="0" Orientation="Vertical" BorderBrush="Gray" BorderThickness="1" Margin="0,-13,0,-15">
+        <StackPanel Background="White" 
+                    Padding="15" 
+                    Grid.Column="0" 
+                    Orientation="Vertical" 
+                    
+                    BorderBrush="White" 
+                    BorderThickness="2"
+                    Margin="0,-13,0,-15">
             <Button Name="btProyPage" 
+                    Background="White" 
+                     Margin="0, 30, 0,30"            
+                    ToolTipService.ToolTip="Proyecto" 
+                    HorizontalAlignment="Stretch"                    
+                    Click="btProyPage_Click">
+                <Image HorizontalAlignment="Center" 
+                       VerticalAlignment="Center" 
+                       Source="/Assets/proyecto.png"                       
+                       Stretch="Uniform"  />
+            </Button>
+            <Button Name="btDocPage" 
+                    Click="btDocPage_Click_1"                     
+                    Background="White"   
+                    Margin="0, 30, 0,30"                     
+                    ToolTipService.ToolTip="Documentos" 
+                    HorizontalAlignment="Center">
+                <Image HorizontalAlignment="Center" 
+                       VerticalAlignment="Center" 
+                       Source="/Assets/docs.png" 
+                       Stretch="Uniform" Height="100" Width="98"/>
+            </Button>
+            <Button Name="btEtiPage" 
+                    Click="btEtiPage_Click_1"
+                    Background="White"   
+                      Margin="0, 30, 0,30" 
+                    ToolTipService.ToolTip="Documentos" 
+                    HorizontalAlignment="Center" 
+                    VerticalAlignment="Stretch" 
+                    Padding="15"  >
+                <Image HorizontalAlignment="Center" 
+                       VerticalAlignment="Center"
+                       Stretch="Uniform" 
+                       Source="/Assets/tags.png" Height="100"/>
+            </Button>
+            <Button Name="btNubePage" 
+                    Click="btNubePage_Click_2" 
                     Background="White"  
                     Margin="0, 30, 0,30" 
-                    ToolTipService.ToolTip="Proyecto" 
+                    ToolTipService.ToolTip="Nubes de palabras"
                     HorizontalAlignment="Center" 
-                    Padding="0" 
-                    BorderThickness="0"
-                    Click="btProyPage_Click">
-                <Image Source="/Assets/proyecto.png"  Stretch="Uniform"/>
+                    VerticalAlignment="Stretch">
+                <Image HorizontalAlignment="Center" 
+                       VerticalAlignment="Center" 
+                       Source="/Assets/cloud.png" 
+                       Stretch="Uniform" Width="98"  />
             </Button>
-            <Button Name="btDocPage" Click="btDocPage_Click_1" Background="White"   Margin="0, 30, 0,30" BorderBrush="Black" ToolTipService.ToolTip="Documentos" HorizontalAlignment="Center" VerticalAlignment="Stretch" Padding="0" BorderThickness="0"  >
-                <Image HorizontalAlignment="Center" VerticalAlignment="Center" Source="/Assets/docs.png" Stretch="Uniform"/>
-            </Button>
-            <Button Name="btEtiPage" Click="btEtiPage_Click_1" Background="White"   Margin="0, 30, 0,30" BorderBrush="Black" ToolTipService.ToolTip="Etiquetas" HorizontalAlignment="Center" VerticalAlignment="Stretch" Padding="0" BorderThickness="0"  >
-                <Image HorizontalAlignment="Center" VerticalAlignment="Center" Source="/Assets/tags.png" Stretch="Uniform"  />
-            </Button>
-            <Button Name="btNubePage" Click="btNubePage_Click_2" Background="White"   Margin="0, 30, 0,30" BorderBrush="Black" ToolTipService.ToolTip="Nubes de palabras" HorizontalAlignment="Center"  VerticalAlignment="Stretch" Padding="0" BorderThickness="0"  >
-                <Image HorizontalAlignment="Center" VerticalAlignment="Center" Source="/Assets/cloud.png" Stretch="Uniform"  />
-            </Button>
-            <Button Name="btSalirPage" Background="White"   Margin="0, 30, 0,30" ToolTipService.ToolTip="Salir" HorizontalAlignment="Center" VerticalAlignment="Bottom" Padding="0" BorderThickness="0"  >
-                <Image HorizontalAlignment="Center" VerticalAlignment="Center" Source="/Assets/salir.png" Stretch="Uniform"  />
+            <Button Name="btSalirPage" 
+                    Background="White"   
+                    Margin="0, 30, 0,30" 
+                    ToolTipService.ToolTip="Salir" 
+                    HorizontalAlignment="Center" 
+                    VerticalAlignment="Stretch"  >
+                <Image HorizontalAlignment="Center" 
+                       VerticalAlignment="Center" 
+                       Source="/Assets/salir.png" 
+                       Stretch="Uniform" Height="77" Width="80"  />
             </Button>
         </StackPanel>
         <Grid Grid.Column="1" Margin="5,15,5,0">
@@ -46,30 +86,72 @@
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="11*"/>
             </Grid.RowDefinitions>
-            <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="5,0,15,0" HorizontalAlignment="Center"  >
-                <Button Name="btEliminar"   FontSize="20" Margin="5,0,15,0"  Content="Eliminar" Click="Eliminar_Documento" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
-                <Button Name="btAnalizar" FontSize="20" Margin="5,0,15,0" Content="Analizar" Click="Button_Click" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
-                <Button  Name="btNube" FontSize="20" Margin="5,0,15,0"  Content="Nube multidoc" Click="Button_Click_1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
-                <Button  Name="btAgregar" FontSize="20" Margin="5,0,15,0"  Content="Agregar" Click="Button_Click_2" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
-            </StackPanel>
-
-
-
-
-            <ListView Grid.Row="1" x:Name="lvDocs"  Grid.Column="1" ItemsSource="{x:Bind documentoVM.documentos}" Margin="5,10,0,5" SelectionMode="Multiple" SelectionChanged="lvDocs_SelectionChanged">
+            <Grid Grid.Column="1" 
+                  Grid.Row="0"  
+                  Margin="5,0,5,0"
+                  HorizontalAlignment="Stretch">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Button Name="btEliminar"
+                        Grid.Column="0"  
+                        FontSize="20" 
+                        Margin="5,0,5,0" 
+                        Content="Eliminar"
+                        Click="Eliminar_Documento" 
+                        VerticalAlignment="Stretch" 
+                        HorizontalAlignment="Stretch"/>
+                <Button Name="btAnalizar" 
+                        Grid.Column="1"
+                        FontSize="20"
+                        Margin="5,0,5,0"
+                        Content="Analizar" 
+                        Click="Analizar" 
+                        VerticalAlignment="Stretch" 
+                        HorizontalAlignment="Stretch"/>
+                <Button  Name="btNube"
+                         Grid.Column="2"
+                         FontSize="20"
+                         Margin="5,0,5,0" 
+                         Content="Nube multidoc" 
+                         Click="NubeMultidocumento" 
+                         VerticalAlignment="Stretch" 
+                         HorizontalAlignment="Stretch"/>
+                <Button  Name="btAgregar" 
+                         Grid.Column="3" 
+                         FontSize="20"
+                         Margin="5,0,5,0"  
+                         Content="Agregar" 
+                         Click="Button_Click_2"
+                         VerticalAlignment="Stretch" 
+                         HorizontalAlignment="Stretch"/>
+            </Grid>
+            <ListView Grid.Row="1" 
+                      x:Name="lvDocs"  
+                      Grid.Column="1" 
+                      ItemsSource="{x:Bind documentoVM.documentos}" 
+                      Margin="5,10,0,5" 
+                      SelectionMode="Single"                       
+                      SelectionChanged="lvDocs_SelectionChanged">
                 <ListView.ItemTemplate>
                     <DataTemplate x:DataType="local:Documento">
-                        <TextBlock Text="{x:Bind Nombre}" FontSize="20" Foreground="Black"/>
+                        <TextBlock Text="{x:Bind Nombre}"
+                                   FontSize="20" 
+                                   Foreground="Black"/>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
         </Grid>
-        <Grid Grid.Column="2">
+        <Grid Grid.Column="2" Margin="5">
             <Grid.RowDefinitions>
+                <RowDefinition Height="5*"/>
                 <RowDefinition Height="*"/>
-                <RowDefinition Height="*"/>
+                <RowDefinition Height="4*"/>
             </Grid.RowDefinitions>
-            <Grid Grid.Row="0" Margin="5,30,5,0">
+            <Grid  Margin="5,30,5,0">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="*"/>
@@ -79,32 +161,57 @@
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
-                <TextBlock Grid.Row="0" FontSize="24" >
-                    <Span><Bold>Detalles</Bold></Span>
-                </TextBlock>
-                <TextBlock Grid.Row="1" FontSize="20">
-                    <Span><Bold>Nombre</Bold></Span>
-                </TextBlock>
-                <TextBlock Grid.Row="2"></TextBlock>
-                <TextBlock Grid.Row="3"  FontSize="20">
-                    <Span><Bold>Ubicación</Bold></Span>
-                </TextBlock>
-                <TextBlock Grid.Row="4"></TextBlock>
-                <TextBlock Grid.Row="5"  FontSize="20">
-                    <Span><Bold>Extensión</Bold></Span>
-                </TextBlock>
-                <TextBlock Grid.Row="6"></TextBlock>
-
+                <TextBlock Grid.Row="0" 
+                                       FontSize="24"
+                                       Text="Detalles"
+                                       FontWeight="Bold"/>
+                <TextBlock Grid.Row="1"
+                                       FontSize="20" 
+                                       Text="Nombre" 
+                                       FontWeight="Bold"/>
+                <TextBlock Grid.Row="2" 
+                                       Text="{x:Bind documento.Nombre}" 
+                                       FontSize="18"
+                                       Foreground="DarkSlateGray"></TextBlock>
+                <TextBlock Grid.Row="3" 
+                                       FontSize="20" 
+                                       Text="Ubicación"
+                                       FontWeight="Bold"/>
+                <TextBlock Grid.Row="4" 
+                                       Text="{x:Bind documento.Ubicacion}" 
+                                       FontSize="18" 
+                                       Foreground="DarkSlateGray"></TextBlock>
+                <TextBlock Grid.Row="5"  
+                                       FontSize="20" 
+                                       Text="Extension en caracteres" 
+                                       FontWeight="Bold"/>
+                <TextBlock Grid.Row="6"
+                                       Text="{x:Bind documento.Extension}" 
+                                       FontSize="18" 
+                                       Foreground="DarkSlateGray"></TextBlock>
             </Grid>
-
-            <ListView Grid.Row="1"  x:Name="lvCitas"  Grid.Column="1" ItemsSource="{x:Bind documentoVM.documentos}" Margin="5,15,5,5" SelectionMode="Multiple" SelectionChanged="lvDocs_SelectionChanged">
-                <ListView.ItemTemplate>
-                    <DataTemplate x:DataType="local:Documento">
-                        <TextBlock Text="{x:Bind Nombre}" FontSize="20" Foreground="Black"/>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
+            <TextBlock Grid.Row="1" 
+                       FontSize="24" 
+                       FontWeight="Bold"  
+                       VerticalAlignment="Center">
+                <Span>
+                    <Bold>Citas</Bold>
+                </Span>
+            </TextBlock> 
+                <ListView Grid.Row="2"  
+                          x:Name="lvCitas" 
+                          Grid.Column="1" 
+                          ItemsSource="{x:Bind citaVM.citas}" 
+                          Margin="5,15,5,5" 
+                          SelectionMode="None">
+                    <ListView.ItemTemplate>
+                        <DataTemplate x:DataType="local:Cita">
+                            <TextBlock Text="{x:Bind Texto}" 
+                                       FontSize="15"
+                                       Foreground="Black"/>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView> 
         </Grid>
-
     </Grid>
 </Page>

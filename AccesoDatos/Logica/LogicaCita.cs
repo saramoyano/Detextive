@@ -23,14 +23,14 @@ namespace AccesoDatos.Logica
 
         // Obtener la lista de Citas
         // params: ninguno
-        public ObservableCollection<Model.Cita> ListaCitas()
+        public ObservableCollection<Model.Cita> ListaCitasFiltro(Documento d)
         {
             ObservableCollection<Cita> citas = new ObservableCollection<Cita>();
             using (var db = new Model.Context())
             {
                 try
                 {
-                    List<Cita> lCitas = db.CitaSet.OrderBy(b => b.Id).ToList();
+                    List<Cita> lCitas = db.CitaSet.Where(b=> b.IdDoc == d.Id).ToList();
                     foreach (Cita cita in lCitas)
                     {
                         citas.Add(cita);

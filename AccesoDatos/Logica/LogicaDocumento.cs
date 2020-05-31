@@ -83,18 +83,18 @@ namespace AccesoDatos.Logica
             {
                 try
                 {
-                    Documento documento = db.DocumentoSet.Single(b => b.Nombre.Equals(doc.Nombre) && b.IdProy==p.Id);
-                    if (documento == null)
-                    {
-                        return false;
-                    }
-                    else
+                    List<Documento> lDocs = new List<Documento>();
+                    lDocs = db.DocumentoSet.Where(b => b.IdProy.Equals(p.Id) && b.Nombre.Equals(doc.Nombre)).ToList();
+                    if (lDocs.Count > 0)
                     {
                         return true;
                     }
+                    else {
+                        return false;
+                    }
                 }
                 catch (Exception e)
-                {
+                {                  
                     throw new Exception("Hubo un error en base de datos.", e);
                 }
             }

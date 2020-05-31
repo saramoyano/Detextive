@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
+using System.Reflection.Metadata.Ecma335;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -20,12 +21,9 @@ namespace Detextive.ViewModel
 
             
         }
-
-
-        //public List<Proyecto> ListaProyectos() { 
-        //    proyectos = 
-        //    return proyectos;
-        //}
+      public bool ExisteProyecto(Proyecto p) {
+            return AccesoDatos.Logica.LogicaProyecto.GetInstance().ExisteProyecto(p);
+      }
         public void AgregarProyecto(Proyecto proyecto) {
             try
             {

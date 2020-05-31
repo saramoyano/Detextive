@@ -46,64 +46,63 @@
             </Grid.RowDefinitions>
             <Grid Grid.Row="0" Margin="5,0,5,0">
                 <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-                    <Button Grid.Column="0" Name="btEliminar"   FontSize="20" Margin="5,0,5,0"  Content="Eliminar" Click="btEliminar_Click" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
-                    <Button Grid.Column="1" Name="Crear" FontSize="20" Margin="5,0,5,0" Content="Analizar" Click="Crear_Click" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
-                    <!--<Button Grid.Column="2" Name="btNube" FontSize="20" Margin="5,0,5,0"  Content="Nube multidoc" Click="Button_Click_1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
-                    <Button Grid.Column="3" Name="btAgregar" FontSize="20" Margin="5,0,5,0"  Content="Agregar" Click="Button_Click_2" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
-            -->
+                <Button Grid.Column="0"
+                            Name="btEliminar"  
+                            FontSize="20"
+                            Margin="5,0,5,0" 
+                            Content="Eliminar" 
+                            Click="btEliminar_Click" 
+                            VerticalAlignment="Stretch"
+                            HorizontalAlignment="Stretch"/>
+                <Button Grid.Column="1" 
+                            Name="Crear"
+                            FontSize="20" Margin="5,0,5,0" Content="Nube Multidocumento" Click="Crear_Click" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
+
             </Grid>
-            <!--ItemsSource="{x:Bind documentoVM.documentos}"-->
-            <ListView Grid.Row="1" x:Name="lvNubes"  Grid.Column="1"  Margin="5,10,0,5" SelectionMode="Multiple" SelectionChanged="lvNubes_SelectionChanged">
-                <ListView.ItemTemplate>
-                    <DataTemplate x:DataType="Model:Nube">
-                        <TextBlock Text="{x:Bind Id, Mode=OneWay}" FontSize="20" Foreground="Black"/>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
         </Grid>
         <Grid Grid.Column="2">
             <Grid.RowDefinitions>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
-            <Grid Grid.Row="0" Margin="5,30,5,0">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="*"/>
-                </Grid.RowDefinitions>
-                <TextBlock Grid.Row="0" FontSize="24" >
-                    <Span><Bold>Detalles</Bold></Span>
-                </TextBlock>
-                <TextBlock Grid.Row="1" FontSize="20">
-                    <Span><Bold>Nombre</Bold></Span>
-                </TextBlock>
-                <TextBlock Grid.Row="2"></TextBlock>
-                <TextBlock Grid.Row="3"  FontSize="20">
-                    <Span><Bold>Ubicación</Bold></Span>
-                </TextBlock>
-                <TextBlock Grid.Row="4"></TextBlock>
-                <TextBlock Grid.Row="5"  FontSize="20">
-                    <Span><Bold>Extensión</Bold></Span>
-                </TextBlock>
-                <TextBlock Grid.Row="6"></TextBlock>
-
-            </Grid>
-            <!--ItemsSource="{x:Bind documentoVM.documentos}"-->
-
-            <ListView Grid.Row="1"  x:Name="lvPalabras"  Grid.Column="1" Margin="5,15,5,5" SelectionMode="Multiple" SelectionChanged="lvPalabras_SelectionChanged">
+                 <RowDefinition Height="*"/>
+                 <RowDefinition Height="4*"/>
+                 <RowDefinition Height="*"/>
+                 <RowDefinition Height="4*"/>
+            </Grid.RowDefinitions>           
+            <TextBlock Grid.Row="0" 
+                           FontSize="24" 
+                           FontWeight="Bold"
+                           Text="Documentos"/>            
+            <ListView Grid.Row="1" 
+                      x:Name="lvDocs"  
+                      Grid.Column="1" 
+                      Margin="5,15,5,5" 
+                      SelectionMode="Multiple"
+                      SelectionChanged="lvPalabras_SelectionChanged">
                 <ListView.ItemTemplate>
                     <DataTemplate x:DataType="Model:Palabra">
-                        <TextBlock Text="{x:Bind Nombre, Mode=OneWay}" FontSize="20" Foreground="Black"/>
+                        <TextBlock Text="{x:Bind Nombre, Mode=OneWay}" 
+                                   FontSize="20" 
+                                   Foreground="Black"/>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+            <TextBlock Grid.Row="2"
+                          FontSize="24"
+                          FontWeight="Bold"
+                          Text="Seleccione documentos para crear una nube: "/>
+            <ListView Grid.Row="3" 
+                      x:Name="lvNubes"  
+                      Grid.Column="1" 
+                      Margin="5,10,0,5"
+                      SelectionMode="Multiple" 
+                      SelectionChanged="lvNubes_SelectionChanged">
+                <ListView.ItemTemplate>
+                    <DataTemplate x:DataType="Model:Nube">
+                        <TextBlock Text="{x:Bind Id, Mode=OneWay}" 
+                                   FontSize="20" 
+                                   Foreground="Black"/>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>

@@ -79,7 +79,11 @@ namespace Detextive.View
 
         private void Crear_Click(object sender, RoutedEventArgs e)
         {
-
+             
+            foreach (Documento doc in lvDocs.SelectedItems)
+            {
+                 documento = 
+            }
         }
 
         private void btDocPage_Click(object sender, RoutedEventArgs e)
