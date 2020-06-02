@@ -209,7 +209,7 @@
             <ListView Grid.Column="2"
                   x:Name="lvCitas"  
                   Margin="5,15,5,5" 
-                  ItemsSource="{x:Bind etiqueta.CitasSet}" 
+                  ItemsSource="{x:Bind etiqueta.Citas}" 
                   SelectionMode="None" 
                   SelectionChanged="lvCitas_SelectionChanged">
             <ListView.ItemTemplate>

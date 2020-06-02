@@ -212,24 +212,17 @@
                               Width="218">
                     <Button.Flyout>
                         <Flyout x:Name="flyAsignarEtiqueta">
-                            <Grid Height="400">
+                            <Grid Height="400" Width="300">
                                 <Grid.RowDefinitions>
-                                    <RowDefinition Height="*"/>
-                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="*"/>                                 
                                     <RowDefinition Height="10*"/>
                                     <RowDefinition Height="*"/>
                                 </Grid.RowDefinitions>
                                 <TextBlock Grid.Row="0"
                                          VerticalAlignment="Center"
-                                         Text="Nueva etiqueta"/>
-                                <TextBox Grid.Row="1" 
-                                         Name="tbEtiquetar" 
-                                         IsEnabled="True"
-                                         VerticalAlignment="Center" 
-                                         PlaceholderText="Ingrese un nombre para la etiqueta" 
-                                         Width="250"/>
+                                         Text="Seleccione etiqueta"/>                             
                                 <ListView x:Name="lvAsignarEtiquetas" 
-                                          Grid.Row="2" 
+                                          Grid.Row="1" 
                                           Margin="5,10,0,5" 
                                           ItemsSource="{x:Bind etiqVM.etiquetas}">
                                     <ListView.ItemTemplate>
@@ -240,7 +233,7 @@
                                         </DataTemplate>
                                     </ListView.ItemTemplate>
                                 </ListView>
-                                <Button Grid.Row="3" 
+                                <Button Grid.Row="2" 
                                         VerticalAlignment="Center" 
                                         HorizontalAlignment="Right" 
                                         Click="AceptarAsignarEtiqueta" 

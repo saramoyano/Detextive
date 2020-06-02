@@ -20,7 +20,6 @@ namespace Detextive
 
     public sealed partial class ProyectoPage : Page
     {
-
         ProyectoViewModel proyectoVM;
         EtiquetaViewModel etiqVM;
         DocumentoViewModel documentoVM;
@@ -76,6 +75,10 @@ namespace Detextive
                 etiqVM = new EtiquetaViewModel(proyecto);
                 documentoVM = new DocumentoViewModel(proyecto);
                 nubeVM = new NubeViewModel(proyecto);
+                if (proyecto.Documentos != null) ;
+                foreach (Documento doc in proyecto.Documentos) {
+                    Debug.WriteLine("documento" + doc);
+                }
             }
 
             if (proyecto == null)
@@ -231,7 +234,7 @@ namespace Detextive
                         documentoVM.AgregarDocumento(documento);
                         //proyecto.Documentos.Add(documento);           
                         UpdateWords();
-                        citaVM = new CitaViewModel(documento);
+                    
                     }
                     else
                     {
@@ -279,37 +282,7 @@ namespace Detextive
             }
         }
         private void UnderlineButton_Click(object sender, RoutedEventArgs e)
-        {
-            Windows.UI.Text.ITextSelection selectedText = editor.Document.Selection;
-            if (selectedText != null)
-            {
-                cita = new Cita();
-                cita.DocumentoId = documento.Id;
-                cita.Texto = selectedText.ToString();
-                if (etiqueta != null)
-                {
-                    cita.EtiquetaId = etiqueta.Id;
-                    citaVM.AgregarCita(cita);
-                    // documento.CitasSet.Add(cita);
-                    MostrarDialog(2);
-                    Windows.UI.Text.ITextCharacterFormat charFormatting = selectedText.CharacterFormat;
-                    if (charFormatting.Underline == Windows.UI.Text.UnderlineType.None)
-                    {
-                        charFormatting.Underline = Windows.UI.Text.UnderlineType.Single;
-                    }
-                    else
-                    {
-                        charFormatting.Underline = Windows.UI.Text.UnderlineType.None;
-                    }
-                    selectedText.CharacterFormat = charFormatting;
-
-                }
-                else
-                {
-                    MostrarDialog(3);
-                }
-            }
-        }
+        { }
         private async void MostrarDialog(int op)
         {
             switch (op)
@@ -415,7 +388,7 @@ namespace Detextive
             }
             IEnumerable<string> terms = new StringExtractor(textoNuevo, _progress);
             int extension = terms.Count();
-            CloudControl.WeightedWords =
+           CloudControl.WeightedWords =
                terms
                .Filter(_blacklist)
                .CountOccurences()
@@ -424,16 +397,12 @@ namespace Detextive
             if (!nubeVM.ExisteNube(documento, proyecto))
             {
                 nube = new Nube();
-                nube.NumDocumentos = "1";
-                Debug.WriteLine("numDocs" + nube.NumDocumentos);
-                nube.ExtensionFragmento = extension;
-                Debug.WriteLine("extension frag" + nube.ExtensionFragmento);
+                nube.NumDocumentos = "1";                
+                nube.ExtensionFragmento = extension;                
                 documento.Extension = extension;
                 nube.ProyectoId = proyecto.Id;
-                nube.DocumentoId = documento.Id;
-                Debug.WriteLine("documento id: " + nube.DocumentoId);
-                nube.NumConceptos = CloudControl.WeightedWords.Count();
-                Debug.WriteLine("num Conceptos" + nube.NumConceptos);
+                nube.DocumentoId = documento.Id;                 
+                nube.NumConceptos = CloudControl.WeightedWords.Count();                 
                 nubeVM.AgregarNube(nube);
             }
             else
@@ -446,7 +415,6 @@ namespace Detextive
             {
                 foreach (var item in CloudControl.WeightedWords)
                 {
-
                     palabra = new Palabra();
                     palabra.ProyectoId = proyecto.Id;
                     palabra.NubeId = nube.Id;
@@ -781,12 +749,7 @@ namespace Detextive
         }
         private void AceptarAsignarEtiqueta(object sender, RoutedEventArgs e)
         {
-            string textoIngresado = tbEtiquetar.Text;
-            if (textoIngresado != "")
-            {
-                etiqueta.Nombre = textoIngresado;
-            }
-            else if (lvAsignarEtiquetas.SelectedItem != null)
+            if (lvAsignarEtiquetas.SelectedItem != null)
             {
                 etiqueta = (Etiqueta)lvAsignarEtiquetas.SelectedItem;
             }
@@ -797,14 +760,17 @@ namespace Detextive
             Windows.UI.Text.ITextSelection selectedText = editor.Document.Selection;
             if (selectedText != null)
             {
+                string seleccion;
+                selectedText.GetText(TextGetOptions.None, out seleccion);
                 cita = new Cita();
+                citaVM = new CitaViewModel(documento);
                 cita.DocumentoId = documento.Id;
-                cita.Texto = selectedText.ToString();
+                cita.Texto = seleccion;
                 if (etiqueta != null)
                 {
                     cita.EtiquetaId = etiqueta.Id;
                     citaVM.AgregarCita(cita);
-                    documento.CitasSet.Add(cita);
+                    //documento.CitasSet.Add(cita);
                     Windows.UI.Text.ITextCharacterFormat charFormatting = selectedText.CharacterFormat;
                     if (charFormatting.Underline == Windows.UI.Text.UnderlineType.None)
                     {
@@ -822,7 +788,7 @@ namespace Detextive
                     MostrarDialog(5);
                 }
             }
-
+            
         }
     }
 }

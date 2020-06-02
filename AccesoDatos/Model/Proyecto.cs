@@ -11,7 +11,16 @@ namespace AccesoDatos.Model
         private int? _numEtiquetas;
         private int? _numCitas;
         private string _nombre;
-        private string _nombreDocActivo;      
+        private string _nombreDocActivo;
+        public ICollection<Documento> Documentos;
+        public ICollection<Etiqueta> Etiquetas;
+        public ICollection<Nube> Nubes;
+
+        public Proyecto() {
+            Documentos = new List<Documento>();
+            Etiquetas = new List<Etiqueta>();
+            Nubes = new List<Nube>();
+        }
 
         public int Id { get => _id; set => _id = value; }
         public int? NumPalabras { get => _numPalabras; set => _numPalabras = value; }
@@ -20,8 +29,6 @@ namespace AccesoDatos.Model
         public int? NumCitas { get => _numCitas; set => _numCitas = value; }
         public string NombreDocActivo { get => _nombreDocActivo; set => _nombreDocActivo = value; }
 
-        public ICollection<Documento> Documentos;
-        public ICollection<Etiqueta> Etiquetas;
-        public ICollection<Nube> Nubes;
+      
     }
 }
