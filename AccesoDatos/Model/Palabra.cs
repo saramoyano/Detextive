@@ -9,22 +9,18 @@ namespace AccesoDatos.Model
     {
         private int _id;
         private string _nombre;
-        private int _idProy;
-        private int _idNube;
+        private int _proyectoId;
+        private int _nubeId;
         private int _numApariciones;
         private float? _porcentaje;
-        private int? _numPalabrasVinculadas;
-        private Proyecto _proyecto;
-        private Nube _nube;
+        private int? _numPalabrasVinculadas;        
 
         public int Id { get => _id; set => _id = value; }
         public string Nombre { get => _nombre; set => _nombre = value; }
-        public int IdProy { get => _idProy; set => _idProy = value; }
         public int NumApariciones { get => _numApariciones; set => _numApariciones = value; }
         public float? Porcentaje { get => _porcentaje; set => _porcentaje = value; }
         public int? NumPalabrasVinculadas { get => _numPalabrasVinculadas; set => _numPalabrasVinculadas = value; }
-        public int IdNube { get => _idNube; set => _idNube = value; }
-        public Proyecto Proyecto { get => _proyecto; set => _proyecto = value; }
-        public Nube Nube { get => _nube; set => _nube = value; }
+        public int ProyectoId { get => _proyectoId; set => _proyectoId = value; }
+        public int NubeId { get => _nubeId; set => _nubeId = value; }
     }
 }

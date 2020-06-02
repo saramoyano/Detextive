@@ -20,15 +20,7 @@ namespace AccesoDatos.Model
                 .HasIndex(p =>  p.Nombre)
                 .IsUnique(true);
 
-            modelBuilder.Entity<Documento>()
-                .HasIndex(p => p.Nombre)
-                .IsUnique(true);
-
-            modelBuilder.Entity<Etiqueta>()
-               .HasIndex(p => p.Nombre)
-               .IsUnique(true);
-
-    }
+        }
         #endregion
         public DbSet<Documento> DocumentoSet { get; set; }       
         public DbSet<Etiqueta> EtiquetaSet { get; set; }

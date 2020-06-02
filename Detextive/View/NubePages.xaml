@@ -73,7 +73,8 @@
             <TextBlock Grid.Row="0" 
                            FontSize="24" 
                            FontWeight="Bold"
-                           Text="Documentos"/>            
+                           Text="Documentos" 
+                       VerticalAlignment="Bottom"/>            
             <ListView Grid.Row="1" 
                       x:Name="lvDocs"  
                       Grid.Column="1" 

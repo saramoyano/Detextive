@@ -48,7 +48,7 @@ namespace AccesoDatos.Logica
 
         }
 
-        // Obtener una  lista de Documentos según filtro aplicado (propiedad nombre)
+        // Obtener una  lista de Documentos según filtro aplicado (propiedad idProyecto)
         // params: objeto de la clase AccesoDatos.Model.Documento
         public ObservableCollection<Model.Documento> ListaDocumentosFiltro(Proyecto proyecto)
         {
@@ -58,7 +58,7 @@ namespace AccesoDatos.Logica
                 ObservableCollection<Documento> documentos = new ObservableCollection<Documento>();
                 try
                 {
-                    var lDocs = db.DocumentoSet.Where(b => b.IdProy.Equals(proyecto.Id)).ToList();
+                    var lDocs = db.DocumentoSet.Where(b => b.ProyectoId.Equals(proyecto.Id)).ToList();
 
                     foreach (Documento documento in lDocs)
                     {
@@ -75,16 +75,25 @@ namespace AccesoDatos.Logica
 
         }
 
+        public Documento GetDocumento(string nombre)
+        {
+            using (var db = new Model.Context())
+            {
+                return db.DocumentoSet.Single(b => b.Nombre.Equals(nombre));
+
+            }               
+        }
+
         //Determina si el documento existe
         //params Objeto tipo documento(propiedad Nombre)
-        public bool ExisteDocumento(Documento doc, Proyecto p)
+        public bool ExisteDocumento(string nombre, Proyecto p)
         {
             using (var db = new Model.Context())
             {
                 try
                 {
                     List<Documento> lDocs = new List<Documento>();
-                    lDocs = db.DocumentoSet.Where(b => b.IdProy.Equals(p.Id) && b.Nombre.Equals(doc.Nombre)).ToList();
+                    lDocs = db.DocumentoSet.Where(b => b.ProyectoId.Equals(p.Id) && b.Nombre.Equals(nombre)).ToList();
                     if (lDocs.Count > 0)
                     {
                         return true;

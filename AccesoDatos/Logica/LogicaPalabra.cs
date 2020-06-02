@@ -26,48 +26,48 @@ namespace AccesoDatos.Logica
         // Obtener la lista de Palabras
         // params: ninguno
         public ObservableCollection<Model.Palabra> ListaPalabras()
-    {
-        using (var db = new Model.Context())
         {
-                ObservableCollection<Palabra> palabras = new ObservableCollection<Palabra>();
-            try
+            using (var db = new Model.Context())
             {
-                var lPal = db.PalabraSet.OrderBy(b => b.Id).ToList();
+                ObservableCollection<Palabra> palabras = new ObservableCollection<Palabra>();
+                try
+                {
+                    var lPal = db.PalabraSet.OrderBy(b => b.Id).ToList();
                     foreach (Palabra p in lPal)
                     {
                         palabras.Add(p);
                     }
                     return palabras;
                 }
-            catch (Exception e)
-            {
-                throw new Exception("No hay palabras guardadas.", e);
+                catch (Exception e)
+                {
+                    throw new Exception("No hay palabras guardadas.", e);
+                }
+
             }
 
         }
 
-    }
-
-    // Obtener una Palabra de la lista según filtro aplicado (propiedad nombre)
-    // params: objeto de la clase AccesoDatos.Model.Palabra
-    public Model.Palabra ListaPalabrasFiltro(Palabra palabra)
-    {
-        using (var db = new Model.Context())
+        // Obtener una Palabra de la lista según filtro aplicado (propiedad nombre)
+        // params: objeto de la clase AccesoDatos.Model.Palabra
+        public Model.Palabra ListaPalabrasFiltro(Palabra palabra)
         {
+            using (var db = new Model.Context())
+            {
 
-            try
-            {
-                var pal = db.PalabraSet.Single(b => b.Nombre.Equals(palabra.Nombre));
-                return pal;
-            }
-            catch (Exception e)
-            {
-                throw new Exception("No hay palabras guardados.", e);
+                try
+                {
+                    var pal = db.PalabraSet.Single(b => b.Nombre.Equals(palabra.Nombre));
+                    return pal;
+                }
+                catch (Exception e)
+                {
+                    throw new Exception("No hay palabras guardados.", e);
+                }
+
             }
 
         }
-
-    }
 
         public bool ExistePalabra(Palabra pal, Proyecto p)
         {
@@ -76,7 +76,7 @@ namespace AccesoDatos.Logica
                 try
                 {
                     List<Palabra> lPal = new List<Palabra>();
-                    lPal = db.PalabraSet.Where(b => b.IdProy.Equals(p.Id) && b.Nombre.Equals(pal.Nombre)).ToList();
+                    lPal = db.PalabraSet.Where(b => b.ProyectoId.Equals(p.Id) && b.Nombre.Equals(pal.Nombre)).ToList();
                     if (lPal.Count > 0)
                     {
                         return true;
@@ -96,62 +96,62 @@ namespace AccesoDatos.Logica
         // Agregar una palabra a la lista 
         // params: objeto de la clase AccesoDatos.Model.Palabra
         public void AgregarPalabra(Palabra palabra)
-    {
-        using (var db = new Model.Context())
         {
-            try
+            using (var db = new Model.Context())
             {
-                db.PalabraSet.Add(palabra);
-                db.SaveChanges();
+                try
+                {
+                    db.PalabraSet.Add(palabra);
+                    db.SaveChanges();
+                }
+                catch (Exception e)
+                {
+                    throw new Exception("No se ha podido agregar la palabra ", e);
+                }
             }
-            catch (Exception e)
+
+        }
+
+        // Actualiza una palabra de la lista 
+        // params: objeto de la clase AccesoDatos.Model.Palabra con los datos actualizados
+        public void ActualizarPalabra(Palabra palabra)
+        {
+            using (var db = new Model.Context())
             {
-                throw new Exception("No se ha podido agregar el palabra ", e);
+                try
+                {
+                    var pal = db.PalabraSet.FirstOrDefault(x => x.Id == palabra.Id);
+                    db.Entry(pal).State = EntityState.Modified;
+                    db.Entry(pal).CurrentValues.SetValues(palabra);
+                    db.SaveChanges();
+                }
+                catch (Exception e)
+                {
+                    throw new Exception("No se ha podido actualizar la palabra ", e);
+
+                }
             }
         }
 
-    }
 
-    // Actualiza una palabra de la lista 
-    // params: objeto de la clase AccesoDatos.Model.Palabra con los datos actualizados
-    public void ActualizarPalabra(Palabra palabra)
-    {
-        using (var db = new Model.Context())
+        // Elimina una palabra de la lista 
+        // params: objeto de la clase AccesoDatos.Model.Palabra 
+        public void EliminarPalabra(Palabra palabra)
         {
-            try
+            using (var db = new Model.Context())
             {
-                var pal = db.PalabraSet.FirstOrDefault(x => x.Id == palabra.Id);
-                db.Entry(pal).State = EntityState.Modified;
-                db.Entry(pal).CurrentValues.SetValues(palabra);
-                db.SaveChanges();
-            }
-            catch (Exception e)
-            {
-                throw new Exception("No se ha podido actualizar el palabra ", e);
+                try
+                {
+                    var pal = db.PalabraSet.FirstOrDefault(x => x.Id == palabra.Id);
+                    db.PalabraSet.Remove(pal);
+                    db.SaveChanges();
+                }
+                catch (Exception e)
+                {
+                    throw new Exception("No se ha podido eliminar la palabra ", e);
 
+                }
             }
         }
     }
-
-
-    // Elimina una palabra de la lista 
-    // params: objeto de la clase AccesoDatos.Model.Palabra 
-    public void EliminarPalabra(Palabra palabra)
-    {
-        using (var db = new Model.Context())
-        {
-            try
-            {
-                var pal = db.PalabraSet.FirstOrDefault(x => x.Id == palabra.Id);
-                db.PalabraSet.Remove(pal);
-                db.SaveChanges();
-            }
-            catch (Exception e)
-            {
-                throw new Exception("No se ha podido eliminar el palabra ", e);
-
-            }
-        }
-    }
-}
 }

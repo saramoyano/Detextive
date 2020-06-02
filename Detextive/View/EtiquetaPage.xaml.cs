@@ -134,7 +134,7 @@ namespace Detextive.View
             if (textoIngresado != "")
             {
                 etiqueta = new Etiqueta();
-                etiqueta.IdProy = proyecto.Id;
+                etiqueta.ProyectoId = proyecto.Id;
                 etiqueta.Nombre = textoIngresado;
             }
         }

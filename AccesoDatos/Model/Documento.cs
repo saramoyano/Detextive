@@ -7,22 +7,18 @@ namespace AccesoDatos.Model
     public class Documento : NotifyBase
     {
         private int _id;
-        private int _idProy;         
+        private int _proyectoId;         
         private string _nombre;
         private string _ubicacion;
         private int _extension;
-        private Proyecto proyecto;
-
+        
 
         public int Id { get => _id; set => _id = value; }
-     
-        public int IdProy { get => _idProy; set => _idProy = value; }
-
-        public string Nombre { get => _nombre;  set { _nombre = value; NotificarCambio("Nombre"); } }
-
+        public string Nombre { get => Nombre1;  set { Nombre1 = value; NotificarCambio("Nombre"); } }
         public string Ubicacion { get => _ubicacion; set => _ubicacion = value; }
         public int Extension { get => _extension; set => _extension = value; }
-        public Proyecto Proyecto { get => proyecto; set => proyecto = value; }
+        public string Nombre1 { get => _nombre; set => _nombre = value; }
+        public int ProyectoId { get => _proyectoId; set => _proyectoId = value; }
 
         public ICollection<Cita> CitasSet;
      

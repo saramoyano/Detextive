@@ -32,7 +32,7 @@ namespace Detextive.View
         public NubePages()
         {
             this.InitializeComponent();
-            nubeVM = new NubeViewModel();
+            
         }
 
 
@@ -43,6 +43,7 @@ namespace Detextive.View
             {
 
                 proyecto = (Proyecto)e.Parameter;
+                nubeVM = new NubeViewModel(proyecto);
             }
         }
 
@@ -82,7 +83,7 @@ namespace Detextive.View
              
             foreach (Documento doc in lvDocs.SelectedItems)
             {
-                 documento = 
+                 
             }
         }
 

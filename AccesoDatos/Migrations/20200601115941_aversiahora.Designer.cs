@@ -3,15 +3,17 @@ using System;
 using AccesoDatos.Model;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace AccesoDatos.Migrations
 {
     [DbContext(typeof(Context))]
-    partial class ContextModelSnapshot : ModelSnapshot
+    [Migration("20200601115941_aversiahora")]
+    partial class aversiahora
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -26,10 +28,10 @@ namespace AccesoDatos.Migrations
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<int>("DocumentoId")
+                    b.Property<int>("IdDoc")
                         .HasColumnType("integer");
 
-                    b.Property<int>("EtiquetaId")
+                    b.Property<int>("IdEtiqueta")
                         .HasColumnType("integer");
 
                     b.Property<string>("Texto")
@@ -50,14 +52,11 @@ namespace AccesoDatos.Migrations
                     b.Property<int>("Extension")
                         .HasColumnType("integer");
 
+                    b.Property<int>("IdProy")
+                        .HasColumnType("integer");
+
                     b.Property<string>("Nombre")
                         .HasColumnType("text");
-
-                    b.Property<string>("Nombre1")
-                        .HasColumnType("text");
-
-                    b.Property<int>("ProyectoId")
-                        .HasColumnType("integer");
 
                     b.Property<string>("Ubicacion")
                         .HasColumnType("text");
@@ -74,13 +73,16 @@ namespace AccesoDatos.Migrations
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
+                    b.Property<int>("IdProy")
+                        .HasColumnType("integer");
+
                     b.Property<string>("Nombre")
                         .HasColumnType("text");
 
                     b.Property<int>("NumCitas")
                         .HasColumnType("integer");
 
-                    b.Property<int>("ProyectoId")
+                    b.Property<int?>("ProyectoId")
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
@@ -97,10 +99,13 @@ namespace AccesoDatos.Migrations
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<int?>("DocumentoId")
+                    b.Property<int>("ExtensionFragmento")
                         .HasColumnType("integer");
 
-                    b.Property<int>("ExtensionFragmento")
+                    b.Property<int?>("IdDoc")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("IdProy")
                         .HasColumnType("integer");
 
                     b.Property<int>("NumConceptos")
@@ -108,9 +113,6 @@ namespace AccesoDatos.Migrations
 
                     b.Property<string>("NumDocumentos")
                         .HasColumnType("text");
-
-                    b.Property<int>("ProyectoId")
-                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 
@@ -124,11 +126,14 @@ namespace AccesoDatos.Migrations
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
+                    b.Property<int>("IdNube")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("IdProy")
+                        .HasColumnType("integer");
+
                     b.Property<string>("Nombre")
                         .HasColumnType("text");
-
-                    b.Property<int>("NubeId")
-                        .HasColumnType("integer");
 
                     b.Property<int>("NumApariciones")
                         .HasColumnType("integer");
@@ -138,9 +143,6 @@ namespace AccesoDatos.Migrations
 
                     b.Property<float?>("Porcentaje")
                         .HasColumnType("real");
-
-                    b.Property<int>("ProyectoId")
-                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 
@@ -182,9 +184,7 @@ namespace AccesoDatos.Migrations
                 {
                     b.HasOne("AccesoDatos.Model.Proyecto", "Proyecto")
                         .WithMany()
-                        .HasForeignKey("ProyectoId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ProyectoId");
                 });
 #pragma warning restore 612, 618
         }

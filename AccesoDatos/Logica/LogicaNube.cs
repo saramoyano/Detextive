@@ -12,12 +12,7 @@ namespace AccesoDatos.Logica
     public class LogicaNube
     {
         private static LogicaNube logicaNube;
-        private List<string> palabras = new List<string>();
-        private List<int> frecuencias = new List<int>();
-
-        public List<string> Palabras { get => palabras; set => palabras = value; }
-        public List<int> Frecuencias { get => frecuencias; set => frecuencias = value; }
-
+        
         public static LogicaNube GetInstance()
         {
             if (logicaNube == null)
@@ -36,8 +31,9 @@ namespace AccesoDatos.Logica
                 ObservableCollection<Model.Nube> nubes = new ObservableCollection<Nube>();
                 try
                 {
-                   var lsNubes =  db.NubeSet.OrderBy(b => b.Id).ToList();
-                    foreach (Nube n in lsNubes) {
+                    var lsNubes = db.NubeSet.OrderBy(b => b.Id).ToList();
+                    foreach (Nube n in lsNubes)
+                    {
                         nubes.Add(n);
                     }
                     return nubes;
@@ -52,25 +48,69 @@ namespace AccesoDatos.Logica
         }
 
 
-        // Obtener una nube de la lista según filtro aplicado  
+        // Obtener lista de nubes según filtro aplicado  
         // params: objeto de la clase AccesoDatos.Model.nube
-        public Model.Nube ListanubeFiltro(Nube nube)
+        public ObservableCollection<Model.Nube> ListaNubeFiltro(Proyecto proyecto)
         {
             using (var db = new Model.Context())
             {
-
+                ObservableCollection<Model.Nube> nubes = new ObservableCollection<Nube>();
                 try
                 {
-                    var n = db.NubeSet.Single(b => b.Id.Equals(nube.Id));
-                    return n;
+                    var lsNubes = db.NubeSet.Where(b => b.ProyectoId.Equals(proyecto.Id));
+                    foreach (Nube n in lsNubes)
+                    {
+                        nubes.Add(n);
+                    }
+                    return nubes;
                 }
                 catch (Exception e)
                 {
-                    throw new Exception("No hay nube guardados.", e);
+                    throw new Exception("No hay nubes guardadas.", e);
                 }
-
             }
+        }
 
+        public Model.Nube NubeFiltro(Documento d, Proyecto proyecto)
+        {
+            using (var db = new Model.Context())
+            {
+                ObservableCollection<Model.Nube> nubes = new ObservableCollection<Nube>();
+                try
+                {
+                    return db.NubeSet.Single(b => b.ProyectoId.Equals(proyecto.Id) && b.DocumentoId.Equals(d.Id));
+                    
+                }
+                catch (Exception e)
+                {
+                    throw new Exception("No hay nubes guardadas.", e);
+                }
+            }
+        }
+
+
+        public bool ExisteNube(Documento d, Proyecto p)
+        {
+            using (var db = new Model.Context())
+            {
+                try
+                {
+                    List<Nube> lNubes = new List<Nube>();
+                    lNubes = db.NubeSet.Where(b => b.ProyectoId.Equals(p.Id) && b.DocumentoId.Equals(d.Id)).ToList();
+                    if (lNubes.Count > 0)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+                catch (Exception e)
+                {
+                    throw new Exception("Hubo un error en base de datos.", e);
+                }
+            }
         }
 
 
@@ -110,7 +150,6 @@ namespace AccesoDatos.Logica
                 catch (Exception e)
                 {
                     throw new Exception("No se ha podido actualizar la nube ", e);
-
                 }
             }
         }
@@ -165,18 +204,18 @@ namespace AccesoDatos.Logica
         //        Frecuencias.Add(item.Occurrences);
         //    }
 
-                
-            
-            
-            
-            
-            // IBlacklist blacklist = CreateBlacklist(true);
-            // IBlacklist customBlacklist = CommonBlacklist.CreateFromTextFile(s_BlacklistTxtFileName);
-           // IEnumerable<string> terms =  CreateExtractor(textoNuevo);
-         //   IEnumerable<string> terms = new List<string>();
-          //  IEnumerable<IWord> words = terms.CountOccurences().SortByOccurences();
 
-            //return words.Cast<string>();
+
+
+
+
+        // IBlacklist blacklist = CreateBlacklist(true);
+        // IBlacklist customBlacklist = CommonBlacklist.CreateFromTextFile(s_BlacklistTxtFileName);
+        // IEnumerable<string> terms =  CreateExtractor(textoNuevo);
+        //   IEnumerable<string> terms = new List<string>();
+        //  IEnumerable<IWord> words = terms.CountOccurences().SortByOccurences();
+
+        //return words.Cast<string>();
         //}
 
         //public void GenerarNube(string texto)

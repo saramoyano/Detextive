@@ -30,7 +30,7 @@ namespace AccesoDatos.Logica
             {
                 try
                 {
-                    List<Cita> lCitas = db.CitaSet.Where(b=> b.IdDoc == d.Id).ToList();
+                    List<Cita> lCitas = db.CitaSet.Where(b=> b.DocumentoId == d.Id).ToList();
                     foreach (Cita cita in lCitas)
                     {
                         citas.Add(cita);
@@ -56,7 +56,7 @@ namespace AccesoDatos.Logica
             {                
                 try
                 {
-                    List<Cita> lCitas = db.CitaSet.Where(b => b.IdEtiqueta.Equals(eti.Id)).ToList();
+                    List<Cita> lCitas = db.CitaSet.Where(b => b.EtiquetaId.Equals(eti.Id)).ToList();
                     foreach (Cita c in lCitas)
                     {
                         citas.Add(c);

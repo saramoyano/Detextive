@@ -76,7 +76,7 @@ namespace AccesoDatos.Logica
                 try
                 {
                     //List<Etiqueta> etiq = db.EtiquetaSet.Where(b => b.IdProy.Equals(proyecto.Id)).ToList();
-                    List<Etiqueta> etiq = db.EtiquetaSet.Where(b => b.IdProy.Equals(proyecto.Id)).ToList();
+                    List<Etiqueta> etiq = db.EtiquetaSet.Where(b => b.ProyectoId.Equals(proyecto.Id)).ToList();
                     foreach (Etiqueta eti in etiq)
                     {
                         etiquetas.Add(eti);
@@ -99,7 +99,7 @@ namespace AccesoDatos.Logica
                 try
                 {
                     List<Etiqueta> lEtiq = new List<Etiqueta>();
-                    lEtiq = db.EtiquetaSet.Where(b => b.IdProy.Equals(p.Id) && b.Nombre.Equals(eti.Nombre)).ToList();
+                    lEtiq = db.EtiquetaSet.Where(b => b.ProyectoId.Equals(p.Id) && b.Nombre.Equals(eti.Nombre)).ToList();
                     if (lEtiq.Count > 0)
                     {
                         return true;

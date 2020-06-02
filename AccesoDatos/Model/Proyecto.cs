@@ -11,9 +11,7 @@ namespace AccesoDatos.Model
         private int? _numEtiquetas;
         private int? _numCitas;
         private string _nombre;
-        private string _nombreDocActivo;
-       
-
+        private string _nombreDocActivo;      
 
         public int Id { get => _id; set => _id = value; }
         public int? NumPalabras { get => _numPalabras; set => _numPalabras = value; }
