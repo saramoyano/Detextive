@@ -25,14 +25,37 @@ namespace AccesoDatos.Logica
 
         // Obtener la lista de Palabras
         // params: ninguno
-        public ObservableCollection<Model.Palabra> ListaPalabras()
+        public ObservableCollection<Model.Palabra> ListaPalabras(Proyecto p)
         {
             using (var db = new Model.Context())
             {
                 ObservableCollection<Palabra> palabras = new ObservableCollection<Palabra>();
                 try
                 {
-                    var lPal = db.PalabraSet.OrderBy(b => b.Id).ToList();
+                    List<Palabra> lPal = db.PalabraSet.Where(b => b.ProyectoId.Equals(p.Id)).ToList();
+                    foreach (Palabra pal in lPal)
+                    {
+                        palabras.Add(pal);
+                    }
+                    return palabras;
+                }
+                catch (Exception e)
+                {
+                    throw new Exception("No hay palabras guardadas.", e);
+                }
+
+            }
+
+        }
+
+        public ObservableCollection<Model.Palabra> ListaPalabrasFiltro(Nube n)
+        {
+            using (var db = new Model.Context())
+            {
+                ObservableCollection<Palabra> palabras = new ObservableCollection<Palabra>();
+                try
+                {
+                    List<Palabra> lPal = db.PalabraSet.Where(b => b.NubeId.Equals(n.Id)).ToList();
                     foreach (Palabra p in lPal)
                     {
                         palabras.Add(p);

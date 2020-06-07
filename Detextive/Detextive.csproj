@@ -120,6 +120,14 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Auxiliar\CrearNube.cs" />
+    <Compile Include="ViewModel\Class1.cs" />
+    <Compile Include="View\MainPage.xaml.cs">
+      <DependentUpon>MainPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ProyectosPage.xaml.cs">
+      <DependentUpon>ProyectosPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ViewModel\BannedWords.cs" />
     <Compile Include="ViewModel\CitaViewModel.cs" />
     <Compile Include="ViewModel\DocumentoViewModel.cs" />
@@ -137,9 +145,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="View\NubePages.xaml.cs">
       <DependentUpon>NubePages.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="View\ProyectoPage.xaml.cs">
-      <DependentUpon>ProyectoPage.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -171,6 +176,14 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="View\MainPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\ProyectosPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\DocumentoPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -180,10 +193,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\NubePages.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="View\ProyectoPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -215,9 +224,7 @@
       <Name>AccesoDatos</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Auxiliar\" />
-  </ItemGroup>
+  <ItemGroup />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>

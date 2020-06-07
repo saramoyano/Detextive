@@ -12,14 +12,28 @@ namespace AccesoDatos.Model
         #region Required
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Proyecto>()
-                .Property(b => b.Nombre)
-                .IsRequired();
+            modelBuilder.Entity<Proyecto>().Property(b => b.Nombre).IsRequired();
          
-            modelBuilder.Entity<Proyecto>()
-                .HasIndex(p =>  p.Nombre)
-                .IsUnique(true);
+            modelBuilder.Entity<Proyecto>().HasIndex(p =>  p.Nombre).IsUnique(true);
 
+            modelBuilder.Entity<Proyecto>().HasMany(b => b.Documentos).WithOne(p => p.Proyecto)
+                        .HasForeignKey(p => p.ProyectoId)
+                        .OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<Proyecto>().HasMany(b => b.Etiquetas).WithOne(p => p.Proyecto)
+                        .HasForeignKey(p => p.ProyectoId)
+                        .OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<Proyecto>().HasMany(b => b.Nubes).WithOne(p => p.Proyecto)
+                        .HasForeignKey(p => p.ProyectoId)
+                        .OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<Nube>().HasMany(b => b.Palabras).WithOne(p => p.Nube)
+                        .HasForeignKey(p => p.NubeId)
+                        .OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<Documento>().HasMany(b => b.Citas).WithOne(p => p.Documento)
+                        .HasForeignKey(p => p.DocumentoId)
+                        .OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<Etiqueta>().HasMany(b => b.Citas).WithOne(p => p.Etiqueta)
+                        .HasForeignKey(p => p.EtiquetaId)
+                        .OnDelete(DeleteBehavior.Cascade);
         }
         #endregion
         public DbSet<Documento> DocumentoSet { get; set; }       

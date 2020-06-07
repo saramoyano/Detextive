@@ -4,31 +4,30 @@ using System.Text;
 
 namespace AccesoDatos.Model
 {
-    public class Proyecto
+    public class Proyecto : NotifyBase
     {
-        private int _id;
-        private int? _numPalabras;
+        private int _id;       
         private int? _numEtiquetas;
-        private int? _numCitas;
+        private int? _numDocumentos;
         private string _nombre;
-        private string _nombreDocActivo;
-        public ICollection<Documento> Documentos;
-        public ICollection<Etiqueta> Etiquetas;
-        public ICollection<Nube> Nubes;
+        private string _ubicacionDocActivo;
+        private List<Documento> documentos;
+        private List<Etiqueta> etiquetas;
+        private List<Nube> nubes;
 
         public Proyecto() {
             Documentos = new List<Documento>();
             Etiquetas = new List<Etiqueta>();
             Nubes = new List<Nube>();
         }
+        public int Id { get => _id; set { _id = value; NotificarCambio("Id"); }}
+        public int? NumEtiquetas { get => _numEtiquetas; set { _numEtiquetas = value; NotificarCambio("NumEtiquetas"); }}
+        public string Nombre { get => _nombre; set { _nombre = value; NotificarCambio("Nombre"); }}
+        public int? NumDocumentos { get => _numDocumentos; set { _numDocumentos = value; NotificarCambio("numDocumentos"); }}
+        public string UbicacionDocActivo { get => _ubicacionDocActivo; set { _ubicacionDocActivo = value; NotificarCambio("UbicacionDocActivo"); }}
 
-        public int Id { get => _id; set => _id = value; }
-        public int? NumPalabras { get => _numPalabras; set => _numPalabras = value; }
-        public int? NumEtiquetas { get => _numEtiquetas; set => _numEtiquetas = value; }
-        public string Nombre { get => _nombre; set => _nombre = value; }
-        public int? NumCitas { get => _numCitas; set => _numCitas = value; }
-        public string NombreDocActivo { get => _nombreDocActivo; set => _nombreDocActivo = value; }
-
-      
+        public List<Documento> Documentos { get => documentos; set => documentos = value; }
+        public List<Etiqueta> Etiquetas { get => etiquetas; set => etiquetas = value; }
+        public List<Nube> Nubes { get => nubes; set => nubes = value; }
     }
 }

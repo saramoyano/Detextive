@@ -12,9 +12,14 @@ namespace Detextive.ViewModel
     {
         public ObservableCollection<Palabra> palabras;
 
-        public PalabraViewModel()
+        public PalabraViewModel(Nube n)
         {
-            palabras =  AccesoDatos.Logica.LogicaPalabra.GetInstance().ListaPalabras();
+            palabras =  AccesoDatos.Logica.LogicaPalabra.GetInstance().ListaPalabrasFiltro(n);
+        }
+
+        public PalabraViewModel(Proyecto p)
+        {
+            palabras = AccesoDatos.Logica.LogicaPalabra.GetInstance().ListaPalabras(p);
         }
 
         public bool ExistePalabra(Palabra pal, Nube n, Proyecto p)

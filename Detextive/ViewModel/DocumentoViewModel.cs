@@ -25,6 +25,11 @@ namespace Detextive.ViewModel
         {           
                 return AccesoDatos.Logica.LogicaDocumento.GetInstance().GetDocumento(nombre);
         }
+        public Documento GetDocumentoUbicacion(string ubicacion)
+        {
+            return AccesoDatos.Logica.LogicaDocumento.GetInstance().GetDocumentoUbicacion(ubicacion);
+        }
+
         public void AgregarDocumento(Documento documento)
         {
             try

@@ -3,15 +3,17 @@ using System;
 using AccesoDatos.Model;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace AccesoDatos.Migrations
 {
     [DbContext(typeof(Context))]
-    partial class ContextModelSnapshot : ModelSnapshot
+    [Migration("20200605224646_finalcorregida2")]
+    partial class finalcorregida2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -36,10 +38,6 @@ namespace AccesoDatos.Migrations
                         .HasColumnType("text");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("DocumentoId");
-
-                    b.HasIndex("EtiquetaId");
 
                     b.ToTable("CitaSet");
                 });
@@ -72,8 +70,6 @@ namespace AccesoDatos.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("NubeId1");
-
-                    b.HasIndex("ProyectoId");
 
                     b.ToTable("DocumentoSet");
                 });
@@ -117,15 +113,10 @@ namespace AccesoDatos.Migrations
                     b.Property<int>("NumConceptos")
                         .HasColumnType("integer");
 
-                    b.Property<int>("NumDocumentos")
-                        .HasColumnType("integer");
-
                     b.Property<int>("ProyectoId")
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ProyectoId");
 
                     b.ToTable("NubeSet");
                 });
@@ -151,10 +142,6 @@ namespace AccesoDatos.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("NubeId");
-
-                    b.HasIndex("ProyectoId");
-
                     b.ToTable("PalabraSet");
                 });
 
@@ -169,14 +156,17 @@ namespace AccesoDatos.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int?>("NumDocumentos")
+                    b.Property<string>("NombreDocActivo")
+                        .HasColumnType("text");
+
+                    b.Property<int?>("NumCitas")
                         .HasColumnType("integer");
 
                     b.Property<int?>("NumEtiquetas")
                         .HasColumnType("integer");
 
-                    b.Property<string>("UbicacionDocActivo")
-                        .HasColumnType("text");
+                    b.Property<int?>("NumPalabras")
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 
@@ -186,60 +176,15 @@ namespace AccesoDatos.Migrations
                     b.ToTable("ProyectoSet");
                 });
 
-            modelBuilder.Entity("AccesoDatos.Model.Cita", b =>
-                {
-                    b.HasOne("AccesoDatos.Model.Documento", "Documento")
-                        .WithMany("Citas")
-                        .HasForeignKey("DocumentoId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("AccesoDatos.Model.Etiqueta", "Etiqueta")
-                        .WithMany("Citas")
-                        .HasForeignKey("EtiquetaId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("AccesoDatos.Model.Documento", b =>
                 {
                     b.HasOne("AccesoDatos.Model.Nube", "Nube")
                         .WithMany()
                         .HasForeignKey("NubeId1");
-
-                    b.HasOne("AccesoDatos.Model.Proyecto", "Proyecto")
-                        .WithMany("Documentos")
-                        .HasForeignKey("ProyectoId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("AccesoDatos.Model.Etiqueta", b =>
                 {
-                    b.HasOne("AccesoDatos.Model.Proyecto", "Proyecto")
-                        .WithMany("Etiquetas")
-                        .HasForeignKey("ProyectoId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("AccesoDatos.Model.Nube", b =>
-                {
-                    b.HasOne("AccesoDatos.Model.Proyecto", "Proyecto")
-                        .WithMany("Nubes")
-                        .HasForeignKey("ProyectoId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("AccesoDatos.Model.Palabra", b =>
-                {
-                    b.HasOne("AccesoDatos.Model.Nube", "Nube")
-                        .WithMany("Palabras")
-                        .HasForeignKey("NubeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("AccesoDatos.Model.Proyecto", "Proyecto")
                         .WithMany()
                         .HasForeignKey("ProyectoId")

@@ -1,9 +1,14 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
- <TargetFramework>netstandard2.0</TargetFramework> 
-  <!--   <TargetFrameworks>netcoreapp2.1;netstandard2.0</TargetFrameworks> -->
+   <TargetFramework>netstandard2.0</TargetFramework> 
+ <!--  <TargetFrameworks>netcoreapp2.1;netstandard2.0</TargetFrameworks>  --> 
   </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Migrations\20200605215038_finalfinal.cs" />
+    <Compile Remove="Migrations\20200605215038_finalfinal.Designer.cs" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.4" />

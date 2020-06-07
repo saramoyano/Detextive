@@ -14,110 +14,111 @@ using System.Linq;
 using WordCloudControl;
 using Windows.Storage;
 using System.Linq.Expressions;
+using Windows.UI.Xaml.Media.Animation;
+using Detextive.View;
+using System.Drawing;
+using Windows.UI.Xaml.Media;
+using System.IO;
+using System.Collections;
+using System.Threading.Tasks;
+
+
+
+// La plantilla de elemento Página en blanco está documentada en https://go.microsoft.com/fwlink/?LinkId=234238
 
 namespace Detextive
 {
-
-    public sealed partial class ProyectoPage : Page
+    /// <summary>
+    /// Una página vacía que se puede usar de forma independiente o a la que se puede navegar dentro de un objeto Frame.
+    /// </summary>
+    public sealed partial class ProyectosPage : Page
     {
-        ProyectoViewModel proyectoVM;
-        EtiquetaViewModel etiqVM;
-        DocumentoViewModel documentoVM;
-        NubeViewModel nubeVM;
-        CitaViewModel citaVM;
-        Proyecto proyecto;
-        Etiqueta etiqueta;
-        Documento documento;
-        Cita cita;
-        Nube nube;
-        Palabra palabra;
+        private ProyectoViewModel proyectoVM;
+        private EtiquetaViewModel etiqVM;
+        private DocumentoViewModel documentoVM;
+        private NubeViewModel nubeVM;
+        private CitaViewModel citaVM;
+        private PalabraViewModel palabraVM;
+        private static Proyecto proyecto;
+        private Etiqueta etiqueta;
+        private Documento documento;
+        private Cita cita;
+        private Nube nube;
+        private Palabra palabra;
 
         private IBlacklist _blacklist;
         private IProgressIndicator _progress;
-        List<string> palabras;
-        List<int> frecuencias;
-        //List<string> nombres;
+        private List<string> palabras;
+        private List<int> frecuencias;
         string texto;
-        private PalabraViewModel palabraVM;
-        public ProyectoPage()
+
+        public static Proyecto Proyecto { get => proyecto; set => proyecto = value; }
+
+        public ProyectosPage()
         {
             this.InitializeComponent();
             proyectoVM = new ProyectoViewModel();
-
             _blacklist = new BannedWords();
             _progress = new ProgressBarWrapper(ProgressBar);
             palabras = new List<string>();
             frecuencias = new List<int>();
-            //nombres = new List<string>();
-
         }
-        private void Page_Loaded(object sender, RoutedEventArgs e)
-        {
-            ;
 
-        }
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
-            if (e.Parameter != null && e.Parameter.GetType().Equals(typeof(Proyecto)))
+            if (proyecto != null)
             {
-                proyecto = (Proyecto)e.Parameter;
 
                 openFileButton.IsEnabled = true;
                 saveFileButton.IsEnabled = true;
                 underlineButton.IsEnabled = true;
                 btnEtiqueta.IsEnabled = true;
-                btnNube.IsEnabled = true;
+                btnNube.IsEnabled = false;
+                btCambiarNombre.IsEnabled = true;
                 btnCerrarProy.IsEnabled = true;
                 btnProyecto.IsEnabled = false;
                 btnAbrirProy.IsEnabled = false;
-                btEliminar.IsEnabled = false;
-                etiqVM = new EtiquetaViewModel(proyecto);
-                documentoVM = new DocumentoViewModel(proyecto);
-                nubeVM = new NubeViewModel(proyecto);
-                if (proyecto.Documentos != null) ;
-                foreach (Documento doc in proyecto.Documentos) {
-                    Debug.WriteLine("documento" + doc);
-                }
+                btEliminar.IsEnabled = false;              
+                etiqVM = new EtiquetaViewModel(Proyecto);
+                documentoVM = new DocumentoViewModel(Proyecto);
+                nubeVM = new NubeViewModel(Proyecto); 
             }
 
-            if (proyecto == null)
+            if (Proyecto == null)
             {
                 openFileButton.IsEnabled = false;
                 saveFileButton.IsEnabled = false;
                 underlineButton.IsEnabled = false;
+                btCambiarNombre.IsEnabled = false;
                 btnEtiqueta.IsEnabled = false;
                 btnNube.IsEnabled = false;
                 btnCerrarProy.IsEnabled = false;
                 MostrarDialog(1);
             }
         }
-        private void NuevoProyecto(object sender, RoutedEventArgs e)
-        { }
+
         private void AceptaNombreProyecto(object sender, RoutedEventArgs e)
         {
             string textoIngresado = textBoxProy.Text;
-            if (textoIngresado != "")
+            if (textoIngresado != "" && textoIngresado.Length >3)
             {
                 try
                 {
-                    proyecto = new Proyecto();
-                    proyecto.Nombre = textoIngresado;
-                    if (!proyectoVM.ExisteProyecto(proyecto))
+                    Proyecto = new Proyecto();
+                    Proyecto.Nombre = textoIngresado;
+                    Proyecto.NumDocumentos = 0;
+                    Proyecto.NumEtiquetas = 0;
+                    if (!proyectoVM.ExisteProyecto(Proyecto))
                     {
-                        proyectoVM.AgregarProyecto(proyecto);
+                        proyectoVM.AgregarProyecto(Proyecto);
                         Proyecto_Ok();
                         flyNombre.Hide();
                     }
                     else
                     {
-                        ContentDialog proyDialog = new ContentDialog()
-                        {
-                            Title = "Nombre duplicado",
-                            Content = "Ya existe un proyecto con el mismo nombre",
-                            PrimaryButtonText = "Aceptar"
-                        };
-                        proyDialog.ShowAsync();
+                        MostrarDialog(10);
+
                     }
                 }
                 catch (Exception excepcion)
@@ -130,12 +131,18 @@ namespace Detextive
                     };
                 }
             }
+            else
+            {
+                MostrarDialog(11);
+            }
         }
         private void Proyecto_Ok()
         {
-            etiqVM = new EtiquetaViewModel(proyecto);
-            documentoVM = new DocumentoViewModel(proyecto);
-            this.Frame.Navigate(typeof(ProyectoPage), proyecto);
+            proyecto.Documentos = new List<Documento>();
+            proyecto.Etiquetas = new List<Etiqueta>();
+            proyecto.Nubes = new List<Nube>();
+
+            this.Frame.Navigate(typeof(ProyectosPage), Proyecto);
         }
         private void AbrirProyecto(object sender, RoutedEventArgs e)
         {
@@ -143,24 +150,23 @@ namespace Detextive
         }
         private void lvProyectos_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            proyecto = (Proyecto)lvProyectos.SelectedItem;
-            Debug.WriteLine(proyecto.Id);
+            Proyecto = new Proyecto();
+            Proyecto = (Proyecto)lvProyectos.SelectedItem;
+
+            Debug.WriteLine(Proyecto.Id);
             flyListaProy.Hide();
             Proyecto_Ok();
-        }
-        private void CrearEtiqueta(object sender, RoutedEventArgs e)
-        {
-
         }
         private void AceptarEtiqueta(object sender, RoutedEventArgs e)
         {
             string textoIngresado = tbEtiqueta.Text;
-            if (textoIngresado != "")
+            if (textoIngresado != "" && textoIngresado.Length > 3)
             {
                 try
                 {
                     etiqueta = new Etiqueta();
-                    etiqueta.ProyectoId = proyecto.Id;
+                    etiqueta.ProyectoId = Proyecto.Id;
+                    Proyecto.NumEtiquetas = Proyecto.NumEtiquetas + 1;
                     etiqueta.Nombre = textoIngresado;
                     etiqueta.NumCitas = 0;
                     flyNvaEtiqueta.Hide();
@@ -168,7 +174,8 @@ namespace Detextive
                     if (!existe)
                     {
                         etiqVM.AgregarEtiqueta(etiqueta);
-                        proyecto.Etiquetas.Add(etiqueta);
+                        Proyecto.Etiquetas.Add(etiqueta);
+                        proyectoVM.ActualizarProyecto(Proyecto);
                         MostrarDialog(6);
                     }
                     else
@@ -186,10 +193,22 @@ namespace Detextive
                     };
                 }
             }
+            else
+            {
+                MostrarDialog(11);
+            }
         }
         private void CrearNubes(object sender, RoutedEventArgs e)
         {
-            this.Frame.Navigate(typeof(Detextive.View.DocumentoPage));
+            if (texto != "")
+            {
+                this.Frame.Navigate(typeof(Detextive.View.NubePages), texto);
+            }
+            else
+            {
+                this.Frame.Navigate(typeof(Detextive.View.NubePages));
+            }
+
         }
         public async void OpenButton_Click(object sender, RoutedEventArgs e)
         {
@@ -200,6 +219,7 @@ namespace Detextive
 
             Windows.Storage.StorageFile file = await picker.PickSingleFileAsync();
 
+            
             if (file != null)
             {
                 if (file.FileType == ".rtf")
@@ -211,7 +231,8 @@ namespace Detextive
 
                         // Load the file into the Document property of the RichEditBox.
                         editor.Document.LoadFromStream(Windows.UI.Text.TextSetOptions.FormatRtf, randAccStream);
-
+                        editor.Document.GetText(TextGetOptions.None, out texto);
+                        btnNube.IsEnabled = true;
                     }
                     catch (Exception excepcion)
                     {
@@ -221,25 +242,27 @@ namespace Detextive
 
                 try
                 {
-                    editor.Document.GetText(TextGetOptions.None, out texto);
+                    documento = new Documento();
 
                     string[] nombre = file.Name.Split(".");
                     string name = nombre[0];
-                    if ((!documentoVM.ExisteDocumento(name, proyecto)))
+                    if ((!documentoVM.ExisteDocumento(name, Proyecto)))
                     {
-                        documento = new Documento();
                         documento.Ubicacion = file.Path;
-                        documento.ProyectoId = proyecto.Id;
+                        documento.ProyectoId = Proyecto.Id;
+                        Proyecto.UbicacionDocActivo = documento.Ubicacion;
+                        Proyecto.NumDocumentos = Proyecto.NumDocumentos + 1;
                         documento.Nombre = name;
                         documentoVM.AgregarDocumento(documento);
-                        //proyecto.Documentos.Add(documento);           
-                        UpdateWords();
-                    
+                        proyecto.Documentos.Add(documento);
+                        proyectoVM.ActualizarProyecto(Proyecto);
                     }
                     else
                     {
                         documento = documentoVM.GetDocumento(name);
                     }
+
+                    UpdateWords();
                 }
                 catch (Exception excepcion)
                 {
@@ -373,66 +396,43 @@ namespace Detextive
 
                     await errorFile.ShowAsync();
                     break;
-            }
-        }
-        private void BaseExample_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
+                case 10:
+                    ContentDialog nombreDuplicado = new ContentDialog()
+                    {
+                        Title = "Nombre duplicado",
+                        Content = "Ya existe un proyecto con el mismo nombre",
+                        PrimaryButtonText = "Aceptar"
+                    };
+                    await nombreDuplicado.ShowAsync();
+                    break;
 
+                case 11:
+                    ContentDialog textoVacio = new ContentDialog()
+                    {
+                        Title = "Nombre no valido",
+                        Content = "El nombre debe tener al menos 3 caracteres",
+                        PrimaryButtonText = "Aceptar"
+                    };
+                    await textoVacio.ShowAsync();
+                    break;
+
+                case 12:
+                    ContentDialog yaAsignada = new ContentDialog()
+                    {
+                        Title = "La etiqueta existe",
+                        Content = "El fragmento seleccionado ya ha sido asignado a la misma etiqueta",
+                        PrimaryButtonText = "Aceptar"
+                    };
+                    await yaAsignada.ShowAsync();
+                    break;
+               
+            }
         }
         public void UpdateWords()
         {
-            string textoNuevo = texto;
-            if (textoNuevo.Length < 3)
-            {
-                return;
-            }
-            IEnumerable<string> terms = new StringExtractor(textoNuevo, _progress);
-            int extension = terms.Count();
-           CloudControl.WeightedWords =
-               terms
-               .Filter(_blacklist)
-               .CountOccurences()
-               .SortByOccurences();
 
-            if (!nubeVM.ExisteNube(documento, proyecto))
-            {
-                nube = new Nube();
-                nube.NumDocumentos = "1";                
-                nube.ExtensionFragmento = extension;                
-                documento.Extension = extension;
-                nube.ProyectoId = proyecto.Id;
-                nube.DocumentoId = documento.Id;                 
-                nube.NumConceptos = CloudControl.WeightedWords.Count();                 
-                nubeVM.AgregarNube(nube);
-            }
-            else
-            {
-                nube = nubeVM.GetNubeFiltro(documento, proyecto);
-            }
-            Palabra palabra;
-            palabraVM = new PalabraViewModel();
-            try
-            {
-                foreach (var item in CloudControl.WeightedWords)
-                {
-                    palabra = new Palabra();
-                    palabra.ProyectoId = proyecto.Id;
-                    palabra.NubeId = nube.Id;
-                    palabra.Nombre = item.Text;
-                    palabra.NumApariciones = item.Occurrences;
-                    palabra.Porcentaje = palabra.NumApariciones / nube.ExtensionFragmento;
-                    palabraVM.AgregarPalabra(palabra);
-                    // nube.PalabrasSet.Add(palabra);
-                }
-                nubeVM.ActualizarNube(nube);
-                //   proyecto.Nubes.Add(nube);
-                documentoVM.ActualizarDocumento(documento);
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine(ex.StackTrace);
-            }
         }
+
         internal class ProgressBarWrapper : IProgressIndicator
         {
             private readonly ProgressBar m_ProgressBar;
@@ -466,37 +466,9 @@ namespace Detextive
         }
         private void CerrarProyecto(object sender, RoutedEventArgs e)
         {
-            //proyecto = null;
-            //openFileButton.IsEnabled = false;
-            //saveFileButton.IsEnabled = false;
-            //underlineButton.IsEnabled = false;
-            //btnEtiqueta.IsEnabled = false;
-            //btnNube.IsEnabled = false;
-            //btnCerrarProy.IsEnabled = false;
-            //btnAbrirProy.IsEnabled = true;
-            //btnProyecto.IsEnabled = true;
+            proyecto = null;
 
-            this.Frame.Navigate(typeof(ProyectoPage));
-        }
-        public void btDocPage_Click(object sender, RoutedEventArgs e)
-        {
-            this.Frame.Navigate(typeof(Detextive.View.DocumentoPage), proyecto);
-        }
-        private void btEtiPage_Click(object sender, RoutedEventArgs e)
-        {
-            this.Frame.Navigate(typeof(Detextive.View.EtiquetaPage), proyecto);
-        }
-        private void btNubePage_Click(object sender, RoutedEventArgs e)
-        {
-            this.Frame.Navigate(typeof(Detextive.View.NubePages), proyecto);
-        }
-        private void btSalirPage_Click(object sender, RoutedEventArgs e)
-        {
-            Application.Current.Exit();
-        }
-        private void btProyPage_Click(object sender, RoutedEventArgs e)
-        {
-            this.Frame.Navigate(typeof(ProyectoPage));
+            this.Frame.Navigate(typeof(ProyectosPage));
         }
         internal class BannedWords : CommonBlacklist
         {
@@ -733,7 +705,7 @@ namespace Detextive
                 "vamos" ,
                 "varias" ,
                 "varios" ,
-                "vaya" , 
+                "vaya" ,
                     "voy" ,
                     "y" ,
                 "ya" ,
@@ -763,14 +735,29 @@ namespace Detextive
                 string seleccion;
                 selectedText.GetText(TextGetOptions.None, out seleccion);
                 cita = new Cita();
-                citaVM = new CitaViewModel(documento);
+                citaVM = new CitaViewModel(etiqueta);
                 cita.DocumentoId = documento.Id;
                 cita.Texto = seleccion;
-                if (etiqueta != null)
+                bool existe = false;
+                if (etiqueta != null && citaVM.citas != null && citaVM.citas.Count > 0)
+                {
+                    foreach (Cita c in citaVM.citas)
+                    {
+                        if (c.Texto.Equals(seleccion))
+                        {
+                            existe = true;
+                            break;
+                        }
+                    }
+                }
+                if (!existe)
                 {
                     cita.EtiquetaId = etiqueta.Id;
                     citaVM.AgregarCita(cita);
-                    //documento.CitasSet.Add(cita);
+                    etiqueta.NumCitas = etiqueta.NumCitas + 1;
+                    // documento.Citas.Add(cita);
+                    etiqVM.ActualizarEtiqueta(etiqueta);
+                    documentoVM.ActualizarDocumento(documento);
                     Windows.UI.Text.ITextCharacterFormat charFormatting = selectedText.CharacterFormat;
                     if (charFormatting.Underline == Windows.UI.Text.UnderlineType.None)
                     {
@@ -785,54 +772,48 @@ namespace Detextive
                 }
                 else
                 {
-                    MostrarDialog(5);
+                    MostrarDialog(12);
                 }
             }
-            
+            else
+            {
+                MostrarDialog(5);
+            }
+        }
+    private void EliminarProyecto(object sender, RoutedEventArgs e)
+    {
+        
+        try
+        {
+            if (lvPEliminar.SelectedItem != null)
+            {
+                Proyecto p = (Proyecto)lvPEliminar.SelectedItem;              
+
+                proyectoVM.EliminarProyecto(p);
+                    flyLPEliminar.Hide();
+                    this.Frame.Navigate(typeof(ProyectosPage));
+             }
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine("No se puede elimnar el proyecto");
         }
     }
+
+    private void AceptarNuevoNombre_Click(object sender, RoutedEventArgs e)
+    {
+        string textoIng = tbCambiarNombre.Text;
+            if (textoIng != null && textoIng.Length > 3)
+            {
+                proyecto.Nombre = textoIng;
+                proyectoVM.ActualizarProyecto(proyecto);
+                flyCambiarNombre.Hide();
+                this.Frame.Navigate(typeof(ProyectosPage));
+            }
+            else {
+                MostrarDialog(11);
+            }
+
+    }
 }
-//public void CreateCloud(FileInfo fileInfo) {
-
-//    nubeVM = new NubeViewModel();
-//    IEnumerable<string> palabras = nubeVM.GenerarNube(fileInfo);
-//    List<string> pal = palabras.ToList();
-
-//    ListView ContactsLV = new ListView();
-//    ContactsLV.ItemsSource = pal;
-
-
-//    listaPal.Children.Add(ContactsLV);
-//    var wCloud = new WordCloudGen(500, 300);
-
-//    //wCloud.Draw(palabras, );
-
-
-//  public void CreateCloud(string texto)
-//{
-//    nube = new Nube();
-//    nube.IdProy = proyecto.Id;
-//    nube.NumDocumentos ="1";
-//    nube.ExtensionFragmento = texto.Length;
-//    nubeVM = new NubeViewModel();
-// nubeVM.ProcesarTexto(texto);
-//palabras = nubeVM.ObtenerPalabras();
-
-
-
-////foreach()
-
-//frecuencias = nubeVM.ObtenerFrecuencias();
-
-//ListView ContactsLV = new ListView();
-//ContactsLV.ItemsSource = palabras;
-
-
-//listaPal.Children.Add(ContactsLV);
-//var wCloud = new WordCloudGen(500, 300);
-
-//wCloud.Draw(palabras, frecuencias);
-
-
-//}
-
+}

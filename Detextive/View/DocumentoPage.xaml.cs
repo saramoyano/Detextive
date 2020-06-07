@@ -2,6 +2,7 @@
 using Detextive.ViewModel;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -25,101 +26,118 @@ namespace Detextive.View
     /// </summary>
     public sealed partial class DocumentoPage : Page
     {
-        Proyecto proyecto;
         public DocumentoViewModel documentoVM;
         public CitaViewModel citaVM;
+        public NubeViewModel nubeVM; 
         Documento documento;
+        Nube nube; 
+        Cita cita;
+        List<Cita> citasD;
+
         public DocumentoPage()
         {
             this.InitializeComponent();
+            citasD = new List<Cita>();
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
-            if (e.Parameter != null && e.Parameter.GetType().Equals(typeof(Proyecto)))
+            if (ProyectosPage.Proyecto != null)
             {
-
-                proyecto = (Proyecto)e.Parameter;
-                documentoVM = new DocumentoViewModel(proyecto);
-                
+                documentoVM = new DocumentoViewModel(ProyectosPage.Proyecto);
+                btAgregar.IsEnabled = true;
             }
+            else {
+                btAgregar.IsEnabled = false;
+            }
+            btEliminar.IsEnabled = false;            
+                 
         }
-
         private void lvDocs_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            documento = (Documento)lvDocs.SelectedItem;
-            citaVM = new CitaViewModel(documento);
-
-            proyecto.NombreDocActivo = documento.Nombre;
-
-            //ScrollViewer scrollViewer = lvDocs.Parent as ScrollViewer;
-            //if (scrollViewer != null)
-            //{
-            //    var container = lvDocs.ContainerFromItem(lvDocs.SelectedItem);
-            //    var item = container as ListViewItem;
-            //    var objTransf = item.TransformToVisual(lvDocs);
-            //    Point point = objTransf.TransformPoint(new Point(0, 0));
-
-            //    scrollViewer.ChangeView(point.X, 0, 1);
-            //}
+            try
+            {
+                documento = (Documento)lvDocs.SelectedItem;
+                citaVM = new CitaViewModel(documento);
+                nubeVM = new NubeViewModel(ProyectosPage.Proyecto);
+                if(nubeVM.GetNubeFiltro(documento, ProyectosPage.Proyecto)!= null)
+                {
+                    nube = nubeVM.GetNubeFiltro(documento, ProyectosPage.Proyecto);
+                }            
+                btEliminar.IsEnabled = true;                
+                btAgregar.IsEnabled = true;                 
+                citasD = new List<Cita>();
+                foreach (Cita cita in citaVM.citas)
+                {
+                    citasD.Add(cita);
+                }
+                lvCitas.ItemsSource = citasD;
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("No se puede ver la lista");
+            }
         }
 
         private void Eliminar_Documento(object sender, RoutedEventArgs e)
         {
             try
             {
-                if (lvDocs.SelectedItem != null && (lvDocs.SelectedItems.Count ==1))
+                if (lvDocs.SelectedItem != null && (lvDocs.SelectedItems.Count == 1))
                 {
-                    string docEliminado = documento.Nombre;
-                    documentoVM.EliminarDocumento(documento);
 
-                    ContentDialog documentoEliminado = new ContentDialog
+                    foreach (Cita cita in citasD)
+                    {
+                        citaVM.EliminarCita(cita);
+
+                    }
+                    documento = (Documento)lvDocs.SelectedItem;                   
+                    documentoVM.EliminarDocumento(documento);
+                    ProyectosPage.Proyecto.NumDocumentos = ProyectosPage.Proyecto.NumDocumentos - 1;
+
+                    MostrarDialog(1);
+                }
+                this.Frame.Navigate(typeof(DocumentoPage));
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.StackTrace);
+            }
+        }
+
+        private async void MostrarDialog(int op)
+        {
+            switch (op)
+            {
+                case 1:
+                    ContentDialog proyDialog = new ContentDialog()
                     {
                         Title = "Documento eliminado",
-                        Content = "Se ha ha eliminado el documento" + docEliminado,
+                        Content = "Se ha eliminado el documento.",
+                        PrimaryButtonText = "Entendido"
+                    };
+                    await proyDialog.ShowAsync();
+                    break;
+                case 2:
+                    ContentDialog etiquetaAgregada = new ContentDialog
+                    {
+                        Title = "Cita agregada",
+                        Content = "",
                         CloseButtonText = "Aceptar"
                     };
-                }
+                    await etiquetaAgregada.ShowAsync();
+
+                    break;
             }
-            catch (Exception ex) {
-                
-            }
+        }
+                    private void AgregarDocumento(object sender, RoutedEventArgs e)
+        {
+            this.Frame.Navigate(typeof(ProyectosPage));
         }
 
-        private void Analizar(object sender, RoutedEventArgs e)
-        {
-            this.Frame.Navigate(typeof(ProyectoPage), proyecto);
-        }
-
-        private void NubeMultidocumento(object sender, RoutedEventArgs e)
-        {
-            this.Frame.Navigate(typeof(NubePages), proyecto);          
-        }
-
-        private void Button_Click_2(object sender, RoutedEventArgs e)
-        {
-            this.Frame.Navigate(typeof(ProyectoPage), proyecto);
-        }
-
-        private void btEtiPage_Click_1(object sender, RoutedEventArgs e)
-        {
-            this.Frame.Navigate(typeof(Detextive.View.EtiquetaPage), proyecto);
-        }
-
-        private void btDocPage_Click_1(object sender, RoutedEventArgs e)
-        {
-            this.Frame.Navigate(typeof(Detextive.View.DocumentoPage), proyecto);
-        }
-
-        private void btNubePage_Click_2(object sender, RoutedEventArgs e)
-        {
-            this.Frame.Navigate(typeof(Detextive.View.NubePages), proyecto);
-        }
-
-        private void btProyPage_Click(object sender, RoutedEventArgs e)
-        {
-            this.Frame.Navigate(typeof(ProyectoPage), proyecto);
-        }
+        
+        //    this.Frame.Navigate(typeof(ProyectosPage), proyecto);
+        //}
     }
 }

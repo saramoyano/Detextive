@@ -8,19 +8,21 @@ namespace AccesoDatos.Model
     {
         private int _id;
         private string _nombre;
-        private int _idProyecto;
+        private int _proyectoId;
         private int _numCitas;
         private Proyecto _proyecto;
-        public ICollection<Cita> Citas;
+        private List<Cita> citas;
 
         public Etiqueta() {
             Citas = new List<Cita>();
         }
 
-        public int Id { get => _id; set => _id = value; }
+        public int Id { get => _id; set { _id = value; NotificarCambio("Id"); } }
         public string Nombre { get { return _nombre; } set { _nombre = value; NotificarCambio("Nombre"); } }
-        public int ProyectoId { get => _idProyecto; set => _idProyecto = value; }
-        public int NumCitas { get => _numCitas; set => _numCitas = value; }
-        public Proyecto Proyecto { get => _proyecto; set => _proyecto = value; }  
+        public int ProyectoId { get => _proyectoId; set { _proyectoId = value; NotificarCambio("Id"); } }
+        public int NumCitas { get => _numCitas; set { _numCitas = value; NotificarCambio("NumCitas"); }}
+        public Proyecto Proyecto { get => _proyecto; set { _proyecto = value; NotificarCambio("Proyecto"); } }
+
+        public List<Cita> Citas { get => citas; set => citas = value; }
     }
 }

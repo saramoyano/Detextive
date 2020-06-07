@@ -9,107 +9,28 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid>
-
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="67*"/>
-            <ColumnDefinition Width="220*"/>
-            <ColumnDefinition Width="205*"/>
+        <Grid.ColumnDefinitions>            
+            <ColumnDefinition Width="377*"/>
+            <ColumnDefinition Width="373*"/>
         </Grid.ColumnDefinitions>
-        <StackPanel Padding="15"
-                    Grid.Column="0"
-                    Orientation="Vertical" 
-                    BorderBrush="Gray" 
-                    BorderThickness="1" 
-                    Margin="0,-13,0,-15">
-            <Button Name="btProyPage" 
-                    Background="White"  
-                    Margin="0, 30, 0,30" 
-                    ToolTipService.ToolTip="Proyecto" 
-                    HorizontalAlignment="Center" 
-                    Padding="0" 
-                    BorderThickness="0"
-                    Click="btProyPage_Click">
-                <Image Source="/Assets/proyecto.png"  
-                       Stretch="Uniform"/>
-            </Button>
-            <Button Name="btDocPage"
-                    Click="btDocPage_Click" 
-                    Background="White"   
-                    Margin="0, 30, 0,30" 
-                    BorderBrush="Black"
-                    ToolTipService.ToolTip="Documentos" 
-                    HorizontalAlignment="Center" 
-                    VerticalAlignment="Stretch" 
-                    Padding="0" 
-                    BorderThickness="0"  >
-                <Image HorizontalAlignment="Center" 
-                       VerticalAlignment="Center"
-                       Source="/Assets/docs.png"
-                       Stretch="Uniform"/>
-            </Button>
-            <Button Name="btEtiPage" 
-                    Click="btEtiPage_Click" 
-                    Background="White"  
-                    Margin="0, 30, 0,30" 
-                    BorderBrush="Black" 
-                    ToolTipService.ToolTip="Etiquetas" 
-                    HorizontalAlignment="Center" 
-                    VerticalAlignment="Stretch" 
-                    Padding="0" 
-                    BorderThickness="0"  >
-                <Image HorizontalAlignment="Center" 
-                       VerticalAlignment="Center"
-                       Source="/Assets/tags.png" 
-                       Stretch="Uniform"  />
-            </Button>
-            <Button Name="btNubePage"
-                    Click="btNubePage_Click"
-                    Background="White"  
-                    Margin="0, 30, 0,30"
-                    BorderBrush="Black" 
-                    ToolTipService.ToolTip="Nubes de palabras"
-                    HorizontalAlignment="Center"  
-                    VerticalAlignment="Stretch" 
-                    Padding="0" 
-                    BorderThickness="0"  >
-                <Image HorizontalAlignment="Center" 
-                       VerticalAlignment="Center" 
-                       Source="/Assets/cloud.png"
-                       Stretch="Uniform"  />
-            </Button>
-            <Button Name="btSalirPage" 
-                    Background="White" 
-                    Margin="0, 30, 0,30"
-                    ToolTipService.ToolTip="Salir" 
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Bottom"
-                    Padding="0" 
-                    BorderThickness="0"  >
-                <Image HorizontalAlignment="Center" 
-                       VerticalAlignment="Center" 
-                       Source="/Assets/salir.png" 
-                       Stretch="Uniform"  />
-            </Button>
-        </StackPanel>
-        <Grid Grid.Column="1" Margin="5,15,5,0">
+        <Grid Grid.Column="0" Margin="5,15,5,0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="*"/>
-                <RowDefinition Height="11*"/>
+                <RowDefinition Height="13*"/>
             </Grid.RowDefinitions>
             <Grid Grid.Row="0" Margin="5,0,5,0" >
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
-                    
+                    <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 <Button Grid.Column="0" 
                         Name="btAgregar"
-                        FontSize="20"
+                        FontSize="18"
                         Margin="5,0,5,0" 
-                        Content="Agregar" 
-                       
+                        Content="Agregar"                        
                         VerticalAlignment="Stretch" 
                         HorizontalAlignment="Stretch">
                     <Button.Flyout>
@@ -128,7 +49,7 @@
                                 <Button Grid.Row="1" 
                                         VerticalAlignment="Center" 
                                         HorizontalAlignment="Center" 
-                                        Click="Button_Click_1" 
+                                        Click="AgregarAceptar" 
                                         Content="Aceptar" />
                             </Grid>
                         </Flyout>
@@ -136,10 +57,9 @@
                 </Button>
                 <Button Grid.Column="1" 
                         Name="btActualizar" 
-                        FontSize="20"
+                        FontSize="18"
                         Margin="5,0,5,0" 
-                        Content="Cambiar Nombre" 
-                      
+                        Content="Renombrar"                       
                         VerticalAlignment="Stretch"
                         HorizontalAlignment="Stretch">
                     <Button.Flyout>
@@ -158,69 +78,97 @@
                                 <Button Grid.Row="1" 
                                         VerticalAlignment="Center" 
                                         HorizontalAlignment="Center" 
-                                        Click="Button_Click" 
+                                        Click="CambiarNombre" 
                                         Content="Aceptar" />
                             </Grid>
                         </Flyout>
                     </Button.Flyout>
                 </Button>
-               
                 <Button Grid.Column="3" 
                         Name="btEliminar"
-                        FontSize="20"
+                        FontSize="18"
                         Margin="5,0,5,0" 
                         Content="Eliminar" 
                         Click="btEliminar_Click" 
                         VerticalAlignment="Stretch"
                         HorizontalAlignment="Stretch"/>
+                <Button Name="btQuitarEtiqueta" 
+                        Content="Quitar cita" 
+                        Margin="5,0,5,0"
+                        Grid.Column="2"
+                        FontSize="18" 
+                        VerticalAlignment="Stretch"
+                        HorizontalAlignment="Stretch" 
+                        Click="QuitarEtiqueta_Click" 
+                        ToolTipService.ToolTip="Remueve la etiqueta asignada a la cita."/>
             </Grid>
-            <!---->
             <TextBlock Grid.Row="1"
-                       FontSize="24"
+                       FontSize="18"
                        FontWeight="Bold"
                        VerticalAlignment="Center"
-                       Text="Etiquetas en este proyecto:"/>
+                       Text="Etiquetas en este proyecto:"
+                       Margin="5,0,0,0"/>
             <ListView Grid.Row="2"
                       x:Name="lvEtiquetas" 
-                      ItemsSource="{x:Bind etiquetaVM.etiquetas}"
+                      ItemsSource="{x:Bind etiquetaVM.etiquetas, Mode=OneWay}"
                       Grid.Column="1"  Margin="5,10,0,5" 
-                      SelectionMode="Multiple" 
-                      SelectionChanged="lvEtiquetas_SelectionChanged">
+                      SelectionMode="Single" 
+                      SelectionChanged="lvEtiquetas_SelectionChanged"
+                      SelectedIndex="0">
                 <ListView.ItemTemplate>
                     <DataTemplate x:DataType="local:Etiqueta">
-                        <TextBlock Text="{x:Bind Nombre, Mode=OneWay}" 
-                                   FontSize="20"
-                                   Foreground="Black"/>
+                        <Grid Margin="5,10,5,0">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>                                
+                            </Grid.RowDefinitions>
+                            <TextBlock Grid.Row="0"
+                                       Text="{x:Bind Nombre, Mode=OneWay}" 
+                                       FontSize="18"
+                                       Foreground="Black"                                      
+                                       VerticalAlignment="Top"/>
+                            <TextBlock Grid.Row="1" 
+                                       Text="{x:Bind NumCitas}" 
+                                       FontSize="16" 
+                                       Foreground="DarkSlateGray"></TextBlock>
+                            </Grid>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
         </Grid>
-        <!---->
-        <Grid Grid.Column="2"
-              Margin="5">
+        <Grid Grid.Column="1"
+              Margin="5,0,5,5">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="11*"/>
             </Grid.RowDefinitions>
             <TextBlock Text="Citas asociadas a la etiqueta: "
-                       VerticalAlignment="Bottom"
-                       FontSize="24"
-                       FontWeight="Bold"/> 
-            <ListView Grid.Column="2"
-                  x:Name="lvCitas"  
-                  Margin="5,15,5,5" 
-                  ItemsSource="{x:Bind etiqueta.Citas}" 
-                  SelectionMode="None" 
-                  SelectionChanged="lvCitas_SelectionChanged">
-            <ListView.ItemTemplate>
-                <DataTemplate x:DataType="local:Cita">
-                    <TextBlock Text="{x:Bind Texto, Mode=OneWay}" 
-                               FontSize="20" 
-                               Foreground="Black"/>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
+                       Grid.Row="0"
+                       VerticalAlignment="Center"
+                       FontSize="18"
+                       FontWeight="Bold"/>
+            <ListView Grid.Row="1"
+                      x:Name="lvCitas"  
+                      Margin="0,0,5,5"                       
+                      SelectionMode="Single" 
+                      ItemsSource="{x:Bind citasE}"
+                      SelectionChanged="lvCitas_SelectionChanged">                       
+                <ListView.ItemTemplate>
+                    <DataTemplate x:DataType="local:Cita">
+                        <Border BorderThickness="1" 
+                                BorderBrush="DarkGray">
+                            <TextBlock Text="{x:Bind Texto}"
+                                   TextWrapping="Wrap"
+                                   FontSize="18" 
+                                   Foreground="Black"
+                                   Margin="10,10,10,5"
+                                   Padding="5"
+                                   TextAlignment="Justify"/>
+                        </Border>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
         </Grid>
-       
+
     </Grid>
 </Page>

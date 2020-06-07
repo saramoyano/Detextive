@@ -43,22 +43,19 @@ namespace AccesoDatos.Logica
                 {
                     throw new Exception("No hay documentos guardados.", e);
                 }
-
             }
-
         }
 
-        // Obtener una  lista de Documentos según filtro aplicado (propiedad idProyecto)
+        // Obtener una  lista de Documentos según filtro aplicado (Proyecto)
         // params: objeto de la clase AccesoDatos.Model.Documento
         public ObservableCollection<Model.Documento> ListaDocumentosFiltro(Proyecto proyecto)
         {
-
             using (var db = new Model.Context())
             {
                 ObservableCollection<Documento> documentos = new ObservableCollection<Documento>();
                 try
                 {
-                    var lDocs = db.DocumentoSet.Where(b => b.ProyectoId.Equals(proyecto.Id)).ToList();
+                    List<Documento> lDocs = db.DocumentoSet.Where(b => b.ProyectoId.Equals(proyecto.Id)).ToList();
 
                     foreach (Documento documento in lDocs)
                     {
@@ -82,6 +79,15 @@ namespace AccesoDatos.Logica
                 return db.DocumentoSet.Single(b => b.Nombre.Equals(nombre));
 
             }               
+        }
+
+        public Documento GetDocumentoUbicacion(string ubicacion)
+        {
+            using (var db = new Model.Context())
+            {
+                return db.DocumentoSet.Single(b => b.Ubicacion.Equals(ubicacion));
+
+            }
         }
 
         //Determina si el documento existe

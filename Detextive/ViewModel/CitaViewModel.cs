@@ -16,7 +16,10 @@ namespace Detextive.ViewModel
         {
             citas =  AccesoDatos.Logica.LogicaCita.GetInstance().ListaCitasFiltro(d);
         }
-
+        public CitaViewModel(Etiqueta etiqueta)
+        {
+            citas = AccesoDatos.Logica.LogicaCita.GetInstance().ListaCitasFiltro(etiqueta);
+        }
 
         //public ObservableCollection<Cita> ListaCitas()
         //{
@@ -25,11 +28,11 @@ namespace Detextive.ViewModel
         //}
 
 
-        public ObservableCollection<Cita> ListaCitasFiltro(Etiqueta etiqueta)
-        {
-            citas = AccesoDatos.Logica.LogicaCita.GetInstance().ListaCitasFiltro(etiqueta);
-            return citas;
-        }
+        //public ObservableCollection<Cita> ListaCitasFiltro(Etiqueta etiqueta)
+        //{
+        //    citas = AccesoDatos.Logica.LogicaCita.GetInstance().ListaCitasFiltro(etiqueta);
+        //    return citas;
+        //}
         public void AgregarCita(Cita cita)
         {
             try

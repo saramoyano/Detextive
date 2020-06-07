@@ -13,7 +13,7 @@ namespace Detextive.ViewModel
 {
     public class NubeViewModel
     {
-        private ObservableCollection<Nube> nubes;
+        public ObservableCollection<Nube> nubes;
 
         public NubeViewModel(Proyecto p)
         {

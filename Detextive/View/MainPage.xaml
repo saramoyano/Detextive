@@ -1,0 +1,48 @@
+﻿<Page
+    x:Class="Detextive.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"   
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    mc:Ignorable="d"
+    Background="White"
+    Loaded="Page_Loaded">
+    <Grid>
+        <NavigationView Name="nvMenuPpal" 
+                        IsPaneOpen="False"
+                        PaneDisplayMode="LeftCompact"                        
+                        IsSettingsVisible="False" 
+                        SelectionChanged="nvMenuPpal_SelectionChanged">
+            <NavigationView.MenuItems>
+                <NavigationViewItem Content="Proyecto" 
+                                    Icon="Home" 
+                                    Tag="proyecto"/>
+                <NavigationViewItem Content="Documentos"
+                                    Icon="Document"
+                                    Tag="documentos"/>
+                <NavigationViewItem Content="Etiquetas"
+                                    Icon="Tag"
+                                    Tag="etiquetas"/>
+                <NavigationViewItem Content="Nubes"
+                                    Icon="Bullets"
+                                    Tag="nubes"/>
+            </NavigationView.MenuItems>
+            <NavigationView.PaneFooter>
+                <NavigationViewItem Tapped="NavigationViewItem_Tapped">
+                    <ContentControl>
+                        <StackPanel Orientation="Horizontal">
+                            <FontIcon FontFamily="Segoe MDL2 Assets"
+                                      Glyph="&#xE7E8;"/>
+                            <TextBlock Text="Salir" 
+                                       VerticalAlignment="Top" 
+                                       Padding="10,0,0,0"/>
+                        </StackPanel>
+                    </ContentControl>
+                </NavigationViewItem>
+            </NavigationView.PaneFooter>
+            <Frame Name="ContentFrame"/>
+        </NavigationView>
+
+       
+    </Grid>
+</Page>

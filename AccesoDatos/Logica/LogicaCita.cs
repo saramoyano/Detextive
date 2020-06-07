@@ -22,7 +22,7 @@ namespace AccesoDatos.Logica
         }
 
         // Obtener la lista de Citas
-        // params: ninguno
+        // params: Documento
         public ObservableCollection<Model.Cita> ListaCitasFiltro(Documento d)
         {
             ObservableCollection<Cita> citas = new ObservableCollection<Cita>();
