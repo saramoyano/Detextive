@@ -21,9 +21,9 @@ namespace Detextive.ViewModel
         public bool ExisteDocumento(string nombre, Proyecto p) {
             return AccesoDatos.Logica.LogicaDocumento.GetInstance().ExisteDocumento(nombre,p);
         }
-        public Documento GetDocumento(string nombre)
+        public Documento GetDocumento(string nombre, Proyecto p)
         {           
-                return AccesoDatos.Logica.LogicaDocumento.GetInstance().GetDocumento(nombre);
+                return AccesoDatos.Logica.LogicaDocumento.GetInstance().GetDocumento(nombre, p );
         }
         public Documento GetDocumentoUbicacion(string ubicacion)
         {

@@ -12,7 +12,8 @@
                         IsPaneOpen="False"
                         PaneDisplayMode="LeftCompact"                        
                         IsSettingsVisible="False" 
-                        SelectionChanged="nvMenuPpal_SelectionChanged">
+                        SelectionChanged="nvMenuPpal_SelectionChanged"
+                        IsBackButtonVisible="Collapsed">
             <NavigationView.MenuItems>
                 <NavigationViewItem Content="Proyecto" 
                                     Icon="Home" 

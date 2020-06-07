@@ -9,8 +9,10 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Security;
+using Windows.ApplicationModel.Contacts;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.Storage;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -33,11 +35,12 @@ namespace Detextive.View
         ProyectoViewModel proyectoVM;
         Documento documento;
         Nube nube;
-        Palabra palabra;
+
         PalabraViewModel palabraVM;
         List<Palabra> palabrasN;
         CrearNube cn;
         string text;
+        IReadOnlyList<StorageFile> files;
         public NubePages()
         {
             cn = new CrearNube();
@@ -52,13 +55,13 @@ namespace Detextive.View
 
                 if (ProyectosPage.Proyecto != null)
                 {
+                    files = new List<StorageFile>();
                     proyectoVM = new ProyectoViewModel();
                     nubeVM = new NubeViewModel(ProyectosPage.Proyecto);
                     documentoVM = new DocumentoViewModel(ProyectosPage.Proyecto);
                     palabraVM = new PalabraViewModel(ProyectosPage.Proyecto);
                     palabrasN = new List<Palabra>();
-                    //palabraVM = new PalabraViewModel(nube);
-                    //  nube.Palabras = palabraVM.palabras;
+                    Crear.IsEnabled = true;
                     foreach (Palabra palabra in palabraVM.palabras)
                     {
                         palabrasN.Add(palabra);
@@ -68,9 +71,10 @@ namespace Detextive.View
                     {
                         text = (string)e.Parameter;
                         CloudControl.WeightedWords = cn.GenerarNube(text);
-                        if (ProyectosPage.Proyecto.UbicacionDocActivo != null)
+
+                        if (ProyectosPage.Proyecto.NombreDocActivo != null && ProyectosPage.Proyecto.NombreDocActivo != "")
                         {
-                            documento = documentoVM.GetDocumentoUbicacion(ProyectosPage.Proyecto.UbicacionDocActivo);
+                            documento = documentoVM.GetDocumento(ProyectosPage.Proyecto.NombreDocActivo, ProyectosPage.Proyecto);
                             if (!nubeVM.ExisteNube(documento, ProyectosPage.Proyecto))
                             {
                                 GuardarNube();
@@ -79,23 +83,20 @@ namespace Detextive.View
                             {
                                 nube = nubeVM.GetNubeFiltro(documento, ProyectosPage.Proyecto);
                             }
-                            //palabraVM = new PalabraViewModel(nube);
-
-                            foreach (Palabra palabra in palabraVM.palabras)
-                            {
-                                palabrasN.Add(palabra);
-                            }
-                            lvPalabras.ItemsSource = palabrasN;
                         }
                     }
-                    else 
+                    else
                     {
                         MostrarDialog(2);
                     }
-                }
 
-                btEliminar.IsEnabled = false;
-                //Crear.IsEnabled = false;
+                   
+                }
+                else 
+                {
+                     btEliminar.IsEnabled = false;
+                    Crear.IsEnabled = false;
+                }
             }
             catch (Exception ex)
             {
@@ -108,15 +109,15 @@ namespace Detextive.View
             try
             {
                 nube = new Nube();
-                //if (lvDocumentos.SelectedItems != null && lvDocumentos.SelectedItems.Count > 1)
-                //{
-                //    nube.NumDocumentos = lvDocumentos.SelectedItems.Count;
-                //}
-                //else
-                //{
+                if (files.Count > 1)
+                {
+                    nube.NumDocumentos = files.Count;
+                }
+                else
+                {
                     nube.NumDocumentos = 1;
                     nube.DocumentoId = documento.Id;
-                //}
+                }
 
                 nube.ExtensionFragmento = cn.Extension;
                 documento.Extension = cn.Extension;
@@ -124,10 +125,7 @@ namespace Detextive.View
                 nube.NumConceptos = CloudControl.WeightedWords.Count();
 
                 nubeVM.AgregarNube(nube);
-
-                
                 Palabra palabra;
-                //palabraVM = new PalabraViewModel(nube);
                 if (nube.NumDocumentos == 1)
                 {
                     documento.NubeId = nube.Id;
@@ -139,35 +137,35 @@ namespace Detextive.View
                         palabra.Nombre = item.Text;
                         palabra.NumApariciones = item.Occurrences;
                         palabraVM.AgregarPalabra(palabra);
+                        nube.Palabras.Add(palabra);
+                        palabrasN.Add(palabra);
                     }
                 }
-                //else
-                //{
-                //    foreach (var item in CloudControl.WeightedWords)
-                //    {
-                //        palabra = new Palabra();
-                //        palabra.ProyectoId = ProyectosPage.Proyecto.Id;
-                //        palabra.NubeId = nube.Id;
-                //        palabra.Nombre = "multidoc " + item.Text;
-                //        palabra.NumApariciones = item.Occurrences;
-                //        palabraVM.AgregarPalabra(palabra);
-                //    }
-                //}
-
-               
+                else
+                {
+                    foreach (var item in CloudControl.WeightedWords)
+                    {
+                        palabra = new Palabra();
+                        palabra.ProyectoId = ProyectosPage.Proyecto.Id;
+                        palabra.NubeId = nube.Id;
+                        palabra.Nombre = "multidoc: " + item.Text;
+                        palabra.NumApariciones = item.Occurrences;
+                        palabraVM.AgregarPalabra(palabra);
+                        nube.Palabras.Add(palabra);
+                        palabrasN.Add(palabra);
+                    }
+                }
+                lvPalabras.ItemsSource = palabrasN;
+                nubeVM.ActualizarNube(nube);
+                ProyectosPage.Proyecto.Nubes.Add(nube);
+                proyectoVM.ActualizarProyecto(ProyectosPage.Proyecto);
+                documentoVM.ActualizarDocumento(documento);
 
             }
             catch (Exception ex)
             {
                 Debug.WriteLine(ex.StackTrace);
             }
-
-
-           // nube.Palabras = palabraVM.palabras;
-            nubeVM.ActualizarNube(nube);
-            //ProyectosPage.Proyecto.Nubes.Add(nube);
-            proyectoVM.ActualizarProyecto(ProyectosPage.Proyecto);
-            documentoVM.ActualizarDocumento(documento);
         }
 
         private void lvDocumentos_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -175,25 +173,12 @@ namespace Detextive.View
             if (lvDocumentos.SelectedItem != null) //
             {
                 btEliminar.IsEnabled = true;
-                //if (lvDocumentos.SelectedItems.Count > 1)
-                //{
-                    //Crear.IsEnabled = true;
-                //}
+
                 try
                 {
                     documento = (Documento)lvDocumentos.SelectedItem;
                     nube = nubeVM.GetNubeFiltro(documento, ProyectosPage.Proyecto);
-                    //            //if (nube != null)
-                    //            //{
-                    //            //    palabrasN = new List<Palabra>();
-                    //            //   //palabraVM = new PalabraViewModel(nube);
-                    //            //  //  nube.Palabras = palabraVM.palabras;
-                    //            //    foreach (Palabra palabra in palabraVM.palabras)
-                    //            //    {
-                    //            //        palabrasN.Add(palabra);
-                    //            //    }
-                    //            //    lvPalabras.ItemsSource = palabrasN;
-                    //            //}
+                 
                 }
                 catch (Exception ex)
                 {
@@ -214,15 +199,15 @@ namespace Detextive.View
             {
                 if (lvDocumentos.SelectedItem != null && lvDocumentos.SelectedItems.Count == 1)
                 {
-                   
+
                     nube = nubeVM.GetNubeFiltro((Documento)lvDocumentos.SelectedItem, ProyectosPage.Proyecto);
-                    if(nube!= null)
+                    if (nube != null)
                     {
-                       nubeVM.EliminarNube(nube);
-                      
+                        nubeVM.EliminarNube(nube);
+
                     }
                     MostrarDialog(1);
-                   
+
                 }
 
             }
@@ -258,46 +243,35 @@ namespace Detextive.View
             }
         }
 
-                    //private void Crear_Click(object sender, RoutedEventArgs e)
-                    //{
-                    //    try
-                    //    {
-                    //        string textoNubeMultidoc = "";
-                    //        foreach (Documento doc in lvDocumentos.SelectedItems)
-                    //        {
-                    //            string[] ubicacion = doc.Ubicacion.Split("\\");
-                    //            string fullUbicacion = Path.Combine(ubicacion);
-                    //           // Debug.WriteLine("E:\LIBROS\500 Libros Digitales\Charles Darwin - El origen de las especies.rtf");
-                    //            if (File.Exists(@"E:\Banquete.rtf"))
-                    //            {
-                    //                File.SetAttributes(fullUbicacion, FileAttributes.Normal);
-                    //            }
-                    //            string text = System.IO.File.ReadAllText(@"E:\Banquete.rtf");
-                    //            textoNubeMultidoc = textoNubeMultidoc + text;
-                    //            CloudControl.WeightedWords = cn.GenerarNube(textoNubeMultidoc);
-                    //            GuardarNube();
-                    //        }
+        private async void Crear_Click(object sender, RoutedEventArgs e)
+        {
+            string textoNubeMultidoc = "";
+            try
+            {
+                var picker = new Windows.Storage.Pickers.FileOpenPicker();
+                picker.ViewMode = Windows.Storage.Pickers.PickerViewMode.List;
+                picker.SuggestedStartLocation = Windows.Storage.Pickers.PickerLocationId.DocumentsLibrary;
+                picker.FileTypeFilter.Add(".rtf");
 
-
-
-                    //    }
-                    //    catch (NotSupportedException ex)
-                    //    {
-                    //        Debug.WriteLine("notSupported" + ex.StackTrace);
-                    //    }
-                    //    catch (SecurityException ex)
-                    //    {
-                    //        Debug.WriteLine("security"+ex.StackTrace);
-                    //    }
-                    //    catch (Exception ex)
-                    //    {
-                    //        Debug.WriteLine(ex.GetType());
-                    //    }
-                    //}
-
-                    //private void btDocPage_Click(object sender, RoutedEventArgs e)
-                    //{
-
-                    //}
+                files = await picker.PickMultipleFilesAsync();
+                if (files != null && files.Count > 1)
+                {
+                    foreach (StorageFile file in files)
+                    {
+                        if (file != null)
+                        {
+                            var text = await FileIO.ReadTextAsync(file, Windows.Storage.Streams.UnicodeEncoding.Utf8);
+                            textoNubeMultidoc = textoNubeMultidoc + text;
+                        }
+                    }
+                    CloudControl.WeightedWords = cn.GenerarNube(textoNubeMultidoc);
+                    GuardarNube();
+                }
             }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.StackTrace);
+            }
+        }
     }
+}

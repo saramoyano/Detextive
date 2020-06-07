@@ -19,7 +19,9 @@ namespace Detextive
 {
 
     public sealed partial class MainPage : Page
-    {      
+    {
+        public string mruToken { get; internal set; }
+
         public MainPage()
         {
             this.InitializeComponent();

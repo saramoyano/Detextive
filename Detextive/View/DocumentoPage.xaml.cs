@@ -58,15 +58,10 @@ namespace Detextive.View
         {
             try
             {
-                documento = (Documento)lvDocs.SelectedItem;
-                citaVM = new CitaViewModel(documento);
-                nubeVM = new NubeViewModel(ProyectosPage.Proyecto);
-                if(nubeVM.GetNubeFiltro(documento, ProyectosPage.Proyecto)!= null)
-                {
-                    nube = nubeVM.GetNubeFiltro(documento, ProyectosPage.Proyecto);
-                }            
                 btEliminar.IsEnabled = true;                
-                btAgregar.IsEnabled = true;                 
+                btAgregar.IsEnabled = true;   
+                documento = (Documento)lvDocs.SelectedItem;
+                citaVM = new CitaViewModel(documento); 
                 citasD = new List<Cita>();
                 foreach (Cita cita in citaVM.citas)
                 {
@@ -76,7 +71,7 @@ namespace Detextive.View
             }
             catch (Exception ex)
             {
-                Debug.WriteLine("No se puede ver la lista");
+                Debug.WriteLine(ex.StackTrace);
             }
         }
 
@@ -95,6 +90,8 @@ namespace Detextive.View
                     documento = (Documento)lvDocs.SelectedItem;                   
                     documentoVM.EliminarDocumento(documento);
                     ProyectosPage.Proyecto.NumDocumentos = ProyectosPage.Proyecto.NumDocumentos - 1;
+                    ProyectosPage.Proyecto.NombreDocActivo = "";
+                    ProyectosPage.Proyecto.Token = "";
 
                     MostrarDialog(1);
                 }
@@ -134,10 +131,7 @@ namespace Detextive.View
                     private void AgregarDocumento(object sender, RoutedEventArgs e)
         {
             this.Frame.Navigate(typeof(ProyectosPage));
-        }
-
-        
-        //    this.Frame.Navigate(typeof(ProyectosPage), proyecto);
-        //}
+        }          
+         
     }
 }

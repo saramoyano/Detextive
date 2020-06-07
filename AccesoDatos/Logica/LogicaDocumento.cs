@@ -72,11 +72,11 @@ namespace AccesoDatos.Logica
 
         }
 
-        public Documento GetDocumento(string nombre)
+        public Documento GetDocumento(string nombre, Proyecto p)
         {
             using (var db = new Model.Context())
             {
-                return db.DocumentoSet.Single(b => b.Nombre.Equals(nombre));
+                return db.DocumentoSet.Single(b => b.Nombre.Equals(nombre) && b.ProyectoId.Equals(p.Id));
 
             }               
         }

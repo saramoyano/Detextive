@@ -274,11 +274,12 @@
                 </RichEditBox>
             </RelativePanel>
         </Grid>
-        <Grid Grid.Column="1" Margin="5,10,5,10" Background="White">
+        <Grid Grid.Column="1" 
+              Margin="5,10,5,10" 
+              Background="White">
             <Grid.RowDefinitions>
                 <RowDefinition Height="35*"/>
                 <RowDefinition Height="220*"/>
-
                 <RowDefinition Height="32*"/>
                 <RowDefinition Height="203*"/>
 
@@ -303,7 +304,7 @@
                       x:Name="lvDocumentos" 
                       Margin="5,10,0,5"
                       ItemsSource="{x:Bind documentoVM.documentos}"
-                      SelectionMode="None" >
+                      SelectionMode="None">
                 <ListView.ItemTemplate>
                     <DataTemplate x:DataType="data:Documento">
                         <TextBlock Text="{x:Bind Nombre}" 
@@ -353,7 +354,7 @@
                           Grid.Row="3" 
                           Margin="5,7,0,5" 
                           ItemsSource="{x:Bind etiqVM.etiquetas}" 
-                          SelectionChanged="lvEtiquetas_SelectionChanged">
+                      SelectionMode="None">
                 <ListView.ItemTemplate>
                     <DataTemplate x:DataType="data:Etiqueta">
                         <TextBlock Text="{x:Bind Nombre }" 

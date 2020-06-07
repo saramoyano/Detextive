@@ -10,7 +10,8 @@ namespace AccesoDatos.Model
         private int? _numEtiquetas;
         private int? _numDocumentos;
         private string _nombre;
-        private string _ubicacionDocActivo;
+        private string _token;
+        private string _nombreDocActivo;
         private List<Documento> documentos;
         private List<Etiqueta> etiquetas;
         private List<Nube> nubes;
@@ -24,10 +25,11 @@ namespace AccesoDatos.Model
         public int? NumEtiquetas { get => _numEtiquetas; set { _numEtiquetas = value; NotificarCambio("NumEtiquetas"); }}
         public string Nombre { get => _nombre; set { _nombre = value; NotificarCambio("Nombre"); }}
         public int? NumDocumentos { get => _numDocumentos; set { _numDocumentos = value; NotificarCambio("numDocumentos"); }}
-        public string UbicacionDocActivo { get => _ubicacionDocActivo; set { _ubicacionDocActivo = value; NotificarCambio("UbicacionDocActivo"); }}
+        public string Token { get => _token; set { _token = value; NotificarCambio("Token"); }}
 
         public List<Documento> Documentos { get => documentos; set => documentos = value; }
         public List<Etiqueta> Etiquetas { get => etiquetas; set => etiquetas = value; }
         public List<Nube> Nubes { get => nubes; set => nubes = value; }
+        public string NombreDocActivo { get => _nombreDocActivo; set { _nombreDocActivo = value; NotificarCambio("NombreDocActivo"); } }
     }
 }

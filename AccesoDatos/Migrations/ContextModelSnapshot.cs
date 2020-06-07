@@ -169,13 +169,16 @@ namespace AccesoDatos.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<string>("NombreDocActivo")
+                        .HasColumnType("text");
+
                     b.Property<int?>("NumDocumentos")
                         .HasColumnType("integer");
 
                     b.Property<int?>("NumEtiquetas")
                         .HasColumnType("integer");
 
-                    b.Property<string>("UbicacionDocActivo")
+                    b.Property<string>("Token")
                         .HasColumnType("text");
 
                     b.HasKey("Id");

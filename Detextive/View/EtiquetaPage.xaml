@@ -127,10 +127,10 @@
                                        FontSize="18"
                                        Foreground="Black"                                      
                                        VerticalAlignment="Top"/>
-                            <TextBlock Grid.Row="1" 
+                            <!--<TextBlock Grid.Row="1" 
                                        Text="{x:Bind NumCitas}" 
                                        FontSize="16" 
-                                       Foreground="DarkSlateGray"></TextBlock>
+                                       Foreground="DarkSlateGray"></TextBlock>-->
                             </Grid>
                     </DataTemplate>
                 </ListView.ItemTemplate>

@@ -20,7 +20,7 @@ using Windows.UI.Xaml.Navigation;
 
 namespace Detextive.View
 {
-    
+
     public sealed partial class EtiquetaPage : Page
     {
         public EtiquetaViewModel etiquetaVM;
@@ -42,12 +42,18 @@ namespace Detextive.View
             base.OnNavigatedTo(e);
             if (ProyectosPage.Proyecto != null)
             {
-                etiquetaVM = new EtiquetaViewModel(ProyectosPage.Proyecto);    
-                btAgregar.IsEnabled = true;           
+                etiquetaVM = new EtiquetaViewModel(ProyectosPage.Proyecto);
+                btAgregar.IsEnabled = true;
             }
-                btEliminar.IsEnabled = false;
-                btActualizar.IsEnabled = false;               
-                btQuitarEtiqueta.IsEnabled = false;
+            else
+            {
+                btAgregar.IsEnabled = false;
+
+            }
+            btEliminar.IsEnabled = false;
+            btActualizar.IsEnabled = false;
+            btQuitarEtiqueta.IsEnabled = false;
+
         }
 
         private void lvEtiquetas_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -81,9 +87,7 @@ namespace Detextive.View
             {
                 if (lvEtiquetas.SelectedItem != null)
                 {
-                    //foreach (Cita cita in citasE) {
-                    //    citaVM.EliminarCita(cita);
-                    //}   
+                       
                     Etiqueta et = (Etiqueta)lvEtiquetas.SelectedItem;
                     etiquetaVM.EliminarEtiqueta(etiqueta);
                     ProyectosPage.Proyecto.NumEtiquetas = ProyectosPage.Proyecto.NumEtiquetas - 1;
@@ -103,7 +107,7 @@ namespace Detextive.View
             {
                 btQuitarEtiqueta.IsEnabled = true;
                 cita = (Cita)lvCitas.SelectedItem;
-               
+
 
             }
         }
@@ -131,7 +135,7 @@ namespace Detextive.View
                     await etiquetaAgregada.ShowAsync();
 
                     break;
-               
+
                 case 3:
                     ContentDialog nombreCorto = new ContentDialog
                     {
@@ -159,7 +163,7 @@ namespace Detextive.View
             string textoIngresado = tbCambiarNombre.Text;
             try
             {
-                if (etiqueta != null && textoIngresado != "" && textoIngresado.Length>3)
+                if (etiqueta != null && textoIngresado != "" && textoIngresado.Length > 3)
                 {
                     etiqueta.Nombre = textoIngresado;
                     etiquetaVM.ActualizarEtiqueta(etiqueta);
@@ -212,8 +216,7 @@ namespace Detextive.View
             {
                 try
                 {
-                    
-                   // etiqueta.Citas.Remove(cita);
+                    etiqueta.Citas.Remove(cita);
                     citaVM.EliminarCita(cita);
                     etiqueta.NumCitas = etiqueta.NumCitas - 1;
                     this.Frame.Navigate(typeof(EtiquetaPage));

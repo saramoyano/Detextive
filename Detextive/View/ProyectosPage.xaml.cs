@@ -21,16 +21,11 @@ using Windows.UI.Xaml.Media;
 using System.IO;
 using System.Collections;
 using System.Threading.Tasks;
+using Windows.Storage.AccessCache;
 
-
-
-// La plantilla de elemento Página en blanco está documentada en https://go.microsoft.com/fwlink/?LinkId=234238
 
 namespace Detextive
 {
-    /// <summary>
-    /// Una página vacía que se puede usar de forma independiente o a la que se puede navegar dentro de un objeto Frame.
-    /// </summary>
     public sealed partial class ProyectosPage : Page
     {
         private ProyectoViewModel proyectoVM;
@@ -48,9 +43,9 @@ namespace Detextive
 
         private IBlacklist _blacklist;
         private IProgressIndicator _progress;
-        private List<string> palabras;
-        private List<int> frecuencias;
         string texto;
+
+        StorageFile file;
 
         public static Proyecto Proyecto { get => proyecto; set => proyecto = value; }
 
@@ -60,11 +55,10 @@ namespace Detextive
             proyectoVM = new ProyectoViewModel();
             _blacklist = new BannedWords();
             _progress = new ProgressBarWrapper(ProgressBar);
-            palabras = new List<string>();
-            frecuencias = new List<int>();
+
         }
 
-        protected override void OnNavigatedTo(NavigationEventArgs e)
+        protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
             if (proyecto != null)
@@ -79,10 +73,14 @@ namespace Detextive
                 btnCerrarProy.IsEnabled = true;
                 btnProyecto.IsEnabled = false;
                 btnAbrirProy.IsEnabled = false;
-                btEliminar.IsEnabled = false;              
+                btEliminar.IsEnabled = false;
                 etiqVM = new EtiquetaViewModel(Proyecto);
                 documentoVM = new DocumentoViewModel(Proyecto);
-                nubeVM = new NubeViewModel(Proyecto); 
+                nubeVM = new NubeViewModel(Proyecto);
+                if (Proyecto.Token != null && Proyecto.Token != "")
+                {
+                    AbrirReciente();
+                }
             }
 
             if (Proyecto == null)
@@ -96,12 +94,12 @@ namespace Detextive
                 btnCerrarProy.IsEnabled = false;
                 MostrarDialog(1);
             }
-        }
 
+        }
         private void AceptaNombreProyecto(object sender, RoutedEventArgs e)
         {
             string textoIngresado = textBoxProy.Text;
-            if (textoIngresado != "" && textoIngresado.Length >3)
+            if (textoIngresado != "" && textoIngresado.Length > 3)
             {
                 try
                 {
@@ -142,18 +140,12 @@ namespace Detextive
             proyecto.Etiquetas = new List<Etiqueta>();
             proyecto.Nubes = new List<Nube>();
 
-            this.Frame.Navigate(typeof(ProyectosPage), Proyecto);
-        }
-        private void AbrirProyecto(object sender, RoutedEventArgs e)
-        {
-
+            this.Frame.Navigate(typeof(ProyectosPage));
         }
         private void lvProyectos_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             Proyecto = new Proyecto();
             Proyecto = (Proyecto)lvProyectos.SelectedItem;
-
-            Debug.WriteLine(Proyecto.Id);
             flyListaProy.Hide();
             Proyecto_Ok();
         }
@@ -176,7 +168,8 @@ namespace Detextive
                         etiqVM.AgregarEtiqueta(etiqueta);
                         Proyecto.Etiquetas.Add(etiqueta);
                         proyectoVM.ActualizarProyecto(Proyecto);
-                        MostrarDialog(6);
+                       // MostrarDialog(6);
+                        this.Frame.Navigate(typeof(ProyectosPage));
                     }
                     else
                     {
@@ -185,12 +178,7 @@ namespace Detextive
                 }
                 catch (Exception excepcion)
                 {
-                    ContentDialog error = new ContentDialog
-                    {
-                        Title = "Hubo un problema",
-                        Content = excepcion.StackTrace,
-                        CloseButtonText = "Aceptar"
-                    };
+                    Debug.Write(excepcion.StackTrace);
                 }
             }
             else
@@ -217,9 +205,23 @@ namespace Detextive
             picker.SuggestedStartLocation = Windows.Storage.Pickers.PickerLocationId.DocumentsLibrary;
             picker.FileTypeFilter.Add(".rtf");
 
-            Windows.Storage.StorageFile file = await picker.PickSingleFileAsync();
+            file = await picker.PickSingleFileAsync();
 
-            
+
+            if (file != null)
+            {
+                RecentStorageItemVisibility visibility = RecentStorageItemVisibility.AppAndSystem;
+                string mruToken = StorageApplicationPermissions.MostRecentlyUsedList.Add(file, file.Name, visibility);
+                Proyecto.Token = mruToken;
+
+            }
+
+            await CargarTexto();
+            this.Frame.Navigate(typeof(ProyectosPage));
+        }
+
+        private async Task CargarTexto()
+        {
             if (file != null)
             {
                 if (file.FileType == ".rtf")
@@ -236,21 +238,20 @@ namespace Detextive
                     }
                     catch (Exception excepcion)
                     {
-                        MostrarDialog(9);
+                        //MostrarDialog(9);
                     }
                 }
+                string[] nombre = file.Name.Split(".");
+                string name = nombre[0];
+                Proyecto.NombreDocActivo = name;
 
                 try
                 {
-                    documento = new Documento();
-
-                    string[] nombre = file.Name.Split(".");
-                    string name = nombre[0];
-                    if ((!documentoVM.ExisteDocumento(name, Proyecto)))
+                    if (!documentoVM.ExisteDocumento(name, Proyecto))
                     {
+                        documento = new Documento();
                         documento.Ubicacion = file.Path;
                         documento.ProyectoId = Proyecto.Id;
-                        Proyecto.UbicacionDocActivo = documento.Ubicacion;
                         Proyecto.NumDocumentos = Proyecto.NumDocumentos + 1;
                         documento.Nombre = name;
                         documentoVM.AgregarDocumento(documento);
@@ -259,17 +260,44 @@ namespace Detextive
                     }
                     else
                     {
-                        documento = documentoVM.GetDocumento(name);
+                        documento = documentoVM.GetDocumento(name, Proyecto);
                     }
-
-                    UpdateWords();
                 }
                 catch (Exception excepcion)
                 {
-                    MostrarDialog(8);
+                   
+                    Debug.Write(excepcion.StackTrace);
                 }
             }
         }
+
+
+        private async void AbrirReciente()
+        {
+
+            Debug.WriteLine(Proyecto.Token);
+            Debug.WriteLine(StorageApplicationPermissions.MostRecentlyUsedList.ContainsItem(Proyecto.Token));
+
+            if (StorageApplicationPermissions.MostRecentlyUsedList.ContainsItem(Proyecto.Token))
+            {
+
+                file = await StorageApplicationPermissions.MostRecentlyUsedList.GetFileAsync(Proyecto.Token);
+                Debug.WriteLine(file.Name);
+            }
+            else
+            {
+                Debug.WriteLine("Error");
+            }
+
+
+            if (file != null)
+            {
+                await CargarTexto();
+
+            }
+        }
+
+
         private async void SaveButton_Click(object sender, RoutedEventArgs e)
         {
             Windows.Storage.Pickers.FileSavePicker savePicker = new Windows.Storage.Pickers.FileSavePicker();
@@ -425,12 +453,8 @@ namespace Detextive
                     };
                     await yaAsignada.ShowAsync();
                     break;
-               
-            }
-        }
-        public void UpdateWords()
-        {
 
+            }
         }
 
         internal class ProgressBarWrapper : IProgressIndicator
@@ -755,7 +779,7 @@ namespace Detextive
                     cita.EtiquetaId = etiqueta.Id;
                     citaVM.AgregarCita(cita);
                     etiqueta.NumCitas = etiqueta.NumCitas + 1;
-                    // documento.Citas.Add(cita);
+                    documento.Citas.Add(cita);
                     etiqVM.ActualizarEtiqueta(etiqueta);
                     documentoVM.ActualizarDocumento(documento);
                     Windows.UI.Text.ITextCharacterFormat charFormatting = selectedText.CharacterFormat;
@@ -780,29 +804,29 @@ namespace Detextive
                 MostrarDialog(5);
             }
         }
-    private void EliminarProyecto(object sender, RoutedEventArgs e)
-    {
-        
-        try
+        private void EliminarProyecto(object sender, RoutedEventArgs e)
         {
-            if (lvPEliminar.SelectedItem != null)
-            {
-                Proyecto p = (Proyecto)lvPEliminar.SelectedItem;              
 
-                proyectoVM.EliminarProyecto(p);
+            try
+            {
+                if (lvPEliminar.SelectedItem != null)
+                {
+                    Proyecto p = (Proyecto)lvPEliminar.SelectedItem;
+
+                    proyectoVM.EliminarProyecto(p);
                     flyLPEliminar.Hide();
                     this.Frame.Navigate(typeof(ProyectosPage));
-             }
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("No se puede elimnar el proyecto");
+            }
         }
-        catch (Exception ex)
-        {
-            Debug.WriteLine("No se puede elimnar el proyecto");
-        }
-    }
 
-    private void AceptarNuevoNombre_Click(object sender, RoutedEventArgs e)
-    {
-        string textoIng = tbCambiarNombre.Text;
+        private void AceptarNuevoNombre_Click(object sender, RoutedEventArgs e)
+        {
+            string textoIng = tbCambiarNombre.Text;
             if (textoIng != null && textoIng.Length > 3)
             {
                 proyecto.Nombre = textoIng;
@@ -810,10 +834,16 @@ namespace Detextive
                 flyCambiarNombre.Hide();
                 this.Frame.Navigate(typeof(ProyectosPage));
             }
-            else {
+            else
+            {
                 MostrarDialog(11);
             }
 
+        }
+
+        private void lvDocumentos_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
     }
-}
 }
