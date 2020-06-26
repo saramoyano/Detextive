@@ -20,7 +20,6 @@ namespace AccesoDatos.Logica
             }
             return logicaDocumento;
         }
-
         // Obtener la lista de Documentos
         // params: ninguno
         public ObservableCollection<Model.Documento> ListaDocumentos()
@@ -47,7 +46,7 @@ namespace AccesoDatos.Logica
         }
 
         // Obtener una  lista de Documentos según filtro aplicado (Proyecto)
-        // params: objeto de la clase AccesoDatos.Model.Documento
+        // params: objeto de la clase AccesoDatos.Model.Proyecto
         public ObservableCollection<Model.Documento> ListaDocumentosFiltro(Proyecto proyecto)
         {
             using (var db = new Model.Context())
@@ -55,7 +54,10 @@ namespace AccesoDatos.Logica
                 ObservableCollection<Documento> documentos = new ObservableCollection<Documento>();
                 try
                 {
-                    List<Documento> lDocs = db.DocumentoSet.Where(b => b.ProyectoId.Equals(proyecto.Id)).ToList();
+                    List<Documento> lDocs = db.DocumentoSet
+                        .Where(b => b.ProyectoId
+                        .Equals(proyecto.Id))
+                        .ToList();
 
                     foreach (Documento documento in lDocs)
                     {
@@ -76,7 +78,10 @@ namespace AccesoDatos.Logica
         {
             using (var db = new Model.Context())
             {
-                return db.DocumentoSet.Single(b => b.Nombre.Equals(nombre) && b.ProyectoId.Equals(p.Id));
+                return db.DocumentoSet
+                    .Single(b => b.Nombre
+                    .Equals(nombre) 
+                    && b.ProyectoId.Equals(p.Id));
 
             }               
         }
@@ -89,7 +94,6 @@ namespace AccesoDatos.Logica
 
             }
         }
-
         //Determina si el documento existe
         //params Objeto tipo documento(propiedad Nombre)
         public bool ExisteDocumento(string nombre, Proyecto p)
@@ -99,7 +103,11 @@ namespace AccesoDatos.Logica
                 try
                 {
                     List<Documento> lDocs = new List<Documento>();
-                    lDocs = db.DocumentoSet.Where(b => b.ProyectoId.Equals(p.Id) && b.Nombre.Equals(nombre)).ToList();
+                    lDocs = db.DocumentoSet.
+                        Where(b => b.ProyectoId.
+                        Equals(p.Id) 
+                        && b.Nombre.Equals(nombre))
+                        .ToList();
                     if (lDocs.Count > 0)
                     {
                         return true;

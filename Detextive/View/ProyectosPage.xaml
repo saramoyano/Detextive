@@ -297,9 +297,7 @@
                          Background="White" 
                          Foreground="White" 
                          Margin="578,0,63,0" 
-                         Height="4"/>
-          
-          
+                         Height="4"/>                   
             <ListView Grid.Row="1" 
                       x:Name="lvDocumentos" 
                       Margin="5,10,0,5"

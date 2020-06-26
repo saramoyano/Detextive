@@ -10,8 +10,6 @@ namespace AccesoDatos.Logica
 {
     public class LogicaProyecto
     {
-
-
         private static LogicaProyecto logicaProyecto;
 
         public static LogicaProyecto GetInstance()
@@ -42,17 +40,12 @@ namespace AccesoDatos.Logica
                 {
                     throw new Exception("No hay proyectos guardados.", e);
                 }
-
             }
-
-        }
-
-        
+        }        
         public bool ExisteProyecto(Proyecto proyecto)
         {
             using (var db = new Model.Context())
             {
-
                 try
                 {
                     List<Proyecto> lProy =  db.ProyectoSet.Where(b => b.Nombre.Equals(proyecto.Nombre)).ToList();

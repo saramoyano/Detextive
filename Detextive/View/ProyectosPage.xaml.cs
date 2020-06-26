@@ -53,9 +53,7 @@ namespace Detextive
         {
             this.InitializeComponent();
             proyectoVM = new ProyectoViewModel();
-            _blacklist = new BannedWords();
-            _progress = new ProgressBarWrapper(ProgressBar);
-
+            _blacklist = new BannedWords();         
         }
 
         protected override async void OnNavigatedTo(NavigationEventArgs e)
@@ -219,7 +217,6 @@ namespace Detextive
             await CargarTexto();
             this.Frame.Navigate(typeof(ProyectosPage));
         }
-
         private async Task CargarTexto()
         {
             if (file != null)
@@ -231,7 +228,7 @@ namespace Detextive
                         Windows.Storage.Streams.IRandomAccessStream randAccStream =
                     await file.OpenAsync(Windows.Storage.FileAccessMode.Read);
 
-                        // Load the file into the Document property of the RichEditBox.
+                       
                         editor.Document.LoadFromStream(Windows.UI.Text.TextSetOptions.FormatRtf, randAccStream);
                         editor.Document.GetText(TextGetOptions.None, out texto);
                         btnNube.IsEnabled = true;
@@ -270,15 +267,10 @@ namespace Detextive
                 }
             }
         }
-
-
         private async void AbrirReciente()
         {
 
-            Debug.WriteLine(Proyecto.Token);
-            Debug.WriteLine(StorageApplicationPermissions.MostRecentlyUsedList.ContainsItem(Proyecto.Token));
-
-            if (StorageApplicationPermissions.MostRecentlyUsedList.ContainsItem(Proyecto.Token))
+           if (StorageApplicationPermissions.MostRecentlyUsedList.ContainsItem(Proyecto.Token))
             {
 
                 file = await StorageApplicationPermissions.MostRecentlyUsedList.GetFileAsync(Proyecto.Token);
@@ -289,15 +281,12 @@ namespace Detextive
                 Debug.WriteLine("Error");
             }
 
-
             if (file != null)
             {
                 await CargarTexto();
 
             }
         }
-
-
         private async void SaveButton_Click(object sender, RoutedEventArgs e)
         {
             Windows.Storage.Pickers.FileSavePicker savePicker = new Windows.Storage.Pickers.FileSavePicker();
@@ -456,34 +445,33 @@ namespace Detextive
 
             }
         }
+        //internal class ProgressBarWrapper : IProgressIndicator
+        //{
+        //    private readonly ProgressBar m_ProgressBar;
 
-        internal class ProgressBarWrapper : IProgressIndicator
-        {
-            private readonly ProgressBar m_ProgressBar;
+        //    public ProgressBarWrapper(ProgressBar toolStripProgressBar)
+        //    {
+        //        m_ProgressBar = toolStripProgressBar;
+        //    }
 
-            public ProgressBarWrapper(ProgressBar toolStripProgressBar)
-            {
-                m_ProgressBar = toolStripProgressBar;
-            }
+        //    public Double Value
+        //    {
+        //        get { return m_ProgressBar.Value; }
+        //        set { m_ProgressBar.Value = value; }
+        //    }
 
-            public Double Value
-            {
-                get { return m_ProgressBar.Value; }
-                set { m_ProgressBar.Value = value; }
-            }
+        //    public virtual Double Maximum
+        //    {
+        //        get { return m_ProgressBar.Maximum; }
+        //        set { m_ProgressBar.Maximum = value; }
+        //    }
 
-            public virtual Double Maximum
-            {
-                get { return m_ProgressBar.Maximum; }
-                set { m_ProgressBar.Maximum = value; }
-            }
-
-            public virtual void Increment(int value)
-            {
-                // m_ProgressBar.Increment(value);
-                // Application.DoEvents();
-            }
-        }
+        //    public virtual void Increment(int value)
+        //    {
+        //        // m_ProgressBar.Increment(value);
+        //        // Application.DoEvents();
+        //    }
+        //}
         private void lvEtiquetas_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             etiqueta = (Etiqueta)lvEtiquetas.SelectedItem;
@@ -494,252 +482,7 @@ namespace Detextive
 
             this.Frame.Navigate(typeof(ProyectosPage));
         }
-        internal class BannedWords : CommonBlacklist
-        {
-            private static readonly string[] s_TopCommonWords =
-                new[]
-                {"I", "a" ,
-              "acá" ,
-              "ahí" , "de", "la", "los", "las", "que", "el", "por", "se", "al" ,
-                "algo" ,
-                "algún" ,
-                "alguna",
-                "alguno",
-                "algunas",
-                "algunos",
-                "allá" ,
-                "allí" ,
-                "ambos" ,
-                "ante" ,  "aquí" ,
-                "arriba" ,
-                "así" ,
-                "atrás" ,
-                "aun" ,
-                "aunque" ,
-                "bajo" ,
-                "bastante" ,
-                "bien" ,
-                "cabe" ,
-                "cada" ,
-                "casi" , "ciertos" ,
-                "ciertas" ,
-                "como" ,
-                "con" ,
-                "conmigo" ,
-                "conseguimos" ,
-                "conseguir" ,
-                "consigo" ,
-                "consigue" ,
-                "consiguen" ,
-                "consigues" ,
-                "contigo" ,  "cualquieras" ,
-                "cualesquiera" ,
-                "cuan" ,
-                "cuando" ,
-                "cuanto" ,
-                "cuanta" ,
-                "cuantos" ,
-                "cuantas" ,
-                "de" ,
-                "dejar" ,
-                "del" ,
-                  "desde" ,
-                "donde" ,
-                "dos" ,
-                    "el",
-                    "en" ,
-                "encima" ,
-                "entonces" ,
-                "entre" ,
-                "era",
-                "eras" ,
-                "eramos" ,
-                "eran" ,
-                "eres" ,
-                "es" ,
-                "esos" ,
-                "esa" ,
-                "eso" ,
-                "ese" ,
-                "esas" ,
-                "estas" ,
-                "esta" ,
-                "estaba" ,
-                "estado" ,
-                "estáis" ,
-                "estamos" ,
-                "están" ,
-                "estar" ,
-                "este" ,
-                "esto" ,
-                "estos" ,
-                "estés" ,
-                "estoy" ,
-                "etc" ,   "ha" ,
-                    "han",
-                    "haces" ,
-                "hace" ,
-                "hacéis" ,
-                "hacemos" ,
-                "hacen" ,
-                "hacer" ,
-                "hacia" ,
-                "hago" ,
-                "hasta" ,
-                "incluso" ,
-                "intentas" ,
-                "intenta" ,
-                "intentáis" ,
-                "intentamos" ,
-                "intentan" ,
-                "intentar" ,
-                "intento" ,
-                "ir" ,
-                "jamás" ,
-                "juntos" ,
-                "junto" ,
-                "la" ,
-                "lo" ,
-                "las" ,
-                "los" ,
-                "largo" ,
-                "más" ,
-                "mas" ,
-                "me" ,
-                "menos" ,
-                "mi" ,
-                "mis" ,
-                "mientras" ,
-                "mío" ,
-                "mía" ,
-                "mías" ,
-                "míos" ,  "modo" ,
-                "mucha" ,
-                "muchas" ,
-                "muchos" ,
-                "muchísima" ,
-                "muchísimo" ,
-                "muchísimas" ,
-                "muchísimos" ,
-                "mucho" ,
-                "muchos" ,
-                "muy" ,
-                "nada" ,
-                "ni" ,
-                "ningún" ,
-                "ninguna" ,
-                "ninguno" ,
-                "no" ,
-                "nos" , "nunca" ,
-                "os" ,
-                    "otras",
-                    "para" , "pero" ,"podéis" ,
-                "podemos" ,
-                "poder" ,
-                "podría" ,
-                "podrías" ,
-                "podríais" ,
-                "podríamos" ,
-                "podrían" ,
-                "por" ,
-                "por qué" ,
-                "porque" ,  "pueden" ,
-                "puedes" ,
-                "puede" ,
-                "puedo" ,
-                "pues" ,
-                "que" ,
-                "qué" ,
-                "querer" ,
-                "quienes" ,
-                "quien" ,
-                "quién" ,
-                "quienesquiera" ,
-                "quienquiera" ,
-                "quizás" ,
-                "quizá" ,
-                    "se" ,
-                "son",
-                    "un",
-                    "le",
-                    "dijo",
-                "según" ,
-                "ser" ,
-                "si" ,
-                "sí" ,
-                "sido",
-                "siempre" ,
-                "siendo" ,
-                "sin" ,
-                "sino" ,
-                "so" ,
-                "sobre" ,
-                "sois" ,
-                "solamente" ,
-                "solo" ,
-                "sólo" ,
-                    "sr" ,
-                "sra" ,
-                "sres" ,
-                "sta" ,
-                "su" ,
-                "sus" ,
-                "suya" ,
-                "suyo" ,
-                "suyas" ,
-                "suyos" ,
-                "tal" ,
-                "tales" ,
-                "también" ,
-                "tampoco" ,
-                "tan" ,
-                "tanta" ,
-                "tanto" ,
-                "tantas" ,
-                "tantos" ,
-                "te" ,
-                "tenéis" ,
-                "tenemos" ,
-                "tener" ,
-                "tengo" ,
-                "ti" ,  "tú" ,
-                "tu" ,
-                "tus" ,
-                "tuya " ,
-                "tuyo" ,
-                "tuyas" ,
-                "tuyos" ,     "un " ,
-                "una" ,
-                "uno" ,
-                "unas" ,
-                "unos" ,
-                "usa" ,
-                "usas" ,
-                "usáis" ,
-                "usamos" ,
-                "usan" ,
-                "usar" ,
-                "uso" ,
-                "ustedes" ,
-                "usted" ,
-                "va" ,
-                "van" ,
-                "vais" ,
-                "valor" ,
-                "vamos" ,
-                "varias" ,
-                "varios" ,
-                "vaya" ,
-                    "voy" ,
-                    "y" ,
-                "ya" ,
-                "yo",};
-
-            public BannedWords() : base(s_TopCommonWords)
-            {
-            }
-        }
-        private void btEliminar_Click(object sender, RoutedEventArgs e)
+             private void btEliminar_Click(object sender, RoutedEventArgs e)
         {
 
         }

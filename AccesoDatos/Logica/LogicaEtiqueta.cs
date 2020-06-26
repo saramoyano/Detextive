@@ -67,7 +67,7 @@ namespace AccesoDatos.Logica
         }
 
         // Obtener una Etiqueta de la lista según filtro aplicado (proyecto)
-        // params: objeto de la clase AccesoDatos.Model.Etiqueta
+        // params: objeto de la clase AccesoDatos.Model.Proyecto
         public ObservableCollection<Model.Etiqueta> ListaEtiquetasFiltro(Proyecto proyecto)
         {
             using (var db = new Model.Context())
@@ -90,8 +90,7 @@ namespace AccesoDatos.Logica
             }
         }
 
-        //Determina si el documento existe
-        //params Objeto tipo documento(propiedad Nombre)
+        //Determina si la etiqueta existe
         public bool ExisteEtiqueta(Etiqueta eti, Proyecto p)
         {
             using (var db = new Model.Context())
