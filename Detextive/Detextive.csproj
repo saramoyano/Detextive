@@ -163,6 +163,7 @@
     <Content Include="Assets\LargeTile.scale-150.png" />
     <Content Include="Assets\LargeTile.scale-200.png" />
     <Content Include="Assets\LargeTile.scale-400.png" />
+    <Content Include="Assets\migracionok.PNG" />
     <Content Include="Assets\nube.png" />
     <Content Include="Assets\project.png" />
     <Content Include="Assets\proyecto.png" />
