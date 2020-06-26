@@ -1,7 +1,7 @@
 # Detextive
 Aplicacion de análisis de texto
 
-![Proyecto](https://raw.github.com/saramoyano/Detextive/blob/master/Detextive/Assets/Captura%20proyectoabierto.PNG)
+![Proyecto](https://raw.github.com/saramoyano/Detextive/master/Detextive/Assets/Captura%20proyectoabierto.PNG)
 
 DETEXTIVE busca servir como una herramienta de ayuda al proceso de investigación, permitiendo organizar, clasificar, etiquetar y visualizar la información. La aplicación tiene dos funcionalidades principales: etiquetado de fragmentos de un documento y creación de nubes de palabras. Este software se centra en el almacenamiento, reorganización y visualización de la información obtenida a partir de documentos, así como de la creada por el usuario. 
 Detextive está aun en desarrollo y pretendo hacerle varios cambios.
