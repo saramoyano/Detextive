@@ -18,12 +18,12 @@ Instrucciones:
 - Modificar transitoriamente la propiedad TargetFramework del archivo de proyecto para que apunte a .netcoreapp2.2 y a .netstandard2.0. Comentar la línea del TargetFramework bajo la etiqueta PropertyGroup y habilitar la de TargetFrameworks.
 - A continuación recargar el proyecto. 
 
-![migracion](https://raw.githubusercontent.com/saramoyano/Detextive/blob/master/Detextive/Assets/Capturamigracion.PNG)
+![migracion](https://raw.github.com/saramoyano/Detextive/master/Detextive/Assets/Capturamigracion.PNG)
 
 - Una vez recargado, se debe establecer el proyecto AccesoDatos como proyecto de inicio y realizar la migración utilizando la Consola del Administrador de paquetes con Add-Migration nombre_migracion. Si se produce un error, se deben descargar los otros dos proyectos.
 - Cuando aparece el mensaje que indica que la migración fue exitosa, se aplican los cambios a la BB.DD. 
 
-![migracionok](https://raw.githubusercontent.com/saramoyano/Detextive/blob/master/Detextive/Assets/migracionok.PNG)
+![migracionok](https://raw.github.com/saramoyano/Detextive/master/Detextive/Assets/migracionok.PNG)
 
 - Una vez realizada y comprobada la migración en BB.DD. se vuelve a modificar el archivo de configuración para que el proyecto pueda ser referenciado desde UWP. Quitar el comentario en TargetFramework y volver a comentar la línea siguiente.  En caso de dudas, ver este hilo https://github.com/dotnet/efcore/issues/19754
 - Ejecutar
